@@ -194,7 +194,7 @@ interrupt 22 void intKBI_SW(){
 View on [GitHub](https://github.com/cpjobling/EG-252-Resources/blob/master/Microcontroller-Interfacing/Exercises/Exercise2/kbi_interrupt.c)
 
 ## Appendix B
-### sample Program in Assembly
+### Sample Program in Assembly
 ~~~~{#kbi_interrupt_asm .assembly .numberLines}
 ;*************************************************************************
 ;*  kbi_interrupt.asm                                                    *
