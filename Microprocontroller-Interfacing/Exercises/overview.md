@@ -1,9 +1,24 @@
+---
+title:  'Microcontroller Laboratory Overview'
+subtitle: 'EG-252 Group Design Exercise -- Microcontroller Laboratory'
+author:
+  - Dr K. S. (Joseph) Kim
+  - Dr Chris P. Jobling
+affiliation: Swansea University
+tags: [eg-252, microcontrollers laboratory]
+date: September 2014
+...
+
 # Microcontroller Laboratory Overview
 
 The microcontroller laboratory exercises are designed to introduce the basics of
 interfacing and controlling microcontrollers through C and assembly programs,
 which are required for you to build a micromouse in the second term of this
 module.
+
+You can view this document as a web page [HTML](overview.html), [PDF](overview.pdf) or as a Word Document [.docx](overview.docx)
+
+-----
 
 There are four exercises for the following topics:
 
@@ -20,7 +35,7 @@ Davies when finishing it. You should also keep a record of your work in a
 laboratory notebook and have it available for assessment, when required;
 materials presented on loose paper (other than program listings) will not be
 considered. A final report in print from each team should be submitted to Dr
-Jobling by 5pm on the 12th of December 2014 (Friday), which should include
+Jobling by _5pm on the 12th of December 2014_ (Friday), which should include
 answers to questions, program design and source code for the implemented program
 with detailed comments. 
 
@@ -34,10 +49,10 @@ Group Design Exercise Resources](https://github.com/cpjobling/EG-252-Resources) 
 
 [1] Freescale Semiconductor, MC9S08AW60 Data Sheet, Rev. 2, Dec. 2006.
 
-[2] ——, DEMO9S08AW60E Evaluation Board User’s Guide, Rev. 0.3, Jan.
+[2] --, DEMO9S08AW60E Evaluation Board User's Guide, Rev. 0.3, Jan.
 2006.
 
-[3] ——, CodeWarrior^TM^ Development Studio IDE 5.9 User’s Guide, Jul. 2010.
+[3] --, CodeWarrior^TM^ Development Studio IDE 5.9 User's Guide, Jul. 2010.
 
-[4] ——, Getting Started with HCS08 and CodeWarrior Using C, Rev. 2, Jul.
+[4] --, Getting Started with HCS08 and CodeWarrior Using C, Rev. 2, Jul.
 2006.
