@@ -47,12 +47,12 @@ Group Design Exercise Resources](https://github.com/cpjobling/EG-252-Resources) 
 
 ## References
 
-[1] Freescale Semiconductor, MC9S08AW60 Data Sheet, Rev. 2, Dec. 2006.
+[1] Freescale Semiconductor, _MC9S08AW60 Data Sheet_, Rev. 2, Dec. 2006.
 
-[2] --, DEMO9S08AW60E Evaluation Board User's Guide, Rev. 0.3, Jan.
+[2] --, _DEMO9S08AW60E Evaluation Board User's Guide_, Rev. 0.3, Jan.
 2006.
 
-[3] --, CodeWarrior^TM^ Development Studio IDE 5.9 User's Guide, Jul. 2010.
+[3] --, _CodeWarrior^TM^ Development Studio IDE 5.9 User's Guide_, Jul. 2010.
 
-[4] --, Getting Started with HCS08 and CodeWarrior Using C, Rev. 2, Jul.
+[4] --, _Getting Started with HCS08 and CodeWarrior Using C_, Rev. 2, Jul.
 2006.
