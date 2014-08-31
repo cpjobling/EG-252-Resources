@@ -2,9 +2,9 @@
 title:  'Microcontroller Laboratory Overview'
 subtitle: 'EG-252 Group Design Exercise -- Microcontroller Laboratory'
 author:
-- name: Dr K. S. (Joseph) Kim
-- name: Dr Chris P. Jobling
-  affiliation: Swansea University
+  - Dr K. S. (Joseph) Kim
+  - Dr Chris P. Jobling
+affiliation: Swansea University
 tags: [eg-252, microcontrollers laboratory]
 date: September 2014
 ...
