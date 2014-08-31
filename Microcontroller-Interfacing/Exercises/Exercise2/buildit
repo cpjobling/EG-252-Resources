@@ -1,0 +1,12 @@
+#!/bin/bash
+
+pandoc -f markdown -t html5 exercise2.md \
+  -o exercise2.html \
+  -T 'EG-252 -- Microcontroller Laboratory' \
+  --smart \
+  --template=../../../templates/html5.html \
+  --css=../../../stylesheets/stylesheet.css
+
+pandoc -f markdown -t latex exercise2.md -o exercise2.pdf
+
+pandoc -f markdown -t docx exercise2.md -o exercise2.docx

@@ -10,3 +10,5 @@ pandoc -f markdown -t html5 overview.md \
 pandoc -f markdown -t latex overview.md -o overview.pdf
 
 pandoc -f markdown -t docx overview.md -o overview.docx
+
+(cd Exercise2; ./buildit)
