@@ -1,4 +1,4 @@
-# EG-252 Group Design Exercise
+# EG-252 Group Design Exercise Resources
 
 A collection of resources created and distributed by
 Dr Chris Jobling, College of Engineering, Swansea University.
@@ -26,3 +26,7 @@ For more on this topic see the GitHub Help Page [Fork a Repo](https://help.githu
 
 Some of the materials are based on notes and examples originally developed
 by Dr Ka Seoung (Joseph) Kim.
+
+## License
+
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">EG-252 Group Design Exercise Resources</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="http://www.swan.ac.uk" property="cc:attributionName" rel="cc:attributionURL">Swansea University</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
