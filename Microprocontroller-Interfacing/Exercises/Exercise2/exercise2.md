@@ -1,5 +1,5 @@
 ---
-title:  'Exercise 1: Keyboard Interrupt'
+title:  'Exercise 2: Keyboard Interrupt'
 subtitle: 'EG-252 Group Design Exercise -- Microcontroller Laboratory'
 author:
   - Dr K. S. (Joseph) Kim
@@ -9,7 +9,7 @@ tags: [eg-252, microcontrollers laboratory, keyboard interrupt]
 date: September 2014
 ...
 
-# Exercise 1: Keyboard Interrupt
+# Exercise 2: Keyboard Interrupt
 
 For this exercise you are provided sample keyboard interrupt programs in both C
 and Assembly in the appendices; make sure that you have downloaded electronic
@@ -28,7 +28,7 @@ the evaluation board.
 
 The demonstration of your program on the board needs to be done no later than *Monday, 10 November 2014*.
 
-You can view this document as a web page [HTML](exercise1.html), [PDF](exercise1.pdf) or as a Word Document [.docx](exercise1.docx)
+You can view this document as a web page [HTML](exercise2.html), [PDF](exercise2.pdf) or as a Word Document [.docx](exercise2.docx)
 
 
 ## I. Experiment with the Sample Program
