@@ -1,14 +1,9 @@
 #!/bin/bash
 
-pandoc -f markdown -t html5 overview.md \
-  -o overview.html \
-  -T 'EG-252 -- Microcontroller Laboratory' \
-  --smart \
-  --template=../../templates/html5.html \
-  --css=../../stylesheets/stylesheet.css
+make all
 
-pandoc -f markdown -t latex overview.md -o overview.pdf
+(cd Exercise2; make all)
 
-pandoc -f markdown -t docx overview.md -o overview.docx
-
-(cd Exercise2; ./buildit)
+git add .
+git commit -m "Updated Website"
+git push
