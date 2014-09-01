@@ -12,13 +12,13 @@ TARGETS=$(HTML) $(PDF) $(WORD)
 
 all: $(TARGETS)
 
-$(DOC).html: $(DOC).md
+$(DOC).html: $(SOURCES)
 	$(PANDOC) $(HTML_FLAGS) $(FLAGS) $< -o $@
 
-$(DOC).pdf: $(DOC).md
+$(DOC).pdf: $(SOURCES)
 	$(PANDOC) $(PDF_FLAGS) $(FLAGS) $< -o $@
 
-$(DOC).docx: $(DOC).md
+$(DOC).docx: $(SOURCES)
 	$(PANDOC) $(DOCX_FLAGS) $(FLAGS) $< -o $@
 
 
