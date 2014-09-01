@@ -93,7 +93,7 @@ RTI</code></pre>
 <p>You are required to design and debug the ISR program (using either Assembly or C language), and demonstrate the application to Dr Chris Jobling or Dr Tim Davies.</p>
 <h2 id="appendix-a">Appendix A</h2>
 <h3 id="sample-program-in-c">Sample Program in C</h3>
-<table class="sourceCode c numberLines" id="kbi_interrupt_c"><tr class="sourceCode"><td class="lineNumbers"><pre>1
+<table class="sourceCode c numberLines" id="kbi_interrupt_c" include="kbi_interrupt.c"><tr class="sourceCode"><td class="lineNumbers"><pre>1
 2
 3
 4
@@ -147,8 +147,8 @@ RTI</code></pre>
 52
 </pre></td><td class="sourceCode"><pre><code class="sourceCode c"><span class="co">/* kbi_interrupt.c */</span>
 
-<span class="ot">#include &lt;hidef.h&gt;    </span><span class="co">/* for EnableInterrupts macro */</span>
-<span class="ot">#include &quot;derivative.h&quot; </span><span class="co">/* include peripheral declarations */</span>
+<span class="ot">#include &lt;hidef.h&gt;		</span><span class="co">/* for EnableInterrupts macro */</span>
+<span class="ot">#include &quot;derivative.h&quot;	</span><span class="co">/* include peripheral declarations */</span>
 
 <span class="kw">typedef</span> <span class="dt">unsigned</span> <span class="dt">char</span> muint8;
 <span class="kw">typedef</span> <span class="dt">unsigned</span> <span class="dt">short</span> muint16;
@@ -159,48 +159,48 @@ RTI</code></pre>
 <span class="kw">typedef</span> <span class="dt">long</span> mint32;
 
 <span class="co">/* to clear or set single bits in a byte variable */</span>
-<span class="ot">#define b_SetBit(bit_ID, varID)   (varID |= (muint8)(1&lt;&lt;bit_ID))</span>
-<span class="ot">#define b_ClearBit(bit_ID, varID) (varID &amp;= ~(muint8)(1&lt;&lt;bit_ID))</span>
-<span class="ot">#define b_XorBit(bit_ID, varID)   (varID ^= (muint8)(1&lt;&lt;bit_ID))</span>
+<span class="ot">#define b_SetBit(bit_ID, varID)		(varID |= (muint8)(1&lt;&lt;bit_ID))</span>
+<span class="ot">#define b_ClearBit(bit_ID, varID)	(varID &amp;= ~(muint8)(1&lt;&lt;bit_ID))</span>
+<span class="ot">#define b_XorBit(bit_ID, varID)		(varID ^= (muint8)(1&lt;&lt;bit_ID))</span>
 
 muint8 LED_onseq;
 
 <span class="dt">void</span> main(<span class="dt">void</span>) {
-  EnableInterrupts; <span class="co">/* enable interrupts */</span>
-  SOPT = <span class="bn">0x00</span>;    <span class="co">/* disable COP */</span>
+	EnableInterrupts;	<span class="co">/* enable interrupts */</span>
+	SOPT = <span class="bn">0x00</span>;		<span class="co">/* disable COP */</span>
 
-  <span class="co">/* begin LED/switch test */</span>
+	<span class="co">/* begin LED/switch test */</span>
 
-  PTDPE = <span class="bn">0xFF</span>;   <span class="co">/* enable port D pullups for push button switch interrupt */</span>
+	PTDPE = <span class="bn">0xFF</span>;		<span class="co">/* enable port D pullups for push button switch interrupt */</span>
 
-  <span class="co">/* Init_GPIO init code */</span>
-  PTFDD = <span class="bn">0xFF</span>;   <span class="co">/* set port F as outputs for LED operation */</span>
-  LED_onseq = <span class="bn">0x0F</span>; <span class="co">/* initialize LED_onseq */</span>
+	<span class="co">/* Init_GPIO init code */</span>
+	PTFDD = <span class="bn">0xFF</span>;		<span class="co">/* set port F as outputs for LED operation */</span>
+	LED_onseq = <span class="bn">0x0F</span>;	<span class="co">/* initialize LED_onseq */</span>
 
-  <span class="co">/* enable interrupt for keyboard input */</span>
-  b_ClearBit(<span class="dv">1</span>, KBI1SC);  <span class="co">/* KBI1SC: KBIE=0, disable KBI interrupt request */</span>
-  KBI1PE = <span class="bn">0x60</span>;      <span class="co">/* KBI1PE: KBIPE7=1, enable KBI function for pins 5 and 6 only */</span>
-  b_ClearBit(<span class="dv">0</span>, KBI1SC);  <span class="co">/* KBI1SC: KBIMOD=0, select edge-only detection */</span>
-  
-  <span class="co">/* in defaut only falling edge events to be detected */</span>
-  b_SetBit(<span class="dv">2</span>, KBI1SC);  <span class="co">/* KBI1SC: KBACK=1, to clear KBI flag */</span>
-  b_SetBit(<span class="dv">1</span>, KBI1SC);  <span class="co">/* KBI1SC: KBIE=1, enable KBI */</span>
+	<span class="co">/* enable interrupt for keyboard input */</span>
+	b_ClearBit(<span class="dv">1</span>, KBI1SC);	<span class="co">/* KBI1SC: KBIE=0, disable KBI interrupt request */</span>
+	KBI1PE = <span class="bn">0x60</span>;			<span class="co">/* KBI1PE: KBIPE7=1, enable KBI function for pins 5 and 6 only */</span>
+	b_ClearBit(<span class="dv">0</span>, KBI1SC);	<span class="co">/* KBI1SC: KBIMOD=0, select edge-only detection */</span>
+	
+	<span class="co">/* in defaut only falling edge events to be detected */</span>
+	b_SetBit(<span class="dv">2</span>, KBI1SC);	<span class="co">/* KBI1SC: KBACK=1, to clear KBI flag */</span>
+	b_SetBit(<span class="dv">1</span>, KBI1SC);	<span class="co">/* KBI1SC: KBIE=1, enable KBI */</span>
 
-  <span class="kw">for</span>(;;) {
-    __RESET_WATCHDOG(); <span class="co">/* feeds the dog */</span>
-  } <span class="co">/* loop forever */</span>
-    <span class="co">/* please make sure that you never leave main */</span>
+	<span class="kw">for</span>(;;) {
+		__RESET_WATCHDOG(); <span class="co">/* feeds the dog */</span>
+	}	<span class="co">/* loop forever */</span>
+		<span class="co">/* please make sure that you never leave main */</span>
 }
 
 interrupt <span class="dv">22</span> <span class="dt">void</span> intKBI_SW(){
-  KBI1SC_KBACK = <span class="dv">1</span>; <span class="co">/*acknowledge interrupt*/</span>
-  PTFD = LED_onseq;
-  LED_onseq ^= <span class="bn">0xFF</span>;  <span class="co">/* toggle LED_onseq bits */</span>
+	KBI1SC_KBACK = <span class="dv">1</span>;	<span class="co">/*acknowledge interrupt*/</span>
+	PTFD = LED_onseq;
+	LED_onseq ^= <span class="bn">0xFF</span>;	<span class="co">/* toggle LED_onseq bits */</span>
 }</code></pre></td></tr></table>
 <p>View on <a href="https://github.com/cpjobling/EG-252-Resources/blob/master/Microcontroller-Interfacing/Exercises/Exercise2/kbi_interrupt.c">GitHub</a></p>
 <h2 id="appendix-b">Appendix B</h2>
 <h3 id="sample-program-in-assembly">Sample Program in Assembly</h3>
-<table class="sourceCode assembly numberLines" id="kbi_interrupt_asm"><tr class="sourceCode"><td class="lineNumbers"><pre>1
+<table class="sourceCode assembly numberLines" id="kbi_interrupt_asm" include="kbi_interrupt.asm"><tr class="sourceCode"><td class="lineNumbers"><pre>1
 2
 3
 4
@@ -265,73 +265,71 @@ interrupt <span class="dv">22</span> <span class="dt">void</span> intKBI_SW(){
 63
 64
 65
-66
 </pre></td><td class="sourceCode"><pre><code class="sourceCode">;*************************************************************************
-;*  kbi_interrupt.asm                                                    *
+;*	kbi_interrupt.asm                                                    *
 ;*                                                                       *
-;*  MC9S08AW60 Evaluation board keyboard interrupt example               *
-;*  - Switch SW3 onboard connected to Port D pin 3, KBI pin6;            *
-;*  - Switch SW4 onboard connected to Port D pin 2, KBI pin5             *
+;*	MC9S08AW60 Evaluation board keyboard interrupt example               *
+;*	- Switch SW3 onboard connected to Port D pin 3, KBI pin6;            *
+;*	- Switch SW4 onboard connected to Port D pin 2, KBI pin5             *
 ;*                                                                       *
-;*  Function:                                                            *
-;*  on reset all LEDs will light on. If SW3 or SW4 pressed,              *
-;*  an interrupt is generated, which set LEDs 0:3 to light on.           *
-;*  More interrupts are genereated if SW3 or SW4 are pressed.            *
+;*	Function:                                                            *
+;*	on reset all LEDs will light on. If SW3 or SW4 pressed,              *
+;*	an interrupt is generated, which set LEDs 0:3 to light on.           *
+;*	More interrupts are genereated if SW3 or SW4 are pressed.            *
 ;*************************************************************************
 
 ; Include derivative-specific definitions
-    INCLUDE &#39;derivative.inc&#39;
+		INCLUDE &#39;derivative.inc&#39;
 
-FLASH EQU   $2000
-RAM   EQU   $0070
-WATCH EQU   $1802
+FLASH	EQU		$2000
+RAM		EQU		$0070
+WATCH	EQU		$1802
 
-    ORG   RAM
-LED_on  DS.B  1               ; Define a variable VAR_D with a size of 1 byte
+		ORG		RAM
+LED_on	DS.B	1               ; Define a variable VAR_D with a size of 1 byte
 
 ;Start program after reset
-    ORG   FLASH
+		ORG		FLASH
 START_UP
-    LDA   #$00
-    STA   WATCH     ; Turn off the watchdog timer
-    
+		LDA		#$00
+		STA		WATCH			; Turn off the watchdog timer
+		
 ;Init_GPIO init code 
-    LDA     #$FF
-    STA     PTFDD
-    MOV     #$0F, LED_on    ; Initialize VAR_D, used to control the LEDs
-    LDA     #$FF
-    STA     PTDPE           ; Port D is enabled with pull-up
-    RSP           ; Reset stack pointer
+		LDA     #$FF
+		STA     PTFDD
+		MOV     #$0F, LED_on    ; Initialize VAR_D, used to control the LEDs
+		LDA     #$FF
+		STA     PTDPE           ; Port D is enabled with pull-up
+		RSP						; Reset stack pointer
                 
 ;Enable interrupt for Keyboard input
-    LDA     #$60
-    STA     KBI1PE           ; KBI1PE: KBIPE7=1, enable KBI function for pins 5 and 6 only
-    BSET    $02, KBI1SC      ; KBI1SC: KBACK=1, to clear KBI flag 
-    BSET    $01, KBI1SC      ; KBI1SC: KBIE=1, enable KBI 
+		LDA     #$60
+		STA     KBI1PE           ; KBI1PE: KBIPE7=1, enable KBI function for pins 5 and 6 only
+		BSET    $02, KBI1SC      ; KBI1SC: KBACK=1, to clear KBI flag 
+		BSET    $01, KBI1SC      ; KBI1SC: KBIE=1, enable KBI 
                                
-    CLI                      ; Enable interrupt
+		CLI                      ; Enable interrupt
 
 MAINLOOP
-    LDA     LED_on           ; Simple routine
-    BRA   MAINLOOP
+		LDA     LED_on           ; Simple routine       
+		BRA		MAINLOOP
 
 ;Interrupt service routine for a keyboard interrupt generated upon the press of a pushbutton
-;with a falling edge (transition from high logic level &quot;1&quot; to low logic level &quot;0&quot;)
+;with a falling edge (transition from high logic level &quot;1&quot; to low logic level &quot;0&quot;)                
 LED_SWITCH
-    BSET    $02, KBI1SC     ; clear KBI flag 
-    LDA     LED_on
-    EOR     #$FF            ; Toggle bits in VAR_D
-    STA     PTFD            ; Output to light LEDs (port F)
-    STA     LED_on          ; Store the new value to VAR_D
+		BSET    $02, KBI1SC     ; clear KBI flag 
+		LDA     LED_on                              
+		EOR     #$FF            ; Toggle bits in VAR_D
+		STA     PTFD            ; Output to light LEDs (port F)
+		STA     LED_on          ; Store the new value to VAR_D                                                          
+		RTI                
 
-    RTI
+;INT_VECTOR		
+		ORG     $FFD2
+		DC.W    LED_SWITCH
 
-;INT_VECTOR
-    ORG     $FFD2
-    DC.W    LED_SWITCH
-
-    ORG     $FFFE
-    DC.W    START_UP</code></pre></td></tr></table>
+		ORG     $FFFE
+		DC.W    START_UP</code></pre></td></tr></table>
 <p>View on <a href="https://github.com/cpjobling/EG-252-Resources/blob/master/Microcontroller-Interfacing/Exercises/Exercise2/kbi_interrupt.asm">GitHub</a></p>
 </body>
 </html>
