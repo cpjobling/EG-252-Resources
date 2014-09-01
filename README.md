@@ -24,8 +24,7 @@ For more on this topic see the GitHub Help Page [Fork a Repo](https://help.githu
     
 ## Acknowlegments
 
-Some of the materials are based on notes and examples originally developed
-by Dr Ka Seoung (Joseph) Kim.
+These materials are adapted from the work of Kyeong Soo (Joseph) Kim ([@kyeongsoo](https://github.com/kyeongsoo)).
 
 ## License
 
