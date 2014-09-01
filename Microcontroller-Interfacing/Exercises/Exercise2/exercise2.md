@@ -137,130 +137,14 @@ language), and demonstrate the application to Dr Chris Jobling or Dr Tim Davies.
 ## Appendix A
 ### Sample Program in C
 
-~~~~{#kbi_interrupt_c .c .numberLines}
+~~~~{include="kbi_interrupt.c" #kbi_interrupt_c .c .numberLines}
 /* kbi_interrupt.c */
-
-#include <hidef.h>    /* for EnableInterrupts macro */
-#include "derivative.h" /* include peripheral declarations */
-
-typedef unsigned char muint8;
-typedef unsigned short muint16;
-typedef unsigned long muint32;
-
-typedef char mint8;
-typedef short mint16;
-typedef long mint32;
-
-/* to clear or set single bits in a byte variable */
-#define b_SetBit(bit_ID, varID)   (varID |= (muint8)(1<<bit_ID))
-#define b_ClearBit(bit_ID, varID) (varID &= ~(muint8)(1<<bit_ID))
-#define b_XorBit(bit_ID, varID)   (varID ^= (muint8)(1<<bit_ID))
-
-muint8 LED_onseq;
-
-void main(void) {
-  EnableInterrupts; /* enable interrupts */
-  SOPT = 0x00;    /* disable COP */
-
-  /* begin LED/switch test */
-
-  PTDPE = 0xFF;   /* enable port D pullups for push button switch interrupt */
-
-  /* Init_GPIO init code */
-  PTFDD = 0xFF;   /* set port F as outputs for LED operation */
-  LED_onseq = 0x0F; /* initialize LED_onseq */
-
-  /* enable interrupt for keyboard input */
-  b_ClearBit(1, KBI1SC);  /* KBI1SC: KBIE=0, disable KBI interrupt request */
-  KBI1PE = 0x60;      /* KBI1PE: KBIPE7=1, enable KBI function for pins 5 and 6 only */
-  b_ClearBit(0, KBI1SC);  /* KBI1SC: KBIMOD=0, select edge-only detection */
-  
-  /* in defaut only falling edge events to be detected */
-  b_SetBit(2, KBI1SC);  /* KBI1SC: KBACK=1, to clear KBI flag */
-  b_SetBit(1, KBI1SC);  /* KBI1SC: KBIE=1, enable KBI */
-
-  for(;;) {
-    __RESET_WATCHDOG(); /* feeds the dog */
-  } /* loop forever */
-    /* please make sure that you never leave main */
-}
-
-interrupt 22 void intKBI_SW(){
-  KBI1SC_KBACK = 1; /*acknowledge interrupt*/
-  PTFD = LED_onseq;
-  LED_onseq ^= 0xFF;  /* toggle LED_onseq bits */
-}
 ~~~~~~~~~~
 View on [GitHub](https://github.com/cpjobling/EG-252-Resources/blob/master/Microcontroller-Interfacing/Exercises/Exercise2/kbi_interrupt.c)
 
 ## Appendix B
 ### Sample Program in Assembly
-~~~~{#kbi_interrupt_asm .assembly .numberLines}
-;*************************************************************************
-;*  kbi_interrupt.asm                                                    *
-;*                                                                       *
-;*  MC9S08AW60 Evaluation board keyboard interrupt example               *
-;*  - Switch SW3 onboard connected to Port D pin 3, KBI pin6;            *
-;*  - Switch SW4 onboard connected to Port D pin 2, KBI pin5             *
-;*                                                                       *
-;*  Function:                                                            *
-;*  on reset all LEDs will light on. If SW3 or SW4 pressed,              *
-;*  an interrupt is generated, which set LEDs 0:3 to light on.           *
-;*  More interrupts are genereated if SW3 or SW4 are pressed.            *
-;*************************************************************************
-
-; Include derivative-specific definitions
-    INCLUDE 'derivative.inc'
-
-FLASH EQU   $2000
-RAM   EQU   $0070
-WATCH EQU   $1802
-
-    ORG   RAM
-LED_on  DS.B  1               ; Define a variable VAR_D with a size of 1 byte
-
-;Start program after reset
-    ORG   FLASH
-START_UP
-    LDA   #$00
-    STA   WATCH     ; Turn off the watchdog timer
-    
-;Init_GPIO init code 
-    LDA     #$FF
-    STA     PTFDD
-    MOV     #$0F, LED_on    ; Initialize VAR_D, used to control the LEDs
-    LDA     #$FF
-    STA     PTDPE           ; Port D is enabled with pull-up
-    RSP           ; Reset stack pointer
-                
-;Enable interrupt for Keyboard input
-    LDA     #$60
-    STA     KBI1PE           ; KBI1PE: KBIPE7=1, enable KBI function for pins 5 and 6 only
-    BSET    $02, KBI1SC      ; KBI1SC: KBACK=1, to clear KBI flag 
-    BSET    $01, KBI1SC      ; KBI1SC: KBIE=1, enable KBI 
-                               
-    CLI                      ; Enable interrupt
-
-MAINLOOP
-    LDA     LED_on           ; Simple routine
-    BRA   MAINLOOP
-
-;Interrupt service routine for a keyboard interrupt generated upon the press of a pushbutton
-;with a falling edge (transition from high logic level "1" to low logic level "0")
-LED_SWITCH
-    BSET    $02, KBI1SC     ; clear KBI flag 
-    LDA     LED_on
-    EOR     #$FF            ; Toggle bits in VAR_D
-    STA     PTFD            ; Output to light LEDs (port F)
-    STA     LED_on          ; Store the new value to VAR_D
-
-    RTI
-
-;INT_VECTOR
-    ORG     $FFD2
-    DC.W    LED_SWITCH
-
-    ORG     $FFFE
-    DC.W    START_UP
+~~~~{include="kbi_interrupt.asm" #kbi_interrupt_asm .assembly .numberLines}
+kbi_interrupt.asm expands here
 ~~~~~~~~~~
 View on [GitHub](https://github.com/cpjobling/EG-252-Resources/blob/master/Microcontroller-Interfacing/Exercises/Exercise2/kbi_interrupt.asm)
