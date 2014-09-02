@@ -9,7 +9,7 @@ FLAGS=--from=markdown --smart --filter includes.hs \
 
 DOC=exercise3
 SOURCES=$(DOC).md 
-INCLUDES=kbi_adc.asm
+INCLUDES=
 PDF=$(SOURCES:.md=.pdf)
 HTML=$(SOURCES:.md=.html)
 WORD=$(SOURCES:.md=.docx)
