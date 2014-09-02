@@ -9,8 +9,6 @@ tags: [eg-252, microcontrollers laboratory, ADC, keyboard interrupt]
 date: September 2014
 ...
 
-# Exercise 3: ADC with Keyboard Interrupt
-
 ## I. Overview
 
 For this lab exercise you are provided a sample ADC assembly program given in

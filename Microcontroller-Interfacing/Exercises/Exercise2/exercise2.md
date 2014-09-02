@@ -9,8 +9,6 @@ tags: [eg-252, microcontrollers laboratory, keyboard interrupt]
 date: September 2014
 ...
 
-# Exercise 2: Keyboard Interrupt
-
 For this exercise you are provided sample keyboard interrupt programs in both C
 and Assembly in the appendices; make sure that you have downloaded electronic
 versions of the program from the [GitHub repository](https://github.com/cpjobling/EG-252-Resources/tree/master/Microcontroller-Interfacing/Exercises/Exercise2)
