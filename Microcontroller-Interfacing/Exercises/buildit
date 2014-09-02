@@ -3,6 +3,7 @@
 make all
 
 (cd Exercise2; make all)
+(cd Exercise3; make all)
 
 git add .
 git commit -m "Updated Website"
