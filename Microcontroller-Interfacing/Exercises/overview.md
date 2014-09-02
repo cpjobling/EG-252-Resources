@@ -16,7 +16,8 @@ interfacing and controlling microcontrollers through C and assembly programs,
 which are required for you to build a micromouse in the second term of this
 module.
 
-You can view this document as a web page [HTML](overview.html), [PDF](overview.pdf) or as a Word Document [.docx](overview.docx)
+You can view this document as a web page [HTML](overview.html), [PDF](overview.pdf) or as
+a Word Document [.docx](overview.docx)
 
 -----
 
@@ -56,3 +57,4 @@ Group Design Exercise Resources](https://github.com/cpjobling/EG-252-Resources) 
 
 [4] --, _Getting Started with HCS08 and CodeWarrior Using C_, Rev. 2, Jul.
 2006.
+
