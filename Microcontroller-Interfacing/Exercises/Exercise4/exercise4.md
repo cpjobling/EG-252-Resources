@@ -31,6 +31,8 @@ demonstration board to Dr Chris Jobling or Dr Tim Davies no later than
 _Monday, 8 December 2014_. Dr Jobling will be available in the Lab to collect
 your final reports from _11 to 12, Friday, 12 December 2014_.
 
+You can view this document as a web page [HTML](exercise4.html), [PDF](exercise4.pdf) or as a Word Document [.docx](exercise4.docx)
+
 ## I. Task 1: Experiment with Sample Program "[tpm_timer.c](https://github.com/cpjobling/EG-252-Resources/tree/master/Microcontroller-Interfacing/Exercises/Exercise4/tpm_timer.c)"
 
 This sample C program is designed to display 5 digits included a student
