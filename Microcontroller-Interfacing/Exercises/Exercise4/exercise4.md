@@ -87,7 +87,7 @@ second. You can control the modulo registers to generate the desired delay.
 generate the delay. Your job is to find correct TPM registers to use and
 configure them accordingly. This task is worth of 5 marks. 
 
-# III. Task 3: Experiment with Sample Program "[tpm_motor.c](https://github.com/cpjobling/EG-252-Resources/tree/master/Microcontroller-Interfacing/Exercises/Exercise4/tpm_motor.c)" 
+# III. Task 3: Experiment with Sample Program "[tpm_motor.c](https://github.com/cpjobling/EG-252-Resources/tree/master/Microcontroller-Interfacing/Exercises/Exercise4/tpm_motor.c) 
 
 This sample C program is designed to generate PWM signals to drive two motors.
 The motor speeds are controlled by the PWM signal duty cycle (i.e., ‘on’ time
@@ -117,7 +117,13 @@ datasheet to find out the interrupt vectors for the TPM1 timer interrupt and
 TPM1 channel 1 interrupt. Again check the MC9S08AW60 datasheet to understand
 the configuration of the modulo register and IOC register.
 
-IV. TASK 4: PWM DUTY CYCLE AND MOTOR SPEED CONTROL
+~~~~{include="tpm_motor.c" #tpm_motor_c .c .numberLines}
+/* tpm_motor.c */
+~~~~~~~~~~
+
+View on [GitHub](https://github.com/cpjobling/EG-252-Resources/blob/master/Microcontroller-Interfacing/Exercises/Exercise4/tpm_motor.c) 
+
+## IV. Task 4: PWM Duty Cycle and Motor Speed Control
 
 For Task 4 you are required to modify the sample program in order to: 
 
@@ -136,12 +142,6 @@ channels are available for speed control, one channel per each motor. You
 should introduce another interrupt service routine for the new TPM1 channel
 and make changes to the interrupt service routine for TPM1 channel 1. _This
 part is worth 5 marks_.
-
-~~~~{include="tpm_motor.c" #tpm_motor_c .c .numberLines}
-/* tpm_motor.c */
-~~~~~~~~~~
-
-View on [GitHub](https://github.com/cpjobling/EG-252-Resources/blob/master/Microcontroller-Interfacing/Exercises/Exercise4/tpm_motor.c)" 
 
 Listing 2 Interrupt service routines for timer overflow interrupt and
 output compare interrupt. 
@@ -176,6 +176,6 @@ will see an average of 6 volts, and will run more slowly accordingly.
 As the amount of time that the voltage is on increases compared with the
 amount of time that it is off, the average speed of the motor increases. This
 is the principle of switch mode speed control. Thus the speed is set by
-PWM[^1].
+PWM.[^1]
 
-[1^]: Refer to [Speed Controllers](http://homepages.which.net/̃paul.hills/SpeedControl/SpeedControllersBody.html) by Paul Hills for more details.
+[^1]: Refer to [Speed Controllers](http://homepages.which.net/̃paul.hills/SpeedControl/SpeedControllersBody.html) by Paul Hills for more details.
