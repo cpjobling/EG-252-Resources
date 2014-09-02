@@ -23,8 +23,8 @@ There are four exercises for the following topics:
 
 - Exercise 1: Getting setup with Git -- needed to complete the remaining exercises [HTML,PDF,docx]
 - Exercise 2: Keyboard interrupt (10 marks) [[HTML](Exercise2/exercise2.html),[PDF](Exercise2/exercise2.pdf),[docx](Exercise2/exercise2.html)]
-- Exercise 3: Analogue to digital conversion (ADC) (6 marks) ([HTML](Exercise3/exercise3.html),[PDF](Exercise3/exercise3.pdf),[docx](Exercise3/exercise3.docx)]
-- Exercise 4: Timer/pulse-width modulation (PWM) (14 marks) [HTML](Exercise4/exercise4.html),[PDF](Exercise4/exercise4.pdf),[docx](Exercise4/exercise4.docx)]
+- Exercise 3: Analogue to digital conversion (ADC) (6 marks) [[HTML](Exercise3/exercise3.html),[PDF](Exercise3/exercise3.pdf),[docx](Exercise3/exercise3.docx)]
+- Exercise 4: Timer/pulse-width modulation (PWM) (14 marks) [[HTML](Exercise4/exercise4.html),[PDF](Exercise4/exercise4.pdf),[docx](Exercise4/exercise4.docx)]
 
 You will work in pairs and share the various tasks required with your partner.
 It is advised to spend some time prior to the timetabled laboratory sessions on
