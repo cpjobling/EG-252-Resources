@@ -1,8 +1,11 @@
 PANDOC=pandoc
-HTML_FLAGS=--standalone --to=html5
+HTML_FLAGS=--standalone --to=html5 \
+					 --css=../../../stylesheets/stylesheet.css \
+					 --template=../../../templates/html5.html
 DOCX_FLAGS=--to=docx
 PDF_FLAGS=--to=latex
-FLAGS=--from=markdown --smart --filter includes.hs
+FLAGS=--from=markdown --smart --filter includes.hs \
+			-T="EG-252 Microntroller Interfacing: Microcontroller Laboratory"
 DOC=exercise2
 SOURCES=$(DOC).md 
 INCLUDES=kbi_interrupt.c kbi_interrupt.asm
