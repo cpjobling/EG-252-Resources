@@ -180,4 +180,4 @@ amount of time that it is off, the average speed of the motor increases. This
 is the principle of switch mode speed control. Thus the speed is set by
 PWM.[^1]
 
-[^1]: Refer to [Speed Controllers](http://homepages.which.net/̃paul.hills/SpeedControl/SpeedControllersBody.html) by Paul Hills for more details.
+[^1]: Refer to [Speed Controllers](http://homepages.which.net/~paul.hills/SpeedControl/SpeedControllersBody.html) by Paul Hills for more details.

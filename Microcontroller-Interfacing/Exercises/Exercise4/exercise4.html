@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta name="author" content="Dr K. S. (Joseph) Kim">
+  <meta name="author" content="Dr Chris P. Jobling">
+  <title>=EG-252 Microcontroller Interfacing: Microcontroller Laboratory - Exercise 4: Timer and Pulse Width Modulation (TPM) Module</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+  <link rel="stylesheet" href="../../../stylesheets/stylesheet.css">
+</head>
+<body>
+
+ <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+<h1 class="title">Exercise 4: Timer and Pulse Width Modulation (TPM) Module</h1>
+<h1 class="subtitle">EG-252 Group Design Exercise – Microcontroller Laboratory</h1>
+<h1 class="author">
+Dr K. S. (Joseph) Kim
+</h1>
+<h1 class="author">
+Dr Chris P. Jobling
+</h1>
+<h3 class="date">September 2014</h3>
+        </header>
+    </div>
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+<section id="main_content" class="inner">
+<p>This exercise is designed for understanding of the TPM modules of MC9S08AW60 MCU and practice of the control of TPM registers in C programming. For this exercise you will be provided with two sample C programs, one for generating a delay by the timer function and the other for pulse-width modulation (PWM) signals for driving motor, respectively. Electronic versions of the programs can be downloaded from the BlackBoard. You are to carry out the following tasks with this exercise:</p>
+<ul>
+<li>Use the sample program “tpm_timer.c” to understand configurations of and programming with the TPM module 1 (TPM1) registers for timer function.</li>
+<li>Modify the sample program “tpm_timer.c” to generate a delay by configuring the TPM module 2 (TPM2) registers.</li>
+<li>Use the sample program “tpm_motor.c” to understand how to generate PWM signals to drive two DC motors on the demonstration board with speed and direction control.</li>
+<li>Modify the sample program “tpm_motor.c” to set PWM duty cycle and implement independent motor speed control for the two DC motors.</li>
+</ul>
+<p>This exercise is worth 14 Marks. You should demonstrate your results over the demonstration board to Dr Chris Jobling or Dr Tim Davies no later than <em>Monday, 8 December 2014</em>. Dr Jobling will be available in the Lab to collect your final reports from <em>11 to 12, Friday, 12 December 2014</em>.</p>
+<p>You can view this document as a web page <a href="exercise4.html">HTML</a>, <a href="exercise4.pdf">PDF</a> or as a Word Document <a href="exercise4.docx">.docx</a></p>
+<h2 id="i.-task-1-experiment-with-sample-program-tpm_timer.c">I. Task 1: Experiment with Sample Program “<a href="https://github.com/cpjobling/EG-252-Resources/tree/master/Microcontroller-Interfacing/Exercises/Exercise4/tpm_timer.c">tpm_timer.c</a>”</h2>
+<p>This sample C program is designed to display 5 digits included a student number 12345 over the LED bar. Each digit is displayed for a configured time, which is determined by the timer modulo registers <code>TPM1MODH</code>:<code>TPM1MODL</code> of the TPM1 module (lines 19 and 20). An interrupt is generated upon the timer overflow, which is configured through the TPM1 status and control register <code>TPM1SC</code> (line 18). More details on the registers and their configurations are referred to the Freescale MC9S08AW60 datasheet document, Chapter 10 for Timer/PWM.</p>
+<p>Once the timer overflow interrupt is generated, the corresponding interrupt service routine, i.e., <code>TPM1_overflow()</code> in this example, will be executed. This interrupt service routine is associated to the timer overflow interrupt by preceding the designated word “interrupt” and followed by the timer overflow interrupt vector “11” in line 28. The interrupt vectors associated with various interrupt sources can be obtained from the Freescale MC9S08AW60 datasheet.</p>
+<p>The lines 32 and 33 are a two-step procedure to clear the timer overflow flag (TOF) in the <code>TPM1SC</code> register. Note that once the TOF is set, it will not be automatically cleared. If the TOF is not cleared, the timer overflow routine <code>TPM1_overflow</code> (line 28) will be continuously called. The following method introduced in the MC9S08AW60 datasheet should be used to clear the overflow flag:</p>
+<ul>
+<li><p>Line 32: Read the TOF (<code>TPM1SC_TOF</code> as we are using the TPM1 module). Note that you can address a register or a specific bit in a register using the name of that register or that bit in a register. Their names can be obtained from the MC9S08AW60 datasheet. For sample, if you want to read the content of TPM1SC register, you can use “<code>varTOF = TPM1SC;</code> if you want to read the content of THE TOF flag in the <code>TMP1SC</code> register, you can simply use”<code>varTOF = TPM1SC_TOF</code>“. The registers and flags that can be recognized by CodeWarrior are highlighted by blue colour in the editor window.</p></li>
+<li><p>Line 33: Write a zero to the overflow flag TOF by “<code>TPM1SC_TOF = 0</code>”</p></li>
+</ul>
+<table class="sourceCode c numberLines" id="tpm_timer_c" include="tpm_timer.c"><tr class="sourceCode"><td class="lineNumbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+</pre></td><td class="sourceCode"><pre><code class="sourceCode c"><span class="ot">#include &lt;hidef.h&gt;		</span><span class="co">// for EnableInterrupts macro</span>
+<span class="ot">#include &quot;derivative.h&quot;	</span><span class="co">// include peripheral declarations</span>
+
+byte tof_cnt, period;
+byte student_num[<span class="dv">5</span>] = {<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>};
+byte digit_cnt = <span class="dv">5</span>;
+
+<span class="dt">void</span> main(<span class="dt">void</span>)
+{
+    EnableInterrupts;	<span class="co">// enable interrupts</span>
+    SOPT   = <span class="bn">0x00</span>;		<span class="co">// disable COP (watchtimer)</span>
+
+    <span class="co">// Init_GPIO init code </span>
+    PTFDD = <span class="bn">0xFF</span>;		<span class="co">// configure port F as outputs for LEDs</span>
+
+    <span class="co">// configure TPM module 1</span>
+    TPM1SC = <span class="bn">0x4F</span>;		<span class="co">// format: TOF(0) TOIE(1) CPWMS(0) CLKSB(0) CLKSA(1) PS2(1) PS1(1) PS0(1)</span>
+    TPM1MODH = <span class="bn">0xFF</span>;	<span class="co">// set the counter modulo registers</span>
+    TPM1MODL = <span class="bn">0xFF</span>;
+
+    tof_cnt = <span class="dv">0</span>;  <span class="co">// initialize the number of timer overflow to 0.</span>
+  
+    <span class="kw">for</span>(;;) {
+    }	<span class="co">// loop forever</span>
+}
+
+interrupt <span class="dv">11</span> <span class="dt">void</span> TPM1_overflow()
+{
+    byte  varTOF;
+   
+    varTOF = TPM1SC_TOF;	<span class="co">// clear TOF; first read and then write 0 to the flag</span>
+    TPM1SC_TOF = <span class="dv">0</span>;
+   
+    <span class="kw">if</span> (tof_cnt &gt; digit_cnt) {
+        tof_cnt = <span class="dv">0</span>;		<span class="co">// reset tof_cnt if larger than digit_cnt</span>
+    }
+
+    PTFD = student_num[tof_cnt];
+    tof_cnt++;
+}</code></pre></td></tr></table>
+<p>View on <a href="https://github.com/cpjobling/EG-252-Resources/blob/master/Microcontroller-Interfacing/Exercises/Exercise4/tpm_timer.c">GitHub</a>&quot;</p>
+<p>Listing 1. Sample program for TPM timer function.</p>
+<h2 id="ii.-task-2-modify-the-sample-program-to-display-your-student-number">II. Task 2: Modify the Sample Program to Display your Student Number</h2>
+<p>For this task you are required to display all the digits in your student number.</p>
+<ul>
+<li>Each digit needs to be displayed for approximately one second. You can control the modulo registers to generate the desired delay.</li>
+<li>Instead of using the TPM1 module, you are required to use the TPM2 module to generate the delay. Your job is to find correct TPM registers to use and configure them accordingly. This task is worth of 5 marks.</li>
+</ul>
+<h1 id="iii.-task-3-experiment-with-sample-program-tpm_motor.c">III. Task 3: Experiment with Sample Program “<a href="https://github.com/cpjobling/EG-252-Resources/tree/master/Microcontroller-Interfacing/Exercises/Exercise4/tpm_motor.c">tpm_motor.c</a></h1>
+<p>This sample C program is designed to generate PWM signals to drive two motors. The motor speeds are controlled by the PWM signal duty cycle (i.e., ‘on’ time with respect to a total period), while the motor directions (brake, forward and reverse etc) can be controlled by the logic levels of output signals to the motors.</p>
+<p>With this sample program the motor direction is configured by the setting of the rocker switches. The motor speed is controlled by configuring the modulo registers and the channel value registers. The modulo registers determine the PWM signal period. Upon the timer overflow interrupt the motors are turned on and direction is set by writing to port G where the two motors are connected. Upon the output compare interrupt (when the free-running counter value matches that stored in the channel value registers, an output compare interrupt is generated if interrupt is enabled for that channel) both motors are turned off.</p>
+<p>Note that to drive the motor, an additional power supply is needed, which is available in the laboratory. Connect a 6-volt output to the demonstration board. Compile and run the sample program, you will be able to try different motor directions by setting the rocker switches accordingly.</p>
+<p>In this sample program there is a main program (Listing 2: Lines 27–51) and two interrupt service routines (Listing 2: Lines 53–73). Use the MC9S08AW60 datasheet to find out the interrupt vectors for the TPM1 timer interrupt and TPM1 channel 1 interrupt. Again check the MC9S08AW60 datasheet to understand the configuration of the modulo register and IOC register.</p>
+<table class="sourceCode c numberLines" id="tpm_motor_c" include="tpm_motor.c"><tr class="sourceCode"><td class="lineNumbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+</pre></td><td class="sourceCode"><pre><code class="sourceCode c"><span class="co">/*</span>
+<span class="co"></span>
+<span class="co">Modified test Programme for new AW60 teaching board thanks to contributions from</span>
+<span class="co">Dr Tim Davies.</span>
+<span class="co"></span>
+<span class="co">This version gives direction control of the two motors but with interrupts to</span>
+<span class="co">give PWM speed control.</span>
+<span class="co"></span>
+<span class="co">There are two interrupts: the timer overflow for TPM1 timer, which sets the</span>
+<span class="co">overflow frequency of 100 Hz with bus clock rate 4MHz, and TPM1 channel 1 for</span>
+<span class="co">turn off the motor. The motors are turned off individually to give individual</span>
+<span class="co">speed control if required.</span>
+<span class="co"></span>
+<span class="co">The lower four rocker switches 1-4 on Port A determine the direction of the two</span>
+<span class="co">motors, e.g. 00001010 is reverse both motors, 00000101 is forward both motors,</span>
+<span class="co">00000000 is braked.</span>
+<span class="co"></span>
+<span class="co">*/</span>
+
+<span class="ot">#include &lt;hidef.h&gt;      </span><span class="co">// for EnableInterrupts macro</span>
+<span class="ot">#include &quot;derivative.h&quot; </span><span class="co">// include peripheral declarations</span>
+
+byte DRIVE;
+byte MODCNTH = <span class="bn">0x4E</span>, MODCNTL = <span class="bn">0x20</span>;            <span class="co">// values for the modulo registers (0x4E20)</span>
+byte INIT_CHNCNTH = <span class="bn">0x40</span>, INIT_CHNCNTL = <span class="bn">0x00</span>;  <span class="co">// set the IOC register to 0x3000 for output compare function</span>
+
+<span class="dt">void</span> main(<span class="dt">void</span>)
+{
+    EnableInterrupts;   <span class="co">// enable interrupts</span>
+    SOPT   = <span class="bn">0x00</span>;      <span class="co">// disable COP (watchtimer)</span>
+
+    <span class="co">// Init_GPIO init code </span>
+    PTADD = <span class="bn">0x00</span>;   <span class="co">// set port A as inputs for the rocker switches.</span>
+    PTAPE = <span class="bn">0xFF</span>;
+    PTFDD = <span class="bn">0xFF</span>;   <span class="co">// set port F as outputs for LEDs</span>
+    PTGDD = <span class="bn">0xFF</span>;   <span class="co">// set port G as outputs for motor drive where motors are connected to.</span>
+    PTGPE = <span class="bn">0xFF</span>;   <span class="co">// enable port G pullups for motor drive.</span>
+   
+    <span class="co">// configure TPM module 1</span>
+    TPM1SC   = <span class="bn">0x49</span>;  <span class="co">// format: TOF(0) TOIE(1) CPWMS(0) CLKSB(0) CLKSA(1) PS2(0) PS1(0) PS0(1)</span>
+    TPM1MODH = MODCNTH; TPM1MODL = MODCNTL; <span class="co">// set the counter modulo registers to 0x4E20.</span>
+
+    <span class="co">// configure TPM1 channel 1</span>
+    TPM1C1SC = <span class="bn">0x50</span>;     <span class="co">// TPM1 Channel 1</span>
+    TPM1C1VH = INIT_CHNCNTH; TPM1C1VL = INIT_CHNCNTL;   <span class="co">// set the channel 1 registers to 0x4000</span>
+  
+    <span class="kw">for</span>(;;) {
+        DRIVE = PTAD &amp; <span class="bn">0x0F</span>;		<span class="co">// read the motor direction settings from the rocker switches 1-4</span>
+        PTFD = DRIVE;
+    }   <span class="co">// loop forever</span>
+}
+
+interrupt <span class="dv">11</span> <span class="dt">void</span> TPM1SC_overflow()
+{   <span class="co">// interrupt vector: Vtpm1</span>
+    byte varClear;
+    
+    varClear = TPM1SC;  <span class="co">// 2 steps to clear timer interrupt flags</span>
+    varClear = varClear &amp; <span class="bn">0x7F</span>;
+    TPM1SC = varClear;
+
+    PTGD = DRIVE;       <span class="co">// turn on motors as configured by DRIVE (port A switches).</span>
+}
+
+interrupt <span class="dv">6</span> <span class="dt">void</span> TPM1C1SC_int()
+{   <span class="co">// interrupt vector: Vtpm1ch1</span>
+    byte varClear;
+
+    varClear = TPM1C1SC;    <span class="co">// 2 steps to clear timer interrupt flags</span>
+    varClear = varClear &amp; <span class="bn">0x7F</span>;
+    TPM1C1SC = varClear;    
+ 
+    PTGD = PTGD | <span class="bn">0x0F</span>;     <span class="co">// set free-wheel mode for both motors instead of turn off</span>
+}</code></pre></td></tr></table>
+<p>View on <a href="https://github.com/cpjobling/EG-252-Resources/blob/master/Microcontroller-Interfacing/Exercises/Exercise4/tpm_motor.c">GitHub</a></p>
+<h2 id="iv.-task-4-pwm-duty-cycle-and-motor-speed-control">IV. Task 4: PWM Duty Cycle and Motor Speed Control</h2>
+<p>For Task 4 you are required to modify the sample program in order to:</p>
+<ul>
+<li><p><em>Set the duty cycle of the two motors to xx%</em>, where <em>xx</em> is the leftmost two digits of your student number. For example, if your student number is 567890, you should set the duty cycle to 56%. In the sample program, only TPM1 channel 1 is used to control the duty cycle (and motor speed) for both motors, resulting identical speed for the two motors. <em>This part is worth of 4 marks</em>.</p></li>
+<li><p><em>Enable independent speed control of the two motors</em>: Use the leftmost two digits of two student numbers in your group to set duty cycle of two motors, respectively. For example, if two student numbers are 123450 and 567890, you should set the duty cycle of two motors to 12% and 56%, respectively. You are expected to utilize another TPM1 channel (e.g. channel 0). Therefore two TPM1 channels are available for speed control, one channel per each motor. You should introduce another interrupt service routine for the new TPM1 channel and make changes to the interrupt service routine for TPM1 channel 1. <em>This part is worth 5 marks</em>.</p></li>
+</ul>
+<p>Listing 2 Interrupt service routines for timer overflow interrupt and output compare interrupt.</p>
+<h2 id="appendix">Appendix</h2>
+<h3 id="theory-of-dc-motor-speed-control">Theory of DC Motor Speed Control</h3>
+<p>The speed of a DC motor is directly proportional to the supply voltage, so if we reduce the supply voltage from 12 volts to 6 volts, the motor will run at half the speed. How can this be achieved when the battery is fixed at 12 volts? The speed controller works by varying the average voltage sent to the motor. It could do this by simply adjusting the voltage sent to the motor, but this is quite inefficient to do. A better way is to switch the motor’s supply on and off very quickly. If the switching is fast enough, the motor doesn’t notice it, it only notices the average effect.</p>
+<p>When you watch a film in the cinema, or the television, what you are actually seeing is a series of fixed pictures, which change rapidly enough that your eyes just see the average effect - movement. Your brain fills in the gaps to give an average effect. Now imagine a light bulb with a switch. When you close the switch, the bulb goes on and is at full brightness, say 100 watts. When you open the switch it goes off (0 watt). Now if you close the switch for a fraction of a second, then open it for the same amount of time, the filament won’t have time to cool down and heat up, and you will just get an average glow of 50 watts. This is how lamp dimmers work, and the same principle is used by speed controllers to drive a motor. When the switch is closed, the motor sees 12 volts, and when it is open it sees 0 volt. If the switch is open for the same amount of time as it is closed, the motor will see an average of 6 volts, and will run more slowly accordingly.</p>
+<p>As the amount of time that the voltage is on increases compared with the amount of time that it is off, the average speed of the motor increases. This is the principle of switch mode speed control. Thus the speed is set by PWM.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Refer to <a href="http://homepages.which.net/~paul.hills/SpeedControl/SpeedControllersBody.html">Speed Controllers</a> by Paul Hills for more details.<a href="#fnref1">↩</a></p></li>
+</ol>
+</section>
+
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">EG-252 Resources</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="http://www.swan.ac.uk" property="cc:attributionName" rel="cc:attributionURL">Swansea University</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+
+</div>
+</section>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">EG-252-Resources maintained by <a href="https://github.com/cpjobling">cpjobling</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+</body>
+</html>
