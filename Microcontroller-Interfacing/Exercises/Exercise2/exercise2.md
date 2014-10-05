@@ -35,4 +35,4 @@ You can view this document as a web page [HTML](exercise2.html), [PDF](exercise2
 ~~~~{include="kbi_adc.asm" #kbi_adc_asm .asm .numberLines}
 ; kbi_interrupt.asm
 ~~~~~~~~~~
-View on [GitHub](https://github.com/cpjobling/EG-252-Resources/blob/master/Microcontroller-Interfacing/Exercises/Exercise3/kbi_adc.asm)
+View on [GitHub](https://github.com/cpjobling/EG-252-Resources/blob/master/Microcontroller-Interfacing/Exercises/Exercise2/kbi_adc.asm)
