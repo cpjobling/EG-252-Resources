@@ -21,9 +21,9 @@ a Word Document [.docx](overview.docx)
 
 There are four exercises for the following topics:
 
-- Exercise 1: Keyboard interrupt (10 marks) [[HTML](Exercise2/exercise2.html),[PDF](Exercise2/exercise2.pdf),[docx](Exercise2/exercise2.html)]
-- Exercise 2: Analogue to digital conversion (ADC) (6 marks) ([HTML](Exercise3/exercise3.html),[PDF](Exercise3/exercise3.pdf),[docx](Exercise3/exercise3.docx)]
-- Exercise 3: Timer/pulse-width modulation (PWM) (14 marks) [HTML,PDF,docx]
+- Exercise 1: Keyboard interrupt (10 marks) [[HTML](Exercise1/exercise1.html),[PDF](Exercise1/exercise1.pdf),[docx](Exercise1/exercise1.html)]
+- Exercise 2: Analogue to digital conversion (ADC) (6 marks) ([HTML](Exercise2/exercise2.html),[PDF](Exercise2/exercise2.pdf),[docx](Exercise2/exercise2.docx)]
+- Exercise 3: Timer/pulse-width modulation (PWM) (14 marks) [[HTML](Exercise3/exercise3.html),[PDF](Exercise3/exercise3.pdf),[docx](Exercise3/exercise3.docx)]
 - Exercise 4: Getting setup with Git -- needed prior to working on the micromouse code [HTML,PDF,docx]
 
 You will work in pairs and share the various tasks required with your partner.
@@ -33,10 +33,7 @@ consultation. You should demonstrate each exercise to Dr Chris Jobling or Dr Tim
 Davies when finishing it. You should also keep a record of your work in a
 laboratory notebook and have it available for assessment, when required;
 materials presented on loose paper (other than program listings) will not be
-considered. A final report in print from each team should be submitted to Dr
-Jobling by _5pm on the 12th of December 2014_ (Friday), which should include
-answers to questions, program design and source code for the implemented program
-with detailed comments. 
+considered. 
 
 Note that the references listed in this document (and many others) are available
 in the Blackboard site.
