@@ -32,7 +32,7 @@ _Monday, 8 December 2014_.
 
 You can view this document as a web page [HTML](exercise3.html), [PDF](exercise3.pdf) or as a Word Document [.docx](exercise3.docx)
 
-## I. Task 1: Experiment with Sample Program "[tpm_timer.c](https://github.com/cpjobling/EG-252-Resources/tree/master/Microcontroller-Interfacing/Exercises/Exercise4/tpm_timer.c)"
+## I. Task 1: Experiment with Sample Program "[tpm_timer.c](https://github.com/cpjobling/EG-252-Resources/tree/master/Microcontroller-Interfacing/Exercises/Exercise3/tpm_timer.c)"
 
 This sample C program is designed to display 5 digits included a student
 number 12345 over the LED bar. Each digit is displayed for a configured time,
@@ -72,7 +72,7 @@ CodeWarrior are highlighted by blue colour in the editor window.
 ~~~~{include="tpm_timer.c" #tpm_timer_c .c .numberLines}
 /* tpm-timer.c */
 ~~~~~~~~~~
-View on [GitHub](https://github.com/cpjobling/EG-252-Resources/blob/master/Microcontroller-Interfacing/Exercises/Exercise4/tpm_timer.c)" 
+View on [GitHub](https://github.com/cpjobling/EG-252-Resources/blob/master/Microcontroller-Interfacing/Exercises/Exercise3/tpm_timer.c)" 
 
 Listing 1. Sample program for TPM timer function.
 
@@ -88,7 +88,7 @@ second. You can control the modulo registers to generate the desired delay.
 generate the delay. Your job is to find correct TPM registers to use and
 configure them accordingly. This task is worth of 5 marks. 
 
-# III. Task 3: Experiment with Sample Program "[tpm_motor.c](https://github.com/cpjobling/EG-252-Resources/tree/master/Microcontroller-Interfacing/Exercises/Exercise4/tpm_motor.c) 
+# III. Task 3: Experiment with Sample Program "[tpm_motor.c](https://github.com/cpjobling/EG-252-Resources/tree/master/Microcontroller-Interfacing/Exercises/Exercise3/tpm_motor.c) 
 
 This sample C program is designed to generate PWM signals to drive two motors.
 The motor speeds are controlled by the PWM signal duty cycle (i.e., ‘on’ time
@@ -122,7 +122,7 @@ the configuration of the modulo register and IOC register.
 /* tpm_motor.c */
 ~~~~~~~~~~
 
-View on [GitHub](https://github.com/cpjobling/EG-252-Resources/blob/master/Microcontroller-Interfacing/Exercises/Exercise4/tpm_motor.c) 
+View on [GitHub](https://github.com/cpjobling/EG-252-Resources/blob/master/Microcontroller-Interfacing/Exercises/Exercise3/tpm_motor.c) 
 
 ## IV. Task 4: PWM Duty Cycle and Motor Speed Control
 
