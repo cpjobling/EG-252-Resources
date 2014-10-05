@@ -9,8 +9,6 @@ tags: [eg-252, microcontrollers laboratory]
 date: September 2014
 ...
 
-# Microcontroller Laboratory Overview
-
 The microcontroller laboratory exercises are designed to introduce the basics of
 interfacing and controlling microcontrollers through C and assembly programs,
 which are required for you to build a micromouse in the second term of this
