@@ -5,11 +5,10 @@ HTML_FLAGS=--standalone --to=html5 \
 DOCX_FLAGS=--to=docx
 PDF_FLAGS=--to=latex
 FLAGS=--from=markdown --smart --filter includes.hs \
-			-T="EG-252 Microcontroller Interfacing: Microcontroller Laboratory"
-
-DOC=exercise4
-SOURCES=$(DOC).md 
-INCLUDES=tpm_motor.c tpm_timer.c
+			-T="EG-252 Microntroller Interfacing: Microcontroller Laboratory"
+DOC=exercise1
+SOURCES=$(DOC).md ../Pictures/fig1.png
+INCLUDES=kbi_interrupt.c kbi_interrupt.asm
 PDF=$(SOURCES:.md=.pdf)
 HTML=$(SOURCES:.md=.html)
 WORD=$(SOURCES:.md=.docx)
