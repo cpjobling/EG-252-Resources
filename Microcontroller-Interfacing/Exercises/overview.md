@@ -19,7 +19,7 @@ a Word Document [.docx](overview.docx)
 
 -----
 
-There are four exercises for the following topics:
+There will be a short [Getting Started](Start/getting-started.html) session and this will be followed by four exercises on the following topics:
 
 - Exercise 1: Keyboard interrupt (10 marks) [[HTML](Exercise1/exercise1.html),[PDF](Exercise1/exercise1.pdf),[docx](Exercise1/exercise1.html)]
 - Exercise 2: Analogue to digital conversion (ADC) (6 marks) ([HTML](Exercise2/exercise2.html),[PDF](Exercise2/exercise2.pdf),[docx](Exercise2/exercise2.docx)]
