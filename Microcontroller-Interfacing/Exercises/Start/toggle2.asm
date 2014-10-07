@@ -99,8 +99,7 @@ COUNT_LOOP                                      ;Entry point of parking loop
 		TST	PRESSED                 ;Otherwise test variable PRESSED
 		BEQ	COUNT_LOOP              ;If not already pressed, return to parking loop
 	
-		CLR	PRESSED                 ;If already pressed, clear PRESSED
-		BRA	COUNT_LOOP              ;and return to parking loop
+		BRA	RELEASED                 ;If already pressed, go to RELEASED
 TEST_PRESS
 		TST	PRESSED                 ;If button pressed, test PRESSED
 		BNE	COUNT_LOOP              ;If already pressed return to parking loop
