@@ -39,7 +39,7 @@ Delete the default `main.asm` and change the name from `toggle.asm` to
 ## Exercises 
 
 1. Use the debug feature to step through the program observing what
-happens when the button us pressed and when it is released.
+happens when the button is pressed and when it is released.
 
 2. Change the code so that the LEDs count up from 0 in binary each time the
    button is pressed.
