@@ -19,10 +19,10 @@ You are to carry out the following three tasks with this exercise:
 
 - Use the sample program to practice using interrupt mechanism to interface peripheral devices with
 the evaluation board.
-- Answer the questions related to the CPU interrupt procedure (3 marks).
-- Adjust the sample program to use the onboard switches to control the display of your student number (7 marks).
+- Answer the questions related to the CPU interrupt procedure (2 marks).
+- Adjust the sample program to use the onboard switches to control the display of your student number (6 marks).
 
-The demonstration of your program on the board needs to be done no later than *Monday, 10 November 2014*.
+The demonstration of your program on the board needs to be done no later than *Tuesday, 28 October 2014*.
 
 You can view this document as a web page [HTML](exercise1.html), [PDF](exercise1.pdf) or as a Word Document [.docx](exercise1.docx)
 
