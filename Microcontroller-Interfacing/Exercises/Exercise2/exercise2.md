@@ -22,9 +22,9 @@ ADC process with the evaluation board.
 - Design an equivalent program in C language which can perform the same keyboard
 interrupt and ADC processing functions as provided by the example assembly program.
 
-This exercise is worth 6 marks. For this exercise you need only demonstrate your
-program with the evaluation board to _Dr Chris Jobling by Monday, 8
-December 2013_. No report is needed.
+This exercise is worth 8 marks. For this exercise you need only demonstrate your
+program with the evaluation board to Dr Chris Jobling, Dr Timothy Davies or one of the demonstrators by **Tuesday, 4
+November 2014**.
 
 You can view this document as a web page [HTML](exercise2.html), [PDF](exercise2.pdf) or as a Word Document [.docx](exercise2.docx)
 
