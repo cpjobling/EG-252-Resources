@@ -136,10 +136,12 @@ Dr Chris P. Jobling
 50
 51
 52
+53
 </pre></td><td class="sourceCode"><pre><code class="sourceCode c"><span class="co">/* kbi_interrupt.c */</span>
 
-<span class="ot">#include &lt;hidef.h&gt;		</span><span class="co">/* for EnableInterrupts macro */</span>
+<span class="ot">#include &lt;hidef.h&gt;		  </span><span class="co">/* for EnableInterrupts macro */</span>
 <span class="ot">#include &quot;derivative.h&quot;	</span><span class="co">/* include peripheral declarations */</span>
+<span class="ot">#define VNkeyboard 22   </span><span class="co">/* Interrupt vector for Keyboard */</span>
 
 <span class="kw">typedef</span> <span class="dt">unsigned</span> <span class="dt">char</span> muint8;
 <span class="kw">typedef</span> <span class="dt">unsigned</span> <span class="dt">short</span> muint16;
@@ -183,7 +185,7 @@ muint8 LED_onseq;
 		<span class="co">/* please make sure that you never leave main */</span>
 }
 
-interrupt <span class="dv">22</span> <span class="dt">void</span> intKBI_SW(){
+interrupt VNkeyboard <span class="dt">void</span> intKBI_SW(){
 	KBI1SC_KBACK = <span class="dv">1</span>;	<span class="co">/*acknowledge interrupt*/</span>
 	PTFD = LED_onseq;
 	LED_onseq ^= <span class="bn">0xFF</span>;	<span class="co">/* toggle LED_onseq bits */</span>
