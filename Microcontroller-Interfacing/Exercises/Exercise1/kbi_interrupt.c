@@ -1,7 +1,8 @@
 /* kbi_interrupt.c */
 
-#include <hidef.h>		/* for EnableInterrupts macro */
+#include <hidef.h>		  /* for EnableInterrupts macro */
 #include "derivative.h"	/* include peripheral declarations */
+#define VNkeyboard 22   /* Interrupt vector for Keyboard */
 
 typedef unsigned char muint8;
 typedef unsigned short muint16;
@@ -45,7 +46,7 @@ void main(void) {
 		/* please make sure that you never leave main */
 }
 
-interrupt 22 void intKBI_SW(){
+interrupt VNkeyboard void intKBI_SW(){
 	KBI1SC_KBACK = 1;	/*acknowledge interrupt*/
 	PTFD = LED_onseq;
 	LED_onseq ^= 0xFF;	/* toggle LED_onseq bits */
