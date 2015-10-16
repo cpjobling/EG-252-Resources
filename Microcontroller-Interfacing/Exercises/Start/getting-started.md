@@ -2,7 +2,7 @@
 title:  'Getting Started with Microcontroller Development'
 subtitle: 'EG-252 Group Design Exercise -- Microcontroller Laboratory'
 author:
-  - Dr Tomothy Davies
+  - Dr Timothy Davies
 affiliation: Swansea University
 tags: [eg-252, microcontrollers laboratory, getting started]
 date: October 2014
@@ -38,13 +38,10 @@ Delete the default `main.asm` and change the name from `toggle.asm` to
 
 ## Exercises 
 
-1. Use the debug feature to step through the program observing what
-happens when the button is pressed and when it is released.
+1. Use the debug feature to step through the program observing what happens when the button is pressed and when it is released.
 
-2. Change the code so that the LEDs count up from 0 in binary each time the
-   button is pressed.
+2. Change the code so that the LEDs count up from 0 in binary each time the button is pressed.
 
-3. Change the code so that button 1 counts up and button 2 counts
-down. You will need to test each button separately.
+3. Change the code so that button 1 counts up and button 2 counts down. You will need to test each button separately.
 
 4. Convert the code from assesmbler into C. 
