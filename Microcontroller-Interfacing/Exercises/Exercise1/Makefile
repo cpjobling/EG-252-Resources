@@ -4,7 +4,7 @@ HTML_FLAGS=--standalone --to=html5 \
 					 --template=../../../templates/html5.html
 DOCX_FLAGS=--to=docx
 PDF_FLAGS=--to=latex
-FLAGS=--from=markdown --smart --filter includes.hs \
+FLAGS=--from=markdown+smart --filter includes.hs \
 			-T="EG-252 Microntroller Interfacing: Microcontroller Laboratory"
 DOC=exercise1
 SOURCES=$(DOC).md ../Pictures/fig1.png
