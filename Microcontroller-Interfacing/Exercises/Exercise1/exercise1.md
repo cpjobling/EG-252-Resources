@@ -106,7 +106,7 @@ new `SW3` pressing. Similar operations are performed for the second student
 number 12345 if pushbutton `SW4` is pressed.
 
 You are required to design and debug the ISR program (using either Assembly or C
-language), and demonstrate the application to Dr Chris Jobling or Dr Tim Davies.
+language), and demonstrate the application to one of the demonstrators.
 
 ## Appendix A
 ### Sample Program in C
