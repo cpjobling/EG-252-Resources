@@ -20,7 +20,6 @@ typedef long mint32;
 muint8 LED_onseq;
 
 void main(void) {
-	EnableInterrupts;	/* enable interrupts */
 	SOPT = 0x00;		/* disable COP */
 
 	/* begin LED/switch test */
@@ -39,6 +38,8 @@ void main(void) {
 	/* in defaut only falling edge events to be detected */
 	b_SetBit(2, KBI1SC);	/* KBI1SC: KBACK=1, to clear KBI flag */
 	b_SetBit(1, KBI1SC);	/* KBI1SC: KBIE=1, enable KBI */
+	
+	EnableInterrupts;	/* enable interrupts */
 
 	for(;;) {
 		__RESET_WATCHDOG(); /* feeds the dog */
