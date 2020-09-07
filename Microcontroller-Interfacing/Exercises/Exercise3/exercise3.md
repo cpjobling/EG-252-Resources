@@ -6,7 +6,7 @@ author:
   - Dr Chris P. Jobling
 affiliation: Swansea University
 tags: [eg-252, microcontrollers laboratory, timer, pwm, tpm]
-date: September 2014
+date: September 2020
 ...
 
 This exercise is designed for understanding of the TPM modules of MC9S08AW60 MCU
@@ -33,7 +33,7 @@ You can view this document as a web page [HTML](exercise3.html), [PDF](exercise3
 
 ## I. Task 1: Experiment with Sample Program "[tpm_timer.c](https://github.com/cpjobling/EG-252-Resources/tree/master/Microcontroller-Interfacing/Exercises/Exercise3/tpm_timer.c)"
 
-This sample C program is designed to display 5 digits included a student
+This sample C program is designed to display 5 digits included in the student
 number 12345 over the LED bar. Each digit is displayed for a configured time,
 which is determined by the timer modulo registers `TPM1MODH`:`TPM1MODL` of the
 TPM1 module (lines 19 and 20). An interrupt is generated upon the timer

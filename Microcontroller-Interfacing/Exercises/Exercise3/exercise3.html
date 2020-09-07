@@ -90,7 +90,7 @@ Dr K. S. (Joseph) Kim
 <h1 class="author">
 Dr Chris P. Jobling
 </h1>
-<h3 class="date">September 2014</h3>
+<h3 class="date">September 2020</h3>
         </header>
     </div>
 <!-- MAIN CONTENT -->
@@ -106,7 +106,7 @@ Dr Chris P. Jobling
 <p>This exercise is worth 14 Marks. You should keep careful records of your solutions as you will need to upload your completed programmes and answer questions to gain the credits.</p>
 <p>You can view this document as a web page <a href="exercise3.html">HTML</a>, <a href="exercise3.pdf">PDF</a> or as a Word Document <a href="exercise3.docx">.docx</a></p>
 <h2 id="i.-task-1-experiment-with-sample-program-tpm_timer.c">I. Task 1: Experiment with Sample Program “<a href="https://github.com/cpjobling/EG-252-Resources/tree/master/Microcontroller-Interfacing/Exercises/Exercise3/tpm_timer.c">tpm_timer.c</a>”</h2>
-<p>This sample C program is designed to display 5 digits included a student number 12345 over the LED bar. Each digit is displayed for a configured time, which is determined by the timer modulo registers <code>TPM1MODH</code>:<code>TPM1MODL</code> of the TPM1 module (lines 19 and 20). An interrupt is generated upon the timer overflow, which is configured through the TPM1 status and control register <code>TPM1SC</code> (line 18). More details on the registers and their configurations are referred to the Freescale MC9S08AW60 datasheet document, Chapter 10 for Timer/PWM.</p>
+<p>This sample C program is designed to display 5 digits included in the student number 12345 over the LED bar. Each digit is displayed for a configured time, which is determined by the timer modulo registers <code>TPM1MODH</code>:<code>TPM1MODL</code> of the TPM1 module (lines 19 and 20). An interrupt is generated upon the timer overflow, which is configured through the TPM1 status and control register <code>TPM1SC</code> (line 18). More details on the registers and their configurations are referred to the Freescale MC9S08AW60 datasheet document, Chapter 10 for Timer/PWM.</p>
 <p>Once the timer overflow interrupt is generated, the corresponding interrupt service routine, i.e., <code>TPM1_overflow()</code> in this example, will be executed. This interrupt service routine is associated to the timer overflow interrupt by preceding the designated word “interrupt” and followed by the timer overflow interrupt vector “11” in line 28. The interrupt vectors associated with various interrupt sources can be obtained from the Freescale MC9S08AW60 datasheet.</p>
 <p>The lines 32 and 33 are a two-step procedure to clear the timer overflow flag (TOF) in the <code>TPM1SC</code> register. Note that once the TOF is set, it will not be automatically cleared. If the TOF is not cleared, the timer overflow routine <code>TPM1_overflow</code> (line 28) will be continuously called. The following method introduced in the MC9S08AW60 datasheet should be used to clear the overflow flag:</p>
 <ul>

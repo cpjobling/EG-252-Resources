@@ -6,7 +6,7 @@ author:
   - Dr Chris P. Jobling
 affiliation: Swansea University
 tags: [eg-252, microcontrollers laboratory, ADC, keyboard interrupt]
-date: September 2014
+date: September 2020
 ...
 
 ## I. Overview

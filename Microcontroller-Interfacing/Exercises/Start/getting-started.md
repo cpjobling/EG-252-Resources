@@ -5,7 +5,7 @@ author:
   - Dr Timothy Davies
 affiliation: Swansea University
 tags: [eg-252, microcontrollers laboratory, getting started]
-date: October 2014
+date: September 2020
 ...
 
 ## Introduction
