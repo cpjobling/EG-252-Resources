@@ -24,7 +24,7 @@ There will be a short [Getting Started](Start/getting-started.html) session and 
 - Exercise 1: Keyboard interrupt (10 marks) [[HTML](Exercise1/exercise1.html),[PDF](Exercise1/exercise1.pdf),[docx](Exercise1/exercise1.html)]
 - Exercise 2: Analogue to digital conversion (ADC) (6 marks) ([HTML](Exercise2/exercise2.html),[PDF](Exercise2/exercise2.pdf),[docx](Exercise2/exercise2.docx)]
 - Exercise 3: Timer/pulse-width modulation (PWM) (14 marks) [[HTML](Exercise3/exercise3.html),[PDF](Exercise3/exercise3.pdf),[docx](Exercise3/exercise3.docx)]
-- Exercise 4: [Version Control with Git](https://cpjobling.github.io/eg-252-git-novice-2020/) (5 marks) -- needed prior to working on the micromouse code [HTML,PDF,docx]
+- Exercise 4: [Version Control with Git](https://cpjobling.github.io/eg-252-git-novice-2020/) (5 marks) -- needed prior to working on the micromouse code.
 
 You would normally work in pairs and share the various tasks required with your partner, but this year, because of Covid-19, you will work on these exercises as an individual.
 It is advised to spend some time prior to the timetabled laboratory sessions on
