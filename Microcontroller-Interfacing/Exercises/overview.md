@@ -6,7 +6,7 @@ author:
   - Dr Chris P. Jobling
 affiliation: Swansea University
 tags: [eg-252, microcontrollers laboratory]
-date: September 2014
+date: September 2020
 ...
 
 The microcontroller laboratory exercises are designed to introduce the basics of
