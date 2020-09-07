@@ -32,7 +32,7 @@ preparing designs, leaving the laboratory time for essential testing and
 consultation. You should complete the end-of-exercise assessment, which requires you to upload upload a copy of your code, at the end of each laboratory exercise.
 
 Note that the references listed in this document (and many others) are available
-in the Canvas LMS site.
+in the Canvas LMS course site [2021_EG-252 Group Design Exercise](https://canvas.swansea.ac.uk/courses/15962).
 
 All source code, which includes the source for this document, is in the [EG-252
 Group Design Exercise Resources](https://github.com/cpjobling/EG-252-Resources) repository on GitHub.

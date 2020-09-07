@@ -10,7 +10,7 @@ date: September 2014
 ...
 
 This exercise is designed for understanding of the TPM modules of MC9S08AW60 MCU
-and practice of the control of TPM registers in C programming. For this exercise
+and the practice of the control of TPM registers in C programming. For this exercise
 you will be provided with two sample C programs, one for generating a delay by
 the timer function and the other for pulse-width modulation (PWM) signals for
 driving motor, respectively. Electronic versions of the programs can be
@@ -26,9 +26,8 @@ to drive two DC motors on the demonstration board with speed and direction contr
 - Modify the sample program "tpm_motor.c" to set PWM duty cycle and implement independent motor
 speed control for the two DC motors.
 
-This exercise is worth 14 Marks. You should demonstrate your results over the
-demonstration board to Dr Chris Jobling or Dr Tim Davies no later than
-_Monday, 8 December 2014_.
+This exercise is worth 14 Marks. You should keep careful records of your solutions as you will need to upload
+your completed programmes and answer questions to gain the credits.
 
 You can view this document as a web page [HTML](exercise3.html), [PDF](exercise3.pdf) or as a Word Document [.docx](exercise3.docx)
 
@@ -86,7 +85,7 @@ your student number.
 second. You can control the modulo registers to generate the desired delay. 
 - Instead of using the TPM1 module, you are required to use the TPM2 module to
 generate the delay. Your job is to find correct TPM registers to use and
-configure them accordingly. This task is worth of 5 marks. 
+configure them accordingly. This task is worth 5 marks. 
 
 # III. Task 3: Experiment with Sample Program "[tpm_motor.c](https://github.com/cpjobling/EG-252-Resources/tree/master/Microcontroller-Interfacing/Exercises/Exercise3/tpm_motor.c) 
 
@@ -104,7 +103,7 @@ PWM signal period. Upon the timer overflow interrupt the motors are turned on
 and direction is set by writing to port G where the two motors are connected.
 Upon the output compare interrupt (when the free-running counter value matches
 that stored in the channel value registers, an output compare interrupt is
-generated if interrupt is enabled for that channel) both motors are turned
+generated if an interrupt is enabled for that channel) both motors are turned
 off. 
 
 Note that to drive the motor, an additional power supply is needed, which
@@ -128,16 +127,17 @@ View on [GitHub](https://github.com/cpjobling/EG-252-Resources/blob/master/Micro
 
 For Task 4 you are required to modify the sample program in order to: 
 
-- *Set the duty cycle of the two motors to xx%*, where _xx_ is the leftmost
+- Set the duty cycle of the two motors to xx%*, where _xx_ is the leftmost
 two digits of your student number. For example, if your student number is
 567890, you should set the duty cycle to 56%. In the sample program, only TPM1
 channel 1 is used to control the duty cycle (and motor speed) for both motors,
-resulting identical speed for the two motors. *This part is worth of 4 marks*.
+resulting identical speed for the two motors. *This part is worth 4 marks*.
 
-- *Enable independent speed control of the two motors*: Use the leftmost two
-digits of two student numbers in your group to set duty cycle of two motors,
-respectively. For example, if two student numbers are 123450 and 567890, you
-should set the duty cycle of two motors to 12% and 56%, respectively. You are
+- Enable independent speed control of the two motors*: Use the leftmost two
+digits of your student number set the duty cycle of motor 1 and the rightmost two digits 
+to set the speed of the second motor.
+For example, if your student number is 123450, you
+should set the duty cycle of two motors to 12% and 50%, respectively. You are
 expected to utilize another TPM1 channel (e.g. channel 0). Therefore two TPM1
 channels are available for speed control, one channel per each motor. You
 should introduce another interrupt service routine for the new TPM1 channel
