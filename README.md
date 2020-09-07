@@ -7,7 +7,8 @@ This is a GitHub hosted source code repository. It contains some of the notes, s
 
 ## Using this Repository
 
-You should refer to the notes on the [Version Control with Git](https://cpjobling.github.io/eg-252-git-novice-2020/) before using the materials in this repository.
+
+You should refer to [Version Control with Git](https://cpjobling.github.io/eg-252-git-novice-2020/) before using the materials in this repository.
 
 As I am developing the notes, slides and code examples in parallel with delivery, this repository will not be complete until the end. You should therefore *fork* this repository and *clone* it rather than downloading the zip file. You also need to set up a remote *upstream* link so that you can regularly *fetch* my changes and additions and *merge* them with your local copy.
 
