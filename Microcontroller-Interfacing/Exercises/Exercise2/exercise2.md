@@ -25,7 +25,7 @@ interrupt and ADC processing functions as provided by the example assembly progr
 This exercise is worth 8 marks. For this exercise you need only convert the provided assembly language programme to C
 and submit it for assessment. The assessment asks some additional questions related to the set up of the ADC and its use in the micromouse project.
 
-You can view this document as a web page [HTML](exercise2.html), [PDF](exercise2.pdf) or as a Word Document [.docx](exercise2.docx)
+You can view this document as a web page [HTML](exercise2.html), [PDF](exercise2.pdf) or as a Word Document [.docx](exercise2.docx).
 
 
 # Appendix

@@ -31,7 +31,7 @@ Replace `name/sources/main.asm` with the `toggle2.asm` you downloaded
 previously,
 
 Delete the default `main.asm` and change the name from `toggle2.asm` to
-`main.asm`
+`main.asm`.
 
  Now run Code Warrior, assemble the code, and call up the debug
  feature.

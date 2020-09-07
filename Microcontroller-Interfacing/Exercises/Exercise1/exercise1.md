@@ -22,7 +22,7 @@ the evaluation board.
 - Answer the questions related to the CPU interrupt procedure (4 marks).
 - Adjust the sample program to use the onboard switches to control the display of your student number (6 marks).
 
-You can view this document as a web page [HTML](exercise1.html), [PDF](exercise1.pdf) or as a Word Document [.docx](exercise1.docx)
+You can view this document as a web page [HTML](exercise1.html), [PDF](exercise1.pdf) or as a Word Document [.docx](exercise1.docx).
 
 
 ## I. Experiment with the Sample Program
