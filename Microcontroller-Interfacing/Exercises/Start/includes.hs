@@ -1,13 +1,17 @@
 #!/usr/bin/env runhaskell
 -- includes.hs
 import Text.Pandoc.JSON
+import qualified Data.Text.IO as TIO
+import qualified Data.Text as T
 
 doInclude :: Block -> IO Block
 doInclude cb@(CodeBlock (id, classes, namevals) contents) =
-   case lookup "include" namevals of
-       Just f     -> return . (CodeBlock (id, classes, namevals)) =<< readFile f
+  case lookup "include" namevals of
+       Just f     -> CodeBlock (id, classes, namevals) <$>
+                      TIO.readFile (T.unpack f)
        Nothing    -> return cb
 doInclude x = return x
 
 main :: IO ()
 main = toJSONFilter doInclude
+
