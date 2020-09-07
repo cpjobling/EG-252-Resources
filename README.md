@@ -7,9 +7,9 @@ This is a GitHub hosted source code repository. It contains the notes, slides, c
 
 ## Using this Repository
 
-You should refer to the notes on the [Crash Course in Git]() before using the materials in this repository.
+You should refer to [Version Control with Git](ihttps://cpjobling.github.io/eg-252-git-novice-2020/) before using the materials in this repository.
 
-As I am developing the notes, slides and code examples in parallel with delivery, this repository will not be complete until the end. You should therefore *fork* this repository and *clone* it rather than downloding the zip file. You also need to set up a remote *upstream* link so that you can regularly *fetch* my changes and additions and *merge* them with your local copy.
+As I am developing the notes, slides and code examples in parallel with delivery, this repository will not be complete until the end. You should therefore *fork* this repository and *clone* it rather than downloading the zip file. You also need to set up a remote *upstream* link so that you can regularly *fetch* my changes and additions and *merge* them with your local copy.
 
 After logging into your GitHub account and *forking* and *cloning* this repo use the following command (from the GitHub command-line tools) to set up the remote *upstream* repository:
 
@@ -22,7 +22,7 @@ When you want to update to my latest changes:
     
 For more on this topic see the GitHub Help Page [Fork a Repo](https://help.github.com/articles/fork-a-repo).
     
-## Acknowlegments
+## Acknowledgments
 
 These materials are adapted from the work of Kyeong Soo (Joseph) Kim ([@kyeongsoo](https://github.com/kyeongsoo)).
 
