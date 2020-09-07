@@ -3,11 +3,11 @@
 A collection of resources created and distributed by
 Dr Chris Jobling, College of Engineering, Swansea University.
 
-This is a GitHub hosted source code repository. It contains the notes, slides, code examples and worksheets used in the module. If you just want to view the slides, or the printable version of the notes and work sheets you should visit the GitHub hosted Web Site [EG-252 Group Design Eexercise](http://cpjobling.github.io/EG-252-Resources) instead. Read-only links to the notes and slides are also to be found on the Blackboard site for EG-252.
+This is a GitHub hosted source code repository. It contains the notes, slides, code examples and worksheets used in the module. If you just want to view the slides, or the printable version of the notes and work sheets you should visit the GitHub hosted Web Site [EG-252 Group Design Exercise](http://cpjobling.github.io/EG-252-Resources) instead. Read-only links to the notes and slides are also to be found on the Blackboard site for EG-252.
 
 ## Using this Repository
 
-You should refer to [Version Control with Git](ihttps://cpjobling.github.io/eg-252-git-novice-2020/) before using the materials in this repository.
+You should refer to [Version Control with Git](https://cpjobling.github.io/eg-252-git-novice-2020/) before using the materials in this repository.
 
 As I am developing the notes, slides and code examples in parallel with delivery, this repository will not be complete until the end. You should therefore *fork* this repository and *clone* it rather than downloading the zip file. You also need to set up a remote *upstream* link so that you can regularly *fetch* my changes and additions and *merge* them with your local copy.
 
