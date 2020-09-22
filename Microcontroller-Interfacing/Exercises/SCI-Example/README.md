@@ -1,6 +1,5 @@
-An example of a C programme that uses the SCI interface to transmit data.
+# About SCI-Example
 
-Written by Dr Timothy Davies
+This is an example of a C programme that configures the SCI interface ion an AW60 microcontroller and uses the SCI interface to transmit data.
 
-
-
+Written by Dr Timothy Davies.
