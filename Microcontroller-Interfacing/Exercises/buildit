@@ -1,5 +1,7 @@
 #!/bin/bash
 
+touch */*.md
+
 make all
 
 (cd Start; make all)
