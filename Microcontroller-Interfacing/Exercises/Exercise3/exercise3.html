@@ -114,45 +114,64 @@ Dr Chris P. Jobling
 <li><p>Line 33: Write a zero to the overflow flag TOF by “<code>TPM1SC_TOF = 0</code>”</p></li>
 </ul>
 <div class="sourceCode" id="tpm_timer_c" data-include="tpm_timer.c"><pre class="sourceCode numberSource c numberLines"><code class="sourceCode c"><span id="tpm_timer_c-1"><a href="#tpm_timer_c-1"></a><span class="pp">#include </span><span class="im">&lt;hidef.h&gt;</span><span class="pp">		</span><span class="co">// for EnableInterrupts macro</span></span>
-<span id="tpm_timer_c-2"><a href="#tpm_timer_c-2"></a><span class="pp">#include </span><span class="im">&quot;derivative.h&quot;</span><span class="pp">	</span><span class="co">// include peripheral declarations</span></span>
+<span id="tpm_timer_c-2"><a href="#tpm_timer_c-2"></a><span class="pp">#include </span><span class="im">&quot;derivative.h&quot;</span><span class="pp">		</span><span class="co">// include peripheral declarations</span></span>
 <span id="tpm_timer_c-3"><a href="#tpm_timer_c-3"></a></span>
-<span id="tpm_timer_c-4"><a href="#tpm_timer_c-4"></a>byte tof_cnt, period;</span>
-<span id="tpm_timer_c-5"><a href="#tpm_timer_c-5"></a>byte student_num[<span class="dv">5</span>] = {<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>};</span>
-<span id="tpm_timer_c-6"><a href="#tpm_timer_c-6"></a>byte digit_cnt = <span class="dv">5</span>;</span>
-<span id="tpm_timer_c-7"><a href="#tpm_timer_c-7"></a></span>
-<span id="tpm_timer_c-8"><a href="#tpm_timer_c-8"></a><span class="dt">void</span> main(<span class="dt">void</span>)</span>
-<span id="tpm_timer_c-9"><a href="#tpm_timer_c-9"></a>{</span>
-<span id="tpm_timer_c-10"><a href="#tpm_timer_c-10"></a>    EnableInterrupts;	<span class="co">// enable interrupts</span></span>
-<span id="tpm_timer_c-11"><a href="#tpm_timer_c-11"></a>    SOPT   = <span class="bn">0x00</span>;		<span class="co">// disable COP (watchtimer)</span></span>
-<span id="tpm_timer_c-12"><a href="#tpm_timer_c-12"></a></span>
-<span id="tpm_timer_c-13"><a href="#tpm_timer_c-13"></a>    <span class="co">// Init_GPIO init code </span></span>
-<span id="tpm_timer_c-14"><a href="#tpm_timer_c-14"></a>    PTFDD = <span class="bn">0xFF</span>;		<span class="co">// configure port F as outputs for LEDs</span></span>
+<span id="tpm_timer_c-4"><a href="#tpm_timer_c-4"></a><span class="pp">#define VNtpm2ch2 11   </span><span class="co">// Interrupt vector for timer 2 channel 2 </span></span>
+<span id="tpm_timer_c-5"><a href="#tpm_timer_c-5"></a></span>
+<span id="tpm_timer_c-6"><a href="#tpm_timer_c-6"></a></span>
+<span id="tpm_timer_c-7"><a href="#tpm_timer_c-7"></a>byte tof_cnt, period;</span>
+<span id="tpm_timer_c-8"><a href="#tpm_timer_c-8"></a>byte student_num[<span class="dv">6</span>] = {<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>};</span>
+<span id="tpm_timer_c-9"><a href="#tpm_timer_c-9"></a>byte digit_cnt = <span class="dv">6</span>;</span>
+<span id="tpm_timer_c-10"><a href="#tpm_timer_c-10"></a></span>
+<span id="tpm_timer_c-11"><a href="#tpm_timer_c-11"></a><span class="dt">void</span> main(<span class="dt">void</span>)</span>
+<span id="tpm_timer_c-12"><a href="#tpm_timer_c-12"></a>{</span>
+<span id="tpm_timer_c-13"><a href="#tpm_timer_c-13"></a>    SOPT   = <span class="bn">0x00</span>;		<span class="co">// disable COP (watchtimer)</span></span>
+<span id="tpm_timer_c-14"><a href="#tpm_timer_c-14"></a></span>
 <span id="tpm_timer_c-15"><a href="#tpm_timer_c-15"></a></span>
-<span id="tpm_timer_c-16"><a href="#tpm_timer_c-16"></a>    <span class="co">// configure TPM module 1</span></span>
-<span id="tpm_timer_c-17"><a href="#tpm_timer_c-17"></a>    TPM1SC = <span class="bn">0x4F</span>;		<span class="co">// format: TOF(0) TOIE(1) CPWMS(0) CLKSB(0) CLKSA(1) PS2(1) PS1(1) PS0(1)</span></span>
-<span id="tpm_timer_c-18"><a href="#tpm_timer_c-18"></a>    TPM1MODH = <span class="bn">0xFF</span>;	<span class="co">// set the counter modulo registers</span></span>
-<span id="tpm_timer_c-19"><a href="#tpm_timer_c-19"></a>    TPM1MODL = <span class="bn">0xFF</span>;</span>
-<span id="tpm_timer_c-20"><a href="#tpm_timer_c-20"></a></span>
-<span id="tpm_timer_c-21"><a href="#tpm_timer_c-21"></a>    tof_cnt = <span class="dv">0</span>;  <span class="co">// initialize the number of timer overflow to 0.</span></span>
-<span id="tpm_timer_c-22"><a href="#tpm_timer_c-22"></a>  </span>
-<span id="tpm_timer_c-23"><a href="#tpm_timer_c-23"></a>    <span class="cf">for</span>(;;) {</span>
-<span id="tpm_timer_c-24"><a href="#tpm_timer_c-24"></a>    }	<span class="co">// loop forever</span></span>
-<span id="tpm_timer_c-25"><a href="#tpm_timer_c-25"></a>}</span>
+<span id="tpm_timer_c-16"><a href="#tpm_timer_c-16"></a>    ICGC1 = <span class="bn">0x74</span>; 		<span class="co">// select external quartz crystal</span></span>
+<span id="tpm_timer_c-17"><a href="#tpm_timer_c-17"></a></span>
+<span id="tpm_timer_c-18"><a href="#tpm_timer_c-18"></a><span class="co">/*The AW60 has an internal oscillator which runs at approx. 8 MHz, resulting in a system clock of 4 MHz.</span></span>
+<span id="tpm_timer_c-19"><a href="#tpm_timer_c-19"></a><span class="co"> If the line above is included in your programme, the AW60 uses an external 4 MHz quartz crystal oscillator</span></span>
+<span id="tpm_timer_c-20"><a href="#tpm_timer_c-20"></a><span class="co"> instead, resulting in a system clock of 2 MHz. This is more accurate than the internal oscillator, so that</span></span>
+<span id="tpm_timer_c-21"><a href="#tpm_timer_c-21"></a><span class="co"> any time intervals defined in your programme will be correct to a fraction of a percent.*/</span></span>
+<span id="tpm_timer_c-22"><a href="#tpm_timer_c-22"></a> </span>
+<span id="tpm_timer_c-23"><a href="#tpm_timer_c-23"></a></span>
+<span id="tpm_timer_c-24"><a href="#tpm_timer_c-24"></a>    <span class="co">// Init_GPIO init code </span></span>
+<span id="tpm_timer_c-25"><a href="#tpm_timer_c-25"></a>   	PTFDD = <span class="bn">0xFF</span>;		<span class="co">// configure port F as outputs for LEDs</span></span>
 <span id="tpm_timer_c-26"><a href="#tpm_timer_c-26"></a></span>
-<span id="tpm_timer_c-27"><a href="#tpm_timer_c-27"></a>interrupt <span class="dv">11</span> <span class="dt">void</span> TPM1_overflow()</span>
-<span id="tpm_timer_c-28"><a href="#tpm_timer_c-28"></a>{</span>
-<span id="tpm_timer_c-29"><a href="#tpm_timer_c-29"></a>    byte  varTOF;</span>
-<span id="tpm_timer_c-30"><a href="#tpm_timer_c-30"></a>   </span>
-<span id="tpm_timer_c-31"><a href="#tpm_timer_c-31"></a>    varTOF = TPM1SC_TOF;	<span class="co">// clear TOF; first read and then write 0 to the flag</span></span>
-<span id="tpm_timer_c-32"><a href="#tpm_timer_c-32"></a>    TPM1SC_TOF = <span class="dv">0</span>;</span>
-<span id="tpm_timer_c-33"><a href="#tpm_timer_c-33"></a>   </span>
-<span id="tpm_timer_c-34"><a href="#tpm_timer_c-34"></a>    <span class="cf">if</span> (tof_cnt &gt; digit_cnt) {</span>
-<span id="tpm_timer_c-35"><a href="#tpm_timer_c-35"></a>        tof_cnt = <span class="dv">0</span>;		<span class="co">// reset tof_cnt if larger than digit_cnt</span></span>
-<span id="tpm_timer_c-36"><a href="#tpm_timer_c-36"></a>    }</span>
+<span id="tpm_timer_c-27"><a href="#tpm_timer_c-27"></a>    <span class="co">// configure TPM module 1</span></span>
+<span id="tpm_timer_c-28"><a href="#tpm_timer_c-28"></a>   	TPM1SC = <span class="bn">0x4F</span>;		<span class="co">// format: TOF(0) TOIE(1) CPWMS(0) CLKSB(0) CLKSA(1) PS2(1) PS1(1) PS0(1)</span></span>
+<span id="tpm_timer_c-29"><a href="#tpm_timer_c-29"></a>  				<span class="co">// Turn on the overflow interrupt and set the prescaler to 128.</span></span>
+<span id="tpm_timer_c-30"><a href="#tpm_timer_c-30"></a></span>
+<span id="tpm_timer_c-31"><a href="#tpm_timer_c-31"></a>	TPM1MOD = <span class="bn">0x8000</span>;	<span class="co">// set the counter modulo registers to hex 8000 = 32,768 decimal.</span></span>
+<span id="tpm_timer_c-32"><a href="#tpm_timer_c-32"></a>				<span class="co">//You do not need to make separate writes to the low and high bytes of</span></span>
+<span id="tpm_timer_c-33"><a href="#tpm_timer_c-33"></a>				<span class="co">//a 16-bit register such as TPM1MOD. The file &quot;derivative.h&quot; includes</span></span>
+<span id="tpm_timer_c-34"><a href="#tpm_timer_c-34"></a>				<span class="co">//macros so that 16 bit variables are split and are written separately.*/</span></span>
+<span id="tpm_timer_c-35"><a href="#tpm_timer_c-35"></a></span>
+<span id="tpm_timer_c-36"><a href="#tpm_timer_c-36"></a>    tof_cnt = <span class="dv">0</span>;  		<span class="co">// initialize the number of timer overflow to 0.</span></span>
 <span id="tpm_timer_c-37"><a href="#tpm_timer_c-37"></a></span>
-<span id="tpm_timer_c-38"><a href="#tpm_timer_c-38"></a>    PTFD = student_num[tof_cnt];</span>
-<span id="tpm_timer_c-39"><a href="#tpm_timer_c-39"></a>    tof_cnt++;</span>
-<span id="tpm_timer_c-40"><a href="#tpm_timer_c-40"></a>}</span></code></pre></div>
+<span id="tpm_timer_c-38"><a href="#tpm_timer_c-38"></a>    EnableInterrupts;		<span class="co">// enable interrupts; from now on the interrupts are active</span></span>
+<span id="tpm_timer_c-39"><a href="#tpm_timer_c-39"></a>  </span>
+<span id="tpm_timer_c-40"><a href="#tpm_timer_c-40"></a>    <span class="cf">for</span>(;;) {</span>
+<span id="tpm_timer_c-41"><a href="#tpm_timer_c-41"></a>    }				<span class="co">// loop forever</span></span>
+<span id="tpm_timer_c-42"><a href="#tpm_timer_c-42"></a>}</span>
+<span id="tpm_timer_c-43"><a href="#tpm_timer_c-43"></a></span>
+<span id="tpm_timer_c-44"><a href="#tpm_timer_c-44"></a>interrupt VNtpm2ch2 <span class="dt">void</span> TPM1_overflow()</span>
+<span id="tpm_timer_c-45"><a href="#tpm_timer_c-45"></a>{</span>
+<span id="tpm_timer_c-46"><a href="#tpm_timer_c-46"></a>    TPM1SC_TOF = <span class="dv">0</span>;		<span class="co">//Clear the overflow interrupt flag.</span></span>
+<span id="tpm_timer_c-47"><a href="#tpm_timer_c-47"></a>   </span>
+<span id="tpm_timer_c-48"><a href="#tpm_timer_c-48"></a>    <span class="cf">if</span> (tof_cnt &gt;= digit_cnt) {</span>
+<span id="tpm_timer_c-49"><a href="#tpm_timer_c-49"></a>        tof_cnt = <span class="dv">0</span>;		<span class="co">// reset tof_cnt if larger than digit_cnt</span></span>
+<span id="tpm_timer_c-50"><a href="#tpm_timer_c-50"></a>    }</span>
+<span id="tpm_timer_c-51"><a href="#tpm_timer_c-51"></a></span>
+<span id="tpm_timer_c-52"><a href="#tpm_timer_c-52"></a>    PTFD = student_num[tof_cnt];</span>
+<span id="tpm_timer_c-53"><a href="#tpm_timer_c-53"></a>    tof_cnt++;</span>
+<span id="tpm_timer_c-54"><a href="#tpm_timer_c-54"></a>}</span>
+<span id="tpm_timer_c-55"><a href="#tpm_timer_c-55"></a></span>
+<span id="tpm_timer_c-56"><a href="#tpm_timer_c-56"></a></span>
+<span id="tpm_timer_c-57"><a href="#tpm_timer_c-57"></a></span>
+<span id="tpm_timer_c-58"><a href="#tpm_timer_c-58"></a></span>
+<span id="tpm_timer_c-59"><a href="#tpm_timer_c-59"></a></span></code></pre></div>
 <p>View on <a href="https://github.com/cpjobling/EG-252-Resources/blob/master/Microcontroller-Interfacing/Exercises/Exercise3/tpm_timer.c">GitHub</a>"</p>
 <p>Listing 1. Sample program for TPM timer function.</p>
 <h2 id="ii.-task-2-modify-the-sample-program-to-display-your-student-number">II. Task 2: Modify the Sample Program to Display your Student Number</h2>
@@ -175,7 +194,7 @@ Dr Chris P. Jobling
 <span id="tpm_motor_c-7"><a href="#tpm_motor_c-7"></a><span class="co">give PWM speed control.</span></span>
 <span id="tpm_motor_c-8"><a href="#tpm_motor_c-8"></a></span>
 <span id="tpm_motor_c-9"><a href="#tpm_motor_c-9"></a><span class="co">There are two interrupts: the timer overflow for TPM1 timer, which sets the</span></span>
-<span id="tpm_motor_c-10"><a href="#tpm_motor_c-10"></a><span class="co">overflow frequency of 100 Hz with bus clock rate 4MHz, and TPM1 channel 1 for</span></span>
+<span id="tpm_motor_c-10"><a href="#tpm_motor_c-10"></a><span class="co">overflow frequency of 100 Hz with bus clock rate 2MHz, and TPM1 channel 1 to</span></span>
 <span id="tpm_motor_c-11"><a href="#tpm_motor_c-11"></a><span class="co">turn off the motor. The motors are turned off individually to give individual</span></span>
 <span id="tpm_motor_c-12"><a href="#tpm_motor_c-12"></a><span class="co">speed control if required.</span></span>
 <span id="tpm_motor_c-13"><a href="#tpm_motor_c-13"></a></span>
@@ -188,57 +207,62 @@ Dr Chris P. Jobling
 <span id="tpm_motor_c-20"><a href="#tpm_motor_c-20"></a><span class="pp">#include </span><span class="im">&lt;hidef.h&gt;</span><span class="pp">      </span><span class="co">// for EnableInterrupts macro</span></span>
 <span id="tpm_motor_c-21"><a href="#tpm_motor_c-21"></a><span class="pp">#include </span><span class="im">&quot;derivative.h&quot;</span><span class="pp"> </span><span class="co">// include peripheral declarations</span></span>
 <span id="tpm_motor_c-22"><a href="#tpm_motor_c-22"></a></span>
-<span id="tpm_motor_c-23"><a href="#tpm_motor_c-23"></a>byte DRIVE;</span>
-<span id="tpm_motor_c-24"><a href="#tpm_motor_c-24"></a>byte MODCNTH = <span class="bn">0x4E</span>, MODCNTL = <span class="bn">0x20</span>;            <span class="co">// values for the modulo registers (0x4E20)</span></span>
-<span id="tpm_motor_c-25"><a href="#tpm_motor_c-25"></a>byte INIT_CHNCNTH = <span class="bn">0x40</span>, INIT_CHNCNTL = <span class="bn">0x00</span>;  <span class="co">// set the IOC register to 0x3000 for output compare function</span></span>
-<span id="tpm_motor_c-26"><a href="#tpm_motor_c-26"></a></span>
-<span id="tpm_motor_c-27"><a href="#tpm_motor_c-27"></a><span class="dt">void</span> main(<span class="dt">void</span>)</span>
-<span id="tpm_motor_c-28"><a href="#tpm_motor_c-28"></a>{</span>
-<span id="tpm_motor_c-29"><a href="#tpm_motor_c-29"></a>    EnableInterrupts;   <span class="co">// enable interrupts</span></span>
-<span id="tpm_motor_c-30"><a href="#tpm_motor_c-30"></a>    SOPT   = <span class="bn">0x00</span>;      <span class="co">// disable COP (watchtimer)</span></span>
-<span id="tpm_motor_c-31"><a href="#tpm_motor_c-31"></a></span>
-<span id="tpm_motor_c-32"><a href="#tpm_motor_c-32"></a>    <span class="co">// Init_GPIO init code </span></span>
-<span id="tpm_motor_c-33"><a href="#tpm_motor_c-33"></a>    PTADD = <span class="bn">0x00</span>;   <span class="co">// set port A as inputs for the rocker switches.</span></span>
-<span id="tpm_motor_c-34"><a href="#tpm_motor_c-34"></a>    PTAPE = <span class="bn">0xFF</span>;</span>
-<span id="tpm_motor_c-35"><a href="#tpm_motor_c-35"></a>    PTFDD = <span class="bn">0xFF</span>;   <span class="co">// set port F as outputs for LEDs</span></span>
-<span id="tpm_motor_c-36"><a href="#tpm_motor_c-36"></a>    PTGDD = <span class="bn">0xFF</span>;   <span class="co">// set port G as outputs for motor drive where motors are connected to.</span></span>
-<span id="tpm_motor_c-37"><a href="#tpm_motor_c-37"></a>    PTGPE = <span class="bn">0xFF</span>;   <span class="co">// enable port G pullups for motor drive.</span></span>
-<span id="tpm_motor_c-38"><a href="#tpm_motor_c-38"></a>   </span>
-<span id="tpm_motor_c-39"><a href="#tpm_motor_c-39"></a>    <span class="co">// configure TPM module 1</span></span>
-<span id="tpm_motor_c-40"><a href="#tpm_motor_c-40"></a>    TPM1SC   = <span class="bn">0x49</span>;  <span class="co">// format: TOF(0) TOIE(1) CPWMS(0) CLKSB(0) CLKSA(1) PS2(0) PS1(0) PS0(1)</span></span>
-<span id="tpm_motor_c-41"><a href="#tpm_motor_c-41"></a>    TPM1MODH = MODCNTH; TPM1MODL = MODCNTL; <span class="co">// set the counter modulo registers to 0x4E20.</span></span>
-<span id="tpm_motor_c-42"><a href="#tpm_motor_c-42"></a></span>
-<span id="tpm_motor_c-43"><a href="#tpm_motor_c-43"></a>    <span class="co">// configure TPM1 channel 1</span></span>
-<span id="tpm_motor_c-44"><a href="#tpm_motor_c-44"></a>    TPM1C1SC = <span class="bn">0x50</span>;     <span class="co">// TPM1 Channel 1</span></span>
-<span id="tpm_motor_c-45"><a href="#tpm_motor_c-45"></a>    TPM1C1VH = INIT_CHNCNTH; TPM1C1VL = INIT_CHNCNTL;   <span class="co">// set the channel 1 registers to 0x4000</span></span>
-<span id="tpm_motor_c-46"><a href="#tpm_motor_c-46"></a>  </span>
-<span id="tpm_motor_c-47"><a href="#tpm_motor_c-47"></a>    <span class="cf">for</span>(;;) {</span>
-<span id="tpm_motor_c-48"><a href="#tpm_motor_c-48"></a>        DRIVE = PTAD &amp; <span class="bn">0x0F</span>;		<span class="co">// read the motor direction settings from the rocker switches 1-4</span></span>
-<span id="tpm_motor_c-49"><a href="#tpm_motor_c-49"></a>        PTFD = DRIVE;</span>
-<span id="tpm_motor_c-50"><a href="#tpm_motor_c-50"></a>    }   <span class="co">// loop forever</span></span>
-<span id="tpm_motor_c-51"><a href="#tpm_motor_c-51"></a>}</span>
+<span id="tpm_motor_c-23"><a href="#tpm_motor_c-23"></a><span class="pp">#define VNtpm2ch2 11   </span><span class="co">// Interrupt vector for timer 2 channel 2 </span></span>
+<span id="tpm_motor_c-24"><a href="#tpm_motor_c-24"></a><span class="pp">#define VNtpm1ch1 6    </span><span class="co">// Interrupt vector for timer 1 channel 1 </span></span>
+<span id="tpm_motor_c-25"><a href="#tpm_motor_c-25"></a></span>
+<span id="tpm_motor_c-26"><a href="#tpm_motor_c-26"></a><span class="co">//Define a 16 bit value to write directly to the modulus</span></span>
+<span id="tpm_motor_c-27"><a href="#tpm_motor_c-27"></a><span class="pp">#define REPEAT 0x4E20	</span></span>
+<span id="tpm_motor_c-28"><a href="#tpm_motor_c-28"></a><span class="co">//Similarly, lets define the pulse width as a 16 bit value.	</span></span>
+<span id="tpm_motor_c-29"><a href="#tpm_motor_c-29"></a><span class="pp">#define INITPW 0x3000		</span></span>
+<span id="tpm_motor_c-30"><a href="#tpm_motor_c-30"></a></span>
+<span id="tpm_motor_c-31"><a href="#tpm_motor_c-31"></a>byte drive;</span>
+<span id="tpm_motor_c-32"><a href="#tpm_motor_c-32"></a></span>
+<span id="tpm_motor_c-33"><a href="#tpm_motor_c-33"></a><span class="dt">void</span> main(<span class="dt">void</span>)</span>
+<span id="tpm_motor_c-34"><a href="#tpm_motor_c-34"></a>{</span>
+<span id="tpm_motor_c-35"><a href="#tpm_motor_c-35"></a>	SOPT   = <span class="bn">0x00</span>;      <span class="co">// disable COP (watchtimer)</span></span>
+<span id="tpm_motor_c-36"><a href="#tpm_motor_c-36"></a></span>
+<span id="tpm_motor_c-37"><a href="#tpm_motor_c-37"></a>	ICGC1 = <span class="bn">0x74</span>;	<span class="co">// Select external 4 MHz quartz crystal.</span></span>
+<span id="tpm_motor_c-38"><a href="#tpm_motor_c-38"></a></span>
+<span id="tpm_motor_c-39"><a href="#tpm_motor_c-39"></a>    <span class="co">// Init_GPIO init code </span></span>
+<span id="tpm_motor_c-40"><a href="#tpm_motor_c-40"></a>	PTADD = <span class="bn">0x00</span>;	<span class="co">// set port A as inputs for the rocker switches.</span></span>
+<span id="tpm_motor_c-41"><a href="#tpm_motor_c-41"></a>	PTAPE = <span class="bn">0xFF</span>;	<span class="co">// turn on the pullups for port A</span></span>
+<span id="tpm_motor_c-42"><a href="#tpm_motor_c-42"></a>	PTFDD = <span class="bn">0xFF</span>;	<span class="co">// set port F as outputs for LEDs</span></span>
+<span id="tpm_motor_c-43"><a href="#tpm_motor_c-43"></a>	PTGDD = <span class="bn">0xFF</span>;	<span class="co">// set port G as outputs for motor drive where motors are connected.</span></span>
+<span id="tpm_motor_c-44"><a href="#tpm_motor_c-44"></a>   </span>
+<span id="tpm_motor_c-45"><a href="#tpm_motor_c-45"></a>    <span class="co">// configure TPM module 1</span></span>
+<span id="tpm_motor_c-46"><a href="#tpm_motor_c-46"></a>	TPM1SC   = <span class="bn">0x48</span>;	<span class="co">// format: TOF(0) TOIE(1) CPWMS(0) CLKSB(0) CLKSA(1) PS2(0) PS1(0) PS0(0)</span></span>
+<span id="tpm_motor_c-47"><a href="#tpm_motor_c-47"></a>	TPM1MOD = REPEAT;	<span class="co">//write the 16-bit value 0x4E20 (20,000 decimal) to the modulus register</span></span>
+<span id="tpm_motor_c-48"><a href="#tpm_motor_c-48"></a></span>
+<span id="tpm_motor_c-49"><a href="#tpm_motor_c-49"></a>    <span class="co">// configure TPM1 channel 1</span></span>
+<span id="tpm_motor_c-50"><a href="#tpm_motor_c-50"></a>  	TPM1C1SC = <span class="bn">0x50</span>;	<span class="co">// TPM1 Channel 1 interrupt enabled, output compare, no external output</span></span>
+<span id="tpm_motor_c-51"><a href="#tpm_motor_c-51"></a>	TPM1C1V = INITPW;	<span class="co">//write 16-bit value 0x3000 (12,000 approx) to the channel 1 register</span></span>
 <span id="tpm_motor_c-52"><a href="#tpm_motor_c-52"></a></span>
-<span id="tpm_motor_c-53"><a href="#tpm_motor_c-53"></a>interrupt <span class="dv">11</span> <span class="dt">void</span> TPM1SC_overflow()</span>
-<span id="tpm_motor_c-54"><a href="#tpm_motor_c-54"></a>{   <span class="co">// interrupt vector: Vtpm1</span></span>
-<span id="tpm_motor_c-55"><a href="#tpm_motor_c-55"></a>    byte varClear;</span>
-<span id="tpm_motor_c-56"><a href="#tpm_motor_c-56"></a>    </span>
-<span id="tpm_motor_c-57"><a href="#tpm_motor_c-57"></a>    varClear = TPM1SC;  <span class="co">// 2 steps to clear timer interrupt flags</span></span>
-<span id="tpm_motor_c-58"><a href="#tpm_motor_c-58"></a>    varClear = varClear &amp; <span class="bn">0x7F</span>;</span>
-<span id="tpm_motor_c-59"><a href="#tpm_motor_c-59"></a>    TPM1SC = varClear;</span>
+<span id="tpm_motor_c-53"><a href="#tpm_motor_c-53"></a>    EnableInterrupts;   <span class="co">// enable interrupts</span></span>
+<span id="tpm_motor_c-54"><a href="#tpm_motor_c-54"></a>  </span>
+<span id="tpm_motor_c-55"><a href="#tpm_motor_c-55"></a>    <span class="cf">for</span>(;;) {</span>
+<span id="tpm_motor_c-56"><a href="#tpm_motor_c-56"></a>        drive = PTAD &amp; <span class="bn">0x0F</span>;		<span class="co">// read the motor direction settings from the rocker switches 1-4</span></span>
+<span id="tpm_motor_c-57"><a href="#tpm_motor_c-57"></a>        PTFD = drive;</span>
+<span id="tpm_motor_c-58"><a href="#tpm_motor_c-58"></a>    }   <span class="co">// loop forever</span></span>
+<span id="tpm_motor_c-59"><a href="#tpm_motor_c-59"></a>}</span>
 <span id="tpm_motor_c-60"><a href="#tpm_motor_c-60"></a></span>
-<span id="tpm_motor_c-61"><a href="#tpm_motor_c-61"></a>    PTGD = DRIVE;       <span class="co">// turn on motors as configured by DRIVE (port A switches).</span></span>
-<span id="tpm_motor_c-62"><a href="#tpm_motor_c-62"></a>}</span>
-<span id="tpm_motor_c-63"><a href="#tpm_motor_c-63"></a></span>
-<span id="tpm_motor_c-64"><a href="#tpm_motor_c-64"></a>interrupt <span class="dv">6</span> <span class="dt">void</span> TPM1C1SC_int()</span>
-<span id="tpm_motor_c-65"><a href="#tpm_motor_c-65"></a>{   <span class="co">// interrupt vector: Vtpm1ch1</span></span>
-<span id="tpm_motor_c-66"><a href="#tpm_motor_c-66"></a>    byte varClear;</span>
-<span id="tpm_motor_c-67"><a href="#tpm_motor_c-67"></a></span>
-<span id="tpm_motor_c-68"><a href="#tpm_motor_c-68"></a>    varClear = TPM1C1SC;    <span class="co">// 2 steps to clear timer interrupt flags</span></span>
-<span id="tpm_motor_c-69"><a href="#tpm_motor_c-69"></a>    varClear = varClear &amp; <span class="bn">0x7F</span>;</span>
-<span id="tpm_motor_c-70"><a href="#tpm_motor_c-70"></a>    TPM1C1SC = varClear;    </span>
-<span id="tpm_motor_c-71"><a href="#tpm_motor_c-71"></a> </span>
-<span id="tpm_motor_c-72"><a href="#tpm_motor_c-72"></a>    PTGD = PTGD | <span class="bn">0x0F</span>;     <span class="co">// set free-wheel mode for both motors instead of turn off</span></span>
-<span id="tpm_motor_c-73"><a href="#tpm_motor_c-73"></a>}</span></code></pre></div>
+<span id="tpm_motor_c-61"><a href="#tpm_motor_c-61"></a>interrupt VNtpm2ch2 <span class="dt">void</span> TPM1SC_overflow()</span>
+<span id="tpm_motor_c-62"><a href="#tpm_motor_c-62"></a>{   <span class="co">// interrupt vector: Vtpm1</span></span>
+<span id="tpm_motor_c-63"><a href="#tpm_motor_c-63"></a>    </span>
+<span id="tpm_motor_c-64"><a href="#tpm_motor_c-64"></a>    TPM1SC_TOF = <span class="dv">0</span>;	<span class="co">// clear the overflow interrupt flag</span></span>
+<span id="tpm_motor_c-65"><a href="#tpm_motor_c-65"></a></span>
+<span id="tpm_motor_c-66"><a href="#tpm_motor_c-66"></a>    PTGD = drive;       <span class="co">// turn on motors as configured by drive (port A switches).</span></span>
+<span id="tpm_motor_c-67"><a href="#tpm_motor_c-67"></a>}</span>
+<span id="tpm_motor_c-68"><a href="#tpm_motor_c-68"></a></span>
+<span id="tpm_motor_c-69"><a href="#tpm_motor_c-69"></a>interrupt VNtpm1ch1 <span class="dt">void</span> TPM1C1SC_int()</span>
+<span id="tpm_motor_c-70"><a href="#tpm_motor_c-70"></a>{   <span class="co">// interrupt vector: Vtpm1ch1</span></span>
+<span id="tpm_motor_c-71"><a href="#tpm_motor_c-71"></a>    </span>
+<span id="tpm_motor_c-72"><a href="#tpm_motor_c-72"></a>    TPM1C1SC = <span class="dv">0</span>;    	<span class="co">// clear the channel 1 interrupt flag</span></span>
+<span id="tpm_motor_c-73"><a href="#tpm_motor_c-73"></a> </span>
+<span id="tpm_motor_c-74"><a href="#tpm_motor_c-74"></a>    PTGD = PTGD | <span class="bn">0x0F</span>;	<span class="co">// set free-wheel mode for both motors instead of turn off</span></span>
+<span id="tpm_motor_c-75"><a href="#tpm_motor_c-75"></a>}</span>
+<span id="tpm_motor_c-76"><a href="#tpm_motor_c-76"></a></span>
+<span id="tpm_motor_c-77"><a href="#tpm_motor_c-77"></a></span>
+<span id="tpm_motor_c-78"><a href="#tpm_motor_c-78"></a></span></code></pre></div>
 <p>View on <a href="https://github.com/cpjobling/EG-252-Resources/blob/master/Microcontroller-Interfacing/Exercises/Exercise3/tpm_motor.c">GitHub</a></p>
 <h2 id="iv.-task-4-pwm-duty-cycle-and-motor-speed-control">IV. Task 4: PWM Duty Cycle and Motor Speed Control</h2>
 <p>For Task 4 you are required to modify the sample program in order to:</p>

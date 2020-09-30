@@ -1,6 +1,6 @@
 /* kbi_interrupt.c */
 
-#include <hidef.h>		  /* for EnableInterrupts macro */
+#include <hidef.h>	 /* for EnableInterrupts macro */
 #include "derivative.h"	/* include peripheral declarations */
 #define VNkeyboard 22   /* Interrupt vector for Keyboard */
 
@@ -11,11 +11,6 @@ typedef unsigned long muint32;
 typedef char mint8;
 typedef short mint16;
 typedef long mint32;
-
-/* to clear or set single bits in a byte variable */
-#define b_SetBit(bit_ID, varID)		(varID |= (muint8)(1<<bit_ID))
-#define b_ClearBit(bit_ID, varID)	(varID &= ~(muint8)(1<<bit_ID))
-#define b_XorBit(bit_ID, varID)		(varID ^= (muint8)(1<<bit_ID))
 
 muint8 LED_onseq;
 
@@ -30,25 +25,45 @@ void main(void) {
 	PTFDD = 0xFF;		/* set port F as outputs for LED operation */
 	LED_onseq = 0x0F;	/* initialize LED_onseq */
 
-	/* enable interrupt for keyboard input */
-	b_ClearBit(1, KBI1SC);	/* KBI1SC: KBIE=0, disable KBI interrupt request */
-	KBI1PE = 0x60;			/* KBI1PE: KBIPE7=1, enable KBI function for pins 5 and 6 only */
-	b_ClearBit(0, KBI1SC);	/* KBI1SC: KBIMOD=0, select edge-only detection */
-	
-	/* in defaut only falling edge events to be detected */
-	b_SetBit(2, KBI1SC);	/* KBI1SC: KBACK=1, to clear KBI flag */
-	b_SetBit(1, KBI1SC);	/* KBI1SC: KBIE=1, enable KBI */
-	
-	EnableInterrupts;	/* enable interrupts */
+	//*********************************************************************************
+	//* KBI1PE7 * KBI1PE6 * KBI1PE5 * KBI1PE4 * KBI1PE3 * KBI1PE2 * KBI1PE1 * KBI1PE0 *
+	//*********************************************************************************	
+	// KBI1PE register; each bit selects the corresponding keyboard interrupt pin.
+
+	//*********************************************************************************
+	//* KBEDG7  * KBEDG6  * KBEDG5  * KBEDG4  *   KBF   *  KBACK  *  KBIE   *  KBIMOD *
+	//*********************************************************************************
+	// KBI1SC register; top four bits 0 = falling edge 1 = rising edge of corresponding
+	// pins KBEDG7 to 4. KBF keyboard interrupt flag, KBACK acknowledges interrupt flag.
+	// KBIE turns on the keyboard interrupt system, KBIMOD 0 = edge detection.
+
+	KBI1SC_KBIE = 0;	//Make sure interrupt is OFF
+	KBI1PE = 0b01100000;	//Turn on interrupts for pins 5 and 6 only
+	KBI1SC_KBIMOD = 0;	//Make sure we are on edge operation
+	KBI1SC_KBACK = 1;	//Clear any possible pending interrupts
+	KBI1SC_KBIE = 1;	//Turn on selected keyboard interrupts
+
+	EnableInterrupts;	// enable interrupts globally ("big switch")
 
 	for(;;) {
-		__RESET_WATCHDOG(); /* feeds the dog */
+
 	}	/* loop forever */
-		/* please make sure that you never leave main */
+		/* make sure that you never leave main! */
 }
 
+	// What follows is the interrupt service routine, which is called if either of the
+	// selected keyboard interrupts occurs on pins 5 and 6. However, Port D is tested
+	// and the LED toggle only happens if SW3 is pressed. (KBI 6, Port D3).
+
 interrupt VNkeyboard void intKBI_SW(){
-	KBI1SC_KBACK = 1;	/*acknowledge interrupt*/
-	PTFD = LED_onseq;
-	LED_onseq ^= 0xFF;	/* toggle LED_onseq bits */
+	KBI1SC_KBACK = 1;		// acknowledge interrupt
+	if (PTDD_PTDD3 == 0){
+		PTFD = LED_onseq;	// this is the business of the interrupt
+		LED_onseq ^= 0xFF;	// toggle LED_onseq bits
+	}	//       do nothing if not keyboard interrupt VNkeyboard
 }
+
+
+
+
+

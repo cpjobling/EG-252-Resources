@@ -131,7 +131,7 @@ Dr Chris P. Jobling
 <h3 id="sample-program-in-c">Sample Program in C</h3>
 <div class="sourceCode" id="kbi_interrupt_c" data-include="kbi_interrupt.c"><pre class="sourceCode numberSource c numberLines"><code class="sourceCode c"><span id="kbi_interrupt_c-1"><a href="#kbi_interrupt_c-1"></a><span class="co">/* kbi_interrupt.c */</span></span>
 <span id="kbi_interrupt_c-2"><a href="#kbi_interrupt_c-2"></a></span>
-<span id="kbi_interrupt_c-3"><a href="#kbi_interrupt_c-3"></a><span class="pp">#include </span><span class="im">&lt;hidef.h&gt;</span><span class="pp">		  </span><span class="co">/* for EnableInterrupts macro */</span></span>
+<span id="kbi_interrupt_c-3"><a href="#kbi_interrupt_c-3"></a><span class="pp">#include </span><span class="im">&lt;hidef.h&gt;</span><span class="pp">	 </span><span class="co">/* for EnableInterrupts macro */</span></span>
 <span id="kbi_interrupt_c-4"><a href="#kbi_interrupt_c-4"></a><span class="pp">#include </span><span class="im">&quot;derivative.h&quot;</span><span class="pp">	</span><span class="co">/* include peripheral declarations */</span></span>
 <span id="kbi_interrupt_c-5"><a href="#kbi_interrupt_c-5"></a><span class="pp">#define VNkeyboard 22   </span><span class="co">/* Interrupt vector for Keyboard */</span></span>
 <span id="kbi_interrupt_c-6"><a href="#kbi_interrupt_c-6"></a></span>
@@ -143,114 +143,139 @@ Dr Chris P. Jobling
 <span id="kbi_interrupt_c-12"><a href="#kbi_interrupt_c-12"></a><span class="kw">typedef</span> <span class="dt">short</span> mint16;</span>
 <span id="kbi_interrupt_c-13"><a href="#kbi_interrupt_c-13"></a><span class="kw">typedef</span> <span class="dt">long</span> mint32;</span>
 <span id="kbi_interrupt_c-14"><a href="#kbi_interrupt_c-14"></a></span>
-<span id="kbi_interrupt_c-15"><a href="#kbi_interrupt_c-15"></a><span class="co">/* to clear or set single bits in a byte variable */</span></span>
-<span id="kbi_interrupt_c-16"><a href="#kbi_interrupt_c-16"></a><span class="pp">#define b_SetBit(bit_ID, varID)		(varID |= (muint8)(1&lt;&lt;bit_ID))</span></span>
-<span id="kbi_interrupt_c-17"><a href="#kbi_interrupt_c-17"></a><span class="pp">#define b_ClearBit(bit_ID, varID)	(varID &amp;= ~(muint8)(1&lt;&lt;bit_ID))</span></span>
-<span id="kbi_interrupt_c-18"><a href="#kbi_interrupt_c-18"></a><span class="pp">#define b_XorBit(bit_ID, varID)		(varID ^= (muint8)(1&lt;&lt;bit_ID))</span></span>
+<span id="kbi_interrupt_c-15"><a href="#kbi_interrupt_c-15"></a>muint8 LED_onseq;</span>
+<span id="kbi_interrupt_c-16"><a href="#kbi_interrupt_c-16"></a></span>
+<span id="kbi_interrupt_c-17"><a href="#kbi_interrupt_c-17"></a><span class="dt">void</span> main(<span class="dt">void</span>) {</span>
+<span id="kbi_interrupt_c-18"><a href="#kbi_interrupt_c-18"></a>	SOPT = <span class="bn">0x00</span>;		<span class="co">/* disable COP */</span></span>
 <span id="kbi_interrupt_c-19"><a href="#kbi_interrupt_c-19"></a></span>
-<span id="kbi_interrupt_c-20"><a href="#kbi_interrupt_c-20"></a>muint8 LED_onseq;</span>
+<span id="kbi_interrupt_c-20"><a href="#kbi_interrupt_c-20"></a>	<span class="co">/* begin LED/switch test */</span></span>
 <span id="kbi_interrupt_c-21"><a href="#kbi_interrupt_c-21"></a></span>
-<span id="kbi_interrupt_c-22"><a href="#kbi_interrupt_c-22"></a><span class="dt">void</span> main(<span class="dt">void</span>) {</span>
-<span id="kbi_interrupt_c-23"><a href="#kbi_interrupt_c-23"></a>	SOPT = <span class="bn">0x00</span>;		<span class="co">/* disable COP */</span></span>
-<span id="kbi_interrupt_c-24"><a href="#kbi_interrupt_c-24"></a></span>
-<span id="kbi_interrupt_c-25"><a href="#kbi_interrupt_c-25"></a>	<span class="co">/* begin LED/switch test */</span></span>
-<span id="kbi_interrupt_c-26"><a href="#kbi_interrupt_c-26"></a></span>
-<span id="kbi_interrupt_c-27"><a href="#kbi_interrupt_c-27"></a>	PTDPE = <span class="bn">0xFF</span>;		<span class="co">/* enable port D pullups for push button switch interrupt */</span></span>
-<span id="kbi_interrupt_c-28"><a href="#kbi_interrupt_c-28"></a></span>
-<span id="kbi_interrupt_c-29"><a href="#kbi_interrupt_c-29"></a>	<span class="co">/* Init_GPIO init code */</span></span>
-<span id="kbi_interrupt_c-30"><a href="#kbi_interrupt_c-30"></a>	PTFDD = <span class="bn">0xFF</span>;		<span class="co">/* set port F as outputs for LED operation */</span></span>
-<span id="kbi_interrupt_c-31"><a href="#kbi_interrupt_c-31"></a>	LED_onseq = <span class="bn">0x0F</span>;	<span class="co">/* initialize LED_onseq */</span></span>
+<span id="kbi_interrupt_c-22"><a href="#kbi_interrupt_c-22"></a>	PTDPE = <span class="bn">0xFF</span>;		<span class="co">/* enable port D pullups for push button switch interrupt */</span></span>
+<span id="kbi_interrupt_c-23"><a href="#kbi_interrupt_c-23"></a></span>
+<span id="kbi_interrupt_c-24"><a href="#kbi_interrupt_c-24"></a>	<span class="co">/* Init_GPIO init code */</span></span>
+<span id="kbi_interrupt_c-25"><a href="#kbi_interrupt_c-25"></a>	PTFDD = <span class="bn">0xFF</span>;		<span class="co">/* set port F as outputs for LED operation */</span></span>
+<span id="kbi_interrupt_c-26"><a href="#kbi_interrupt_c-26"></a>	LED_onseq = <span class="bn">0x0F</span>;	<span class="co">/* initialize LED_onseq */</span></span>
+<span id="kbi_interrupt_c-27"><a href="#kbi_interrupt_c-27"></a></span>
+<span id="kbi_interrupt_c-28"><a href="#kbi_interrupt_c-28"></a>	<span class="co">//*********************************************************************************</span></span>
+<span id="kbi_interrupt_c-29"><a href="#kbi_interrupt_c-29"></a>	<span class="co">//* KBI1PE7 * KBI1PE6 * KBI1PE5 * KBI1PE4 * KBI1PE3 * KBI1PE2 * KBI1PE1 * KBI1PE0 *</span></span>
+<span id="kbi_interrupt_c-30"><a href="#kbi_interrupt_c-30"></a>	<span class="co">//*********************************************************************************	</span></span>
+<span id="kbi_interrupt_c-31"><a href="#kbi_interrupt_c-31"></a>	<span class="co">// KBI1PE register; each bit selects the corresponding keyboard interrupt pin.</span></span>
 <span id="kbi_interrupt_c-32"><a href="#kbi_interrupt_c-32"></a></span>
-<span id="kbi_interrupt_c-33"><a href="#kbi_interrupt_c-33"></a>	<span class="co">/* enable interrupt for keyboard input */</span></span>
-<span id="kbi_interrupt_c-34"><a href="#kbi_interrupt_c-34"></a>	b_ClearBit(<span class="dv">1</span>, KBI1SC);	<span class="co">/* KBI1SC: KBIE=0, disable KBI interrupt request */</span></span>
-<span id="kbi_interrupt_c-35"><a href="#kbi_interrupt_c-35"></a>	KBI1PE = <span class="bn">0x60</span>;			<span class="co">/* KBI1PE: KBIPE7=1, enable KBI function for pins 5 and 6 only */</span></span>
-<span id="kbi_interrupt_c-36"><a href="#kbi_interrupt_c-36"></a>	b_ClearBit(<span class="dv">0</span>, KBI1SC);	<span class="co">/* KBI1SC: KBIMOD=0, select edge-only detection */</span></span>
-<span id="kbi_interrupt_c-37"><a href="#kbi_interrupt_c-37"></a>	</span>
-<span id="kbi_interrupt_c-38"><a href="#kbi_interrupt_c-38"></a>	<span class="co">/* in defaut only falling edge events to be detected */</span></span>
-<span id="kbi_interrupt_c-39"><a href="#kbi_interrupt_c-39"></a>	b_SetBit(<span class="dv">2</span>, KBI1SC);	<span class="co">/* KBI1SC: KBACK=1, to clear KBI flag */</span></span>
-<span id="kbi_interrupt_c-40"><a href="#kbi_interrupt_c-40"></a>	b_SetBit(<span class="dv">1</span>, KBI1SC);	<span class="co">/* KBI1SC: KBIE=1, enable KBI */</span></span>
-<span id="kbi_interrupt_c-41"><a href="#kbi_interrupt_c-41"></a>	</span>
-<span id="kbi_interrupt_c-42"><a href="#kbi_interrupt_c-42"></a>	EnableInterrupts;	<span class="co">/* enable interrupts */</span></span>
-<span id="kbi_interrupt_c-43"><a href="#kbi_interrupt_c-43"></a></span>
-<span id="kbi_interrupt_c-44"><a href="#kbi_interrupt_c-44"></a>	<span class="cf">for</span>(;;) {</span>
-<span id="kbi_interrupt_c-45"><a href="#kbi_interrupt_c-45"></a>		__RESET_WATCHDOG(); <span class="co">/* feeds the dog */</span></span>
-<span id="kbi_interrupt_c-46"><a href="#kbi_interrupt_c-46"></a>	}	<span class="co">/* loop forever */</span></span>
-<span id="kbi_interrupt_c-47"><a href="#kbi_interrupt_c-47"></a>		<span class="co">/* please make sure that you never leave main */</span></span>
-<span id="kbi_interrupt_c-48"><a href="#kbi_interrupt_c-48"></a>}</span>
+<span id="kbi_interrupt_c-33"><a href="#kbi_interrupt_c-33"></a>	<span class="co">//*********************************************************************************</span></span>
+<span id="kbi_interrupt_c-34"><a href="#kbi_interrupt_c-34"></a>	<span class="co">//* KBEDG7  * KBEDG6  * KBEDG5  * KBEDG4  *   KBF   *  KBACK  *  KBIE   *  KBIMOD *</span></span>
+<span id="kbi_interrupt_c-35"><a href="#kbi_interrupt_c-35"></a>	<span class="co">//*********************************************************************************</span></span>
+<span id="kbi_interrupt_c-36"><a href="#kbi_interrupt_c-36"></a>	<span class="co">// KBI1SC register; top four bits 0 = falling edge 1 = rising edge of corresponding</span></span>
+<span id="kbi_interrupt_c-37"><a href="#kbi_interrupt_c-37"></a>	<span class="co">// pins KBEDG7 to 4. KBF keyboard interrupt flag, KBACK acknowledges interrupt flag.</span></span>
+<span id="kbi_interrupt_c-38"><a href="#kbi_interrupt_c-38"></a>	<span class="co">// KBIE turns on the keyboard interrupt system, KBIMOD 0 = edge detection.</span></span>
+<span id="kbi_interrupt_c-39"><a href="#kbi_interrupt_c-39"></a></span>
+<span id="kbi_interrupt_c-40"><a href="#kbi_interrupt_c-40"></a>	KBI1SC_KBIE = <span class="dv">0</span>;	<span class="co">//Make sure interrupt is OFF</span></span>
+<span id="kbi_interrupt_c-41"><a href="#kbi_interrupt_c-41"></a>	KBI1PE = <span class="bn">0b01100000</span>;	<span class="co">//Turn on interrupts for pins 5 and 6 only</span></span>
+<span id="kbi_interrupt_c-42"><a href="#kbi_interrupt_c-42"></a>	KBI1SC_KBIMOD = <span class="dv">0</span>;	<span class="co">//Make sure we are on edge operation</span></span>
+<span id="kbi_interrupt_c-43"><a href="#kbi_interrupt_c-43"></a>	KBI1SC_KBACK = <span class="dv">1</span>;	<span class="co">//Clear any possible pending interrupts</span></span>
+<span id="kbi_interrupt_c-44"><a href="#kbi_interrupt_c-44"></a>	KBI1SC_KBIE = <span class="dv">1</span>;	<span class="co">//Turn on selected keyboard interrupts</span></span>
+<span id="kbi_interrupt_c-45"><a href="#kbi_interrupt_c-45"></a></span>
+<span id="kbi_interrupt_c-46"><a href="#kbi_interrupt_c-46"></a>	EnableInterrupts;	<span class="co">// enable interrupts globally (&quot;big switch&quot;)</span></span>
+<span id="kbi_interrupt_c-47"><a href="#kbi_interrupt_c-47"></a></span>
+<span id="kbi_interrupt_c-48"><a href="#kbi_interrupt_c-48"></a>	<span class="cf">for</span>(;;) {</span>
 <span id="kbi_interrupt_c-49"><a href="#kbi_interrupt_c-49"></a></span>
-<span id="kbi_interrupt_c-50"><a href="#kbi_interrupt_c-50"></a>interrupt VNkeyboard <span class="dt">void</span> intKBI_SW(){</span>
-<span id="kbi_interrupt_c-51"><a href="#kbi_interrupt_c-51"></a>	KBI1SC_KBACK = <span class="dv">1</span>;	<span class="co">/*acknowledge interrupt*/</span></span>
-<span id="kbi_interrupt_c-52"><a href="#kbi_interrupt_c-52"></a>	PTFD = LED_onseq;</span>
-<span id="kbi_interrupt_c-53"><a href="#kbi_interrupt_c-53"></a>	LED_onseq ^= <span class="bn">0xFF</span>;	<span class="co">/* toggle LED_onseq bits */</span></span>
-<span id="kbi_interrupt_c-54"><a href="#kbi_interrupt_c-54"></a>}</span></code></pre></div>
+<span id="kbi_interrupt_c-50"><a href="#kbi_interrupt_c-50"></a>	}	<span class="co">/* loop forever */</span></span>
+<span id="kbi_interrupt_c-51"><a href="#kbi_interrupt_c-51"></a>		<span class="co">/* make sure that you never leave main! */</span></span>
+<span id="kbi_interrupt_c-52"><a href="#kbi_interrupt_c-52"></a>}</span>
+<span id="kbi_interrupt_c-53"><a href="#kbi_interrupt_c-53"></a></span>
+<span id="kbi_interrupt_c-54"><a href="#kbi_interrupt_c-54"></a>	<span class="co">// What follows is the interrupt service routine, which is called if either of the</span></span>
+<span id="kbi_interrupt_c-55"><a href="#kbi_interrupt_c-55"></a>	<span class="co">// selected keyboard interrupts occurs on pins 5 and 6. However, Port D is tested</span></span>
+<span id="kbi_interrupt_c-56"><a href="#kbi_interrupt_c-56"></a>	<span class="co">// and the LED toggle only happens if SW3 is pressed. (KBI 6, Port D3).</span></span>
+<span id="kbi_interrupt_c-57"><a href="#kbi_interrupt_c-57"></a></span>
+<span id="kbi_interrupt_c-58"><a href="#kbi_interrupt_c-58"></a>interrupt VNkeyboard <span class="dt">void</span> intKBI_SW(){</span>
+<span id="kbi_interrupt_c-59"><a href="#kbi_interrupt_c-59"></a>	KBI1SC_KBACK = <span class="dv">1</span>;		<span class="co">// acknowledge interrupt</span></span>
+<span id="kbi_interrupt_c-60"><a href="#kbi_interrupt_c-60"></a>	<span class="cf">if</span> (PTDD_PTDD3 == <span class="dv">0</span>){</span>
+<span id="kbi_interrupt_c-61"><a href="#kbi_interrupt_c-61"></a>		PTFD = LED_onseq;	<span class="co">// this is the business of the interrupt</span></span>
+<span id="kbi_interrupt_c-62"><a href="#kbi_interrupt_c-62"></a>		LED_onseq ^= <span class="bn">0xFF</span>;	<span class="co">// toggle LED_onseq bits</span></span>
+<span id="kbi_interrupt_c-63"><a href="#kbi_interrupt_c-63"></a>	}	<span class="co">//       do nothing if not keyboard interrupt VNkeyboard</span></span>
+<span id="kbi_interrupt_c-64"><a href="#kbi_interrupt_c-64"></a>}</span>
+<span id="kbi_interrupt_c-65"><a href="#kbi_interrupt_c-65"></a></span>
+<span id="kbi_interrupt_c-66"><a href="#kbi_interrupt_c-66"></a></span>
+<span id="kbi_interrupt_c-67"><a href="#kbi_interrupt_c-67"></a></span>
+<span id="kbi_interrupt_c-68"><a href="#kbi_interrupt_c-68"></a></span>
+<span id="kbi_interrupt_c-69"><a href="#kbi_interrupt_c-69"></a></span></code></pre></div>
 <p>View on <a href="https://github.com/cpjobling/EG-252-Resources/blob/master/Microcontroller-Interfacing/Exercises/Exercise1/kbi_interrupt.c">GitHub</a></p>
 <h2 id="appendix-b">Appendix B</h2>
 <h3 id="sample-program-in-assembly">Sample Program in Assembly</h3>
 <div class="sourceCode" id="kbi_interrupt_asm" data-include="kbi_interrupt.asm"><pre class="sourceCode numberSource assembly numberLines"><code class="sourceCode"><span id="kbi_interrupt_asm-1"><a href="#kbi_interrupt_asm-1"></a>;*************************************************************************</span>
-<span id="kbi_interrupt_asm-2"><a href="#kbi_interrupt_asm-2"></a>;*	kbi_interrupt.asm                                                    *</span>
+<span id="kbi_interrupt_asm-2"><a href="#kbi_interrupt_asm-2"></a>;*	kbi_adc.asm                                                      *</span>
 <span id="kbi_interrupt_asm-3"><a href="#kbi_interrupt_asm-3"></a>;*                                                                       *</span>
-<span id="kbi_interrupt_asm-4"><a href="#kbi_interrupt_asm-4"></a>;*	MC9S08AW60 Evaluation board keyboard interrupt example               *</span>
-<span id="kbi_interrupt_asm-5"><a href="#kbi_interrupt_asm-5"></a>;*	- Switch SW3 onboard connected to Port D pin 3, KBI pin6;            *</span>
-<span id="kbi_interrupt_asm-6"><a href="#kbi_interrupt_asm-6"></a>;*	- Switch SW4 onboard connected to Port D pin 2, KBI pin5             *</span>
+<span id="kbi_interrupt_asm-4"><a href="#kbi_interrupt_asm-4"></a>;*	MC9S08AW60 Evaluation board keyboard interrupt example           *</span>
+<span id="kbi_interrupt_asm-5"><a href="#kbi_interrupt_asm-5"></a>;*	- Switch SW3 onboard connected to Port D bit 3, KBI pin6;        *</span>
+<span id="kbi_interrupt_asm-6"><a href="#kbi_interrupt_asm-6"></a>;*	- Switch SW4 onboard connected to Port D bit 2, KBI pin5         *</span>
 <span id="kbi_interrupt_asm-7"><a href="#kbi_interrupt_asm-7"></a>;*                                                                       *</span>
-<span id="kbi_interrupt_asm-8"><a href="#kbi_interrupt_asm-8"></a>;*	Function:                                                            *</span>
-<span id="kbi_interrupt_asm-9"><a href="#kbi_interrupt_asm-9"></a>;*	on reset all LEDs will light on. If SW3 or SW4 pressed,              *</span>
-<span id="kbi_interrupt_asm-10"><a href="#kbi_interrupt_asm-10"></a>;*	an interrupt is generated, which set LEDs 0:3 to light on.           *</span>
-<span id="kbi_interrupt_asm-11"><a href="#kbi_interrupt_asm-11"></a>;*	More interrupts are genereated if SW3 or SW4 are pressed.            *</span>
-<span id="kbi_interrupt_asm-12"><a href="#kbi_interrupt_asm-12"></a>;*************************************************************************</span>
-<span id="kbi_interrupt_asm-13"><a href="#kbi_interrupt_asm-13"></a></span>
-<span id="kbi_interrupt_asm-14"><a href="#kbi_interrupt_asm-14"></a>; Include derivative-specific definitions</span>
-<span id="kbi_interrupt_asm-15"><a href="#kbi_interrupt_asm-15"></a>		INCLUDE &#39;derivative.inc&#39;</span>
-<span id="kbi_interrupt_asm-16"><a href="#kbi_interrupt_asm-16"></a></span>
-<span id="kbi_interrupt_asm-17"><a href="#kbi_interrupt_asm-17"></a>FLASH	EQU		$2000</span>
-<span id="kbi_interrupt_asm-18"><a href="#kbi_interrupt_asm-18"></a>RAM		EQU		$0070</span>
-<span id="kbi_interrupt_asm-19"><a href="#kbi_interrupt_asm-19"></a>WATCH	EQU		$1802</span>
+<span id="kbi_interrupt_asm-8"><a href="#kbi_interrupt_asm-8"></a>;*	Function:                                                        *</span>
+<span id="kbi_interrupt_asm-9"><a href="#kbi_interrupt_asm-9"></a>;*	On reset, all LEDs are off. When either SW3 or SW4 are pressed,  *</span>
+<span id="kbi_interrupt_asm-10"><a href="#kbi_interrupt_asm-10"></a>;*	then the ADC channel 8 is read and sent to the LEDs.             *</span>
+<span id="kbi_interrupt_asm-11"><a href="#kbi_interrupt_asm-11"></a>;*************************************************************************</span>
+<span id="kbi_interrupt_asm-12"><a href="#kbi_interrupt_asm-12"></a></span>
+<span id="kbi_interrupt_asm-13"><a href="#kbi_interrupt_asm-13"></a>		INCLUDE	&#39;derivative.inc&#39; ; Include derivative-specific definitions</span>
+<span id="kbi_interrupt_asm-14"><a href="#kbi_interrupt_asm-14"></a></span>
+<span id="kbi_interrupt_asm-15"><a href="#kbi_interrupt_asm-15"></a>FLASH		EQU		$2000</span>
+<span id="kbi_interrupt_asm-16"><a href="#kbi_interrupt_asm-16"></a>RAM		    EQU		$0070</span>
+<span id="kbi_interrupt_asm-17"><a href="#kbi_interrupt_asm-17"></a>WATCH		EQU		$1802</span>
+<span id="kbi_interrupt_asm-18"><a href="#kbi_interrupt_asm-18"></a></span>
+<span id="kbi_interrupt_asm-19"><a href="#kbi_interrupt_asm-19"></a>ConvComp	EQU		%10000000	;Mask for Conversion Complete flag</span>
 <span id="kbi_interrupt_asm-20"><a href="#kbi_interrupt_asm-20"></a></span>
 <span id="kbi_interrupt_asm-21"><a href="#kbi_interrupt_asm-21"></a>		ORG		RAM</span>
-<span id="kbi_interrupt_asm-22"><a href="#kbi_interrupt_asm-22"></a>LED_on	DS.B	1               ; Define a variable VAR_D with a size of 1 byte</span>
+<span id="kbi_interrupt_asm-22"><a href="#kbi_interrupt_asm-22"></a>LED_on		DS.B		1		; Define a variable VAR_D with a size of 1 byte</span>
 <span id="kbi_interrupt_asm-23"><a href="#kbi_interrupt_asm-23"></a></span>
 <span id="kbi_interrupt_asm-24"><a href="#kbi_interrupt_asm-24"></a>;Start program after reset</span>
-<span id="kbi_interrupt_asm-25"><a href="#kbi_interrupt_asm-25"></a>		ORG		FLASH</span>
-<span id="kbi_interrupt_asm-26"><a href="#kbi_interrupt_asm-26"></a>START_UP</span>
-<span id="kbi_interrupt_asm-27"><a href="#kbi_interrupt_asm-27"></a>		LDA		#$00</span>
-<span id="kbi_interrupt_asm-28"><a href="#kbi_interrupt_asm-28"></a>		STA		WATCH			; Turn off the watchdog timer</span>
-<span id="kbi_interrupt_asm-29"><a href="#kbi_interrupt_asm-29"></a>		</span>
-<span id="kbi_interrupt_asm-30"><a href="#kbi_interrupt_asm-30"></a>;Init_GPIO init code </span>
-<span id="kbi_interrupt_asm-31"><a href="#kbi_interrupt_asm-31"></a>		LDA     #$FF</span>
-<span id="kbi_interrupt_asm-32"><a href="#kbi_interrupt_asm-32"></a>		STA     PTFDD</span>
-<span id="kbi_interrupt_asm-33"><a href="#kbi_interrupt_asm-33"></a>		MOV     #$0F, LED_on    ; Initialize VAR_D, used to control the LEDs</span>
-<span id="kbi_interrupt_asm-34"><a href="#kbi_interrupt_asm-34"></a>		LDA     #$FF</span>
-<span id="kbi_interrupt_asm-35"><a href="#kbi_interrupt_asm-35"></a>		STA     PTDPE           ; Port D is enabled with pull-up</span>
-<span id="kbi_interrupt_asm-36"><a href="#kbi_interrupt_asm-36"></a>		RSP						; Reset stack pointer</span>
-<span id="kbi_interrupt_asm-37"><a href="#kbi_interrupt_asm-37"></a>                </span>
-<span id="kbi_interrupt_asm-38"><a href="#kbi_interrupt_asm-38"></a>;Enable interrupt for Keyboard input</span>
-<span id="kbi_interrupt_asm-39"><a href="#kbi_interrupt_asm-39"></a>		LDA     #$60</span>
-<span id="kbi_interrupt_asm-40"><a href="#kbi_interrupt_asm-40"></a>		STA     KBI1PE           ; KBI1PE: KBIPE7=1, enable KBI function for pins 5 and 6 only</span>
-<span id="kbi_interrupt_asm-41"><a href="#kbi_interrupt_asm-41"></a>		BSET    $02, KBI1SC      ; KBI1SC: KBACK=1, to clear KBI flag </span>
-<span id="kbi_interrupt_asm-42"><a href="#kbi_interrupt_asm-42"></a>		BSET    $01, KBI1SC      ; KBI1SC: KBIE=1, enable KBI </span>
-<span id="kbi_interrupt_asm-43"><a href="#kbi_interrupt_asm-43"></a>                               </span>
-<span id="kbi_interrupt_asm-44"><a href="#kbi_interrupt_asm-44"></a>		CLI                      ; Enable interrupt</span>
-<span id="kbi_interrupt_asm-45"><a href="#kbi_interrupt_asm-45"></a></span>
-<span id="kbi_interrupt_asm-46"><a href="#kbi_interrupt_asm-46"></a>MAINLOOP</span>
-<span id="kbi_interrupt_asm-47"><a href="#kbi_interrupt_asm-47"></a>		LDA     LED_on           ; Simple routine       </span>
-<span id="kbi_interrupt_asm-48"><a href="#kbi_interrupt_asm-48"></a>		BRA		MAINLOOP</span>
-<span id="kbi_interrupt_asm-49"><a href="#kbi_interrupt_asm-49"></a></span>
-<span id="kbi_interrupt_asm-50"><a href="#kbi_interrupt_asm-50"></a>;Interrupt service routine for a keyboard interrupt generated upon the press of a pushbutton</span>
-<span id="kbi_interrupt_asm-51"><a href="#kbi_interrupt_asm-51"></a>;with a falling edge (transition from high logic level &quot;1&quot; to low logic level &quot;0&quot;)                </span>
-<span id="kbi_interrupt_asm-52"><a href="#kbi_interrupt_asm-52"></a>LED_SWITCH</span>
-<span id="kbi_interrupt_asm-53"><a href="#kbi_interrupt_asm-53"></a>		BSET    $02, KBI1SC     ; clear KBI flag </span>
-<span id="kbi_interrupt_asm-54"><a href="#kbi_interrupt_asm-54"></a>		LDA     LED_on                              </span>
-<span id="kbi_interrupt_asm-55"><a href="#kbi_interrupt_asm-55"></a>		EOR     #$FF            ; Toggle bits in VAR_D</span>
-<span id="kbi_interrupt_asm-56"><a href="#kbi_interrupt_asm-56"></a>		STA     PTFD            ; Output to light LEDs (port F)</span>
-<span id="kbi_interrupt_asm-57"><a href="#kbi_interrupt_asm-57"></a>		STA     LED_on          ; Store the new value to VAR_D                                                          </span>
-<span id="kbi_interrupt_asm-58"><a href="#kbi_interrupt_asm-58"></a>		RTI                </span>
-<span id="kbi_interrupt_asm-59"><a href="#kbi_interrupt_asm-59"></a></span>
-<span id="kbi_interrupt_asm-60"><a href="#kbi_interrupt_asm-60"></a>;INT_VECTOR		</span>
-<span id="kbi_interrupt_asm-61"><a href="#kbi_interrupt_asm-61"></a>		ORG     $FFD2</span>
-<span id="kbi_interrupt_asm-62"><a href="#kbi_interrupt_asm-62"></a>		DC.W    LED_SWITCH</span>
-<span id="kbi_interrupt_asm-63"><a href="#kbi_interrupt_asm-63"></a></span>
-<span id="kbi_interrupt_asm-64"><a href="#kbi_interrupt_asm-64"></a>		ORG     $FFFE</span>
-<span id="kbi_interrupt_asm-65"><a href="#kbi_interrupt_asm-65"></a>		DC.W    START_UP</span></code></pre></div>
+<span id="kbi_interrupt_asm-25"><a href="#kbi_interrupt_asm-25"></a></span>
+<span id="kbi_interrupt_asm-26"><a href="#kbi_interrupt_asm-26"></a>		ORG		FLASH</span>
+<span id="kbi_interrupt_asm-27"><a href="#kbi_interrupt_asm-27"></a>START_UP</span>
+<span id="kbi_interrupt_asm-28"><a href="#kbi_interrupt_asm-28"></a>		LDA		#$00</span>
+<span id="kbi_interrupt_asm-29"><a href="#kbi_interrupt_asm-29"></a>		STA		WATCH		; Turn off the watchdog timer</span>
+<span id="kbi_interrupt_asm-30"><a href="#kbi_interrupt_asm-30"></a>		</span>
+<span id="kbi_interrupt_asm-31"><a href="#kbi_interrupt_asm-31"></a>;Init_GPIO init code </span>
+<span id="kbi_interrupt_asm-32"><a href="#kbi_interrupt_asm-32"></a>		LDA     	#$FF</span>
+<span id="kbi_interrupt_asm-33"><a href="#kbi_interrupt_asm-33"></a>		STA     	PTFDD</span>
+<span id="kbi_interrupt_asm-34"><a href="#kbi_interrupt_asm-34"></a>		MOV    		#$0F, LED_on	; Initialize VAR_D, used to control the LEDs</span>
+<span id="kbi_interrupt_asm-35"><a href="#kbi_interrupt_asm-35"></a>		LDA     	#$FF</span>
+<span id="kbi_interrupt_asm-36"><a href="#kbi_interrupt_asm-36"></a>		STA    		PTDPE           ; Port D is enabled with pull-up</span>
+<span id="kbi_interrupt_asm-37"><a href="#kbi_interrupt_asm-37"></a>		RSP				; Reset stack pointer to $0080</span>
+<span id="kbi_interrupt_asm-38"><a href="#kbi_interrupt_asm-38"></a>                </span>
+<span id="kbi_interrupt_asm-39"><a href="#kbi_interrupt_asm-39"></a>;Enable interrupt for Keyboard input</span>
+<span id="kbi_interrupt_asm-40"><a href="#kbi_interrupt_asm-40"></a>		LDA     	#$60</span>
+<span id="kbi_interrupt_asm-41"><a href="#kbi_interrupt_asm-41"></a>		STA     	KBI1PE           ; KBI1PE: enable KBI function for pins 5 and 6 only</span>
+<span id="kbi_interrupt_asm-42"><a href="#kbi_interrupt_asm-42"></a>		BSET    	$02, KBI1SC      ; KBI1SC: KBACK=1, to clear KBI flag </span>
+<span id="kbi_interrupt_asm-43"><a href="#kbi_interrupt_asm-43"></a>		BSET    	$01, KBI1SC      ; KBI1SC: KBIE=1, enable KBI </span>
+<span id="kbi_interrupt_asm-44"><a href="#kbi_interrupt_asm-44"></a>                               </span>
+<span id="kbi_interrupt_asm-45"><a href="#kbi_interrupt_asm-45"></a>		CLI                      	; Enable interrupt</span>
+<span id="kbi_interrupt_asm-46"><a href="#kbi_interrupt_asm-46"></a></span>
+<span id="kbi_interrupt_asm-47"><a href="#kbi_interrupt_asm-47"></a>MAINLOOP</span>
+<span id="kbi_interrupt_asm-48"><a href="#kbi_interrupt_asm-48"></a>		LDA     	LED_on           ; Simple loop with &quot;dummy&quot; operation</span>
+<span id="kbi_interrupt_asm-49"><a href="#kbi_interrupt_asm-49"></a>		BRA		    MAINLOOP</span>
+<span id="kbi_interrupt_asm-50"><a href="#kbi_interrupt_asm-50"></a>		</span>
+<span id="kbi_interrupt_asm-51"><a href="#kbi_interrupt_asm-51"></a>;Interrupt service routine for a keyboard interrupt generated upon the press of a pushbutton</span>
+<span id="kbi_interrupt_asm-52"><a href="#kbi_interrupt_asm-52"></a>;with a falling edge (transition from high logic level &quot;1&quot; to low logic level &quot;0&quot;)                </span>
+<span id="kbi_interrupt_asm-53"><a href="#kbi_interrupt_asm-53"></a>LED_SWITCH</span>
+<span id="kbi_interrupt_asm-54"><a href="#kbi_interrupt_asm-54"></a>		BSET    	$02, KBI1SC     ; Clear KBI flag </span>
+<span id="kbi_interrupt_asm-55"><a href="#kbi_interrupt_asm-55"></a>		LDA     	#8		; Select analogue input 8 (the blue potentiometer).</span>
+<span id="kbi_interrupt_asm-56"><a href="#kbi_interrupt_asm-56"></a>		STA     	ADC1SC1         ; ADC conversion will start after a number is written to ADC1SC1 register.</span>
+<span id="kbi_interrupt_asm-57"><a href="#kbi_interrupt_asm-57"></a>ADCLOOP                </span>
+<span id="kbi_interrupt_asm-58"><a href="#kbi_interrupt_asm-58"></a>		LDA     	ADC1SC1         ; </span>
+<span id="kbi_interrupt_asm-59"><a href="#kbi_interrupt_asm-59"></a>		AND		    #ConvComp	    ; Check the COCO bit (conversion complete flag).</span>
+<span id="kbi_interrupt_asm-60"><a href="#kbi_interrupt_asm-60"></a>		BEQ     	ADCLOOP         ; if not complete, wait in the ADC loop.</span>
+<span id="kbi_interrupt_asm-61"><a href="#kbi_interrupt_asm-61"></a>		LDA     	ADC1RL          ; if complete, read the ADC outcome (digital value) from the register.</span>
+<span id="kbi_interrupt_asm-62"><a href="#kbi_interrupt_asm-62"></a>		STA     	PTFD            ; display over LED bar</span>
+<span id="kbi_interrupt_asm-63"><a href="#kbi_interrupt_asm-63"></a>		RTI                </span>
+<span id="kbi_interrupt_asm-64"><a href="#kbi_interrupt_asm-64"></a></span>
+<span id="kbi_interrupt_asm-65"><a href="#kbi_interrupt_asm-65"></a>;INT_VECTOR		</span>
+<span id="kbi_interrupt_asm-66"><a href="#kbi_interrupt_asm-66"></a>		ORG     	$FFD2</span>
+<span id="kbi_interrupt_asm-67"><a href="#kbi_interrupt_asm-67"></a>		DC.W    	LED_SWITCH</span>
+<span id="kbi_interrupt_asm-68"><a href="#kbi_interrupt_asm-68"></a>		</span>
+<span id="kbi_interrupt_asm-69"><a href="#kbi_interrupt_asm-69"></a>		ORG    		$FFFE</span>
+<span id="kbi_interrupt_asm-70"><a href="#kbi_interrupt_asm-70"></a>		DC.W    	START_UP</span>
+<span id="kbi_interrupt_asm-71"><a href="#kbi_interrupt_asm-71"></a></span>
+<span id="kbi_interrupt_asm-72"><a href="#kbi_interrupt_asm-72"></a></span>
+<span id="kbi_interrupt_asm-73"><a href="#kbi_interrupt_asm-73"></a></span>
+<span id="kbi_interrupt_asm-74"><a href="#kbi_interrupt_asm-74"></a></span>
+<span id="kbi_interrupt_asm-75"><a href="#kbi_interrupt_asm-75"></a></span></code></pre></div>
 <p>View on <a href="https://github.com/cpjobling/EG-252-Resources/blob/master/Microcontroller-Interfacing/Exercises/Exercise1/kbi_interrupt.asm">GitHub</a></p>
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">EG-252 Resources</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="http://www.swan.ac.uk" property="cc:attributionName" rel="cc:attributionURL">Swansea University</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
