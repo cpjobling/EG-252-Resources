@@ -20,9 +20,11 @@ motors, e.g. 00001010 is reverse both motors, 00000101 is forward both motors,
 #include <hidef.h>      // for EnableInterrupts macro
 #include "derivative.h" // include peripheral declarations
 
-byte DRIVE;
-word REPEAT = 0x4E20; //Define a 16 bit value to write directly to the modulus
-word INITPW = 0x3000; //Similarly, lets define the pulse width as a 16 bit value.
+byte drive;
+//Define a 16 bit value to write directly to the modulus
+#define REPEAT 0x4E20 
+//Similarly, lets define the pulse width as a 16 bit value.
+#define INITPW 0x3000 
 
 void main(void)
 {
@@ -48,20 +50,20 @@ void main(void)
 
     for (;;)
     {
-        DRIVE = PTAD & 0x0F; // read the motor direction settings from the rocker switches 1-4
-        PTFD = DRIVE;
+        drive = PTAD & 0x0F; // read the motor direction settings from the rocker switches 1-4
+        PTFD = drive;
     } // loop forever
 }
 
-interrupt 11 void TPM1SC_overflow()
+interrupt VNtpm2ch2 void TPM1SC_overflow()
 { // interrupt vector: Vtpm1
 
     TPM1SC_TOF = 0; // clear the overflow interrupt flag
 
-    PTGD = DRIVE; // turn on motors as configured by DRIVE (port A switches).
+    PTGD = drive; // turn on motors as configured by drive (port A switches).
 }
 
-interrupt 6 void TPM1C1SC_int()
+interrupt VNtpm1ch1 void TPM1C1SC_int()
 { // interrupt vector: Vtpm1ch1
 
     TPM1C1SC = 0; // clear the channel 1 interrupt flag

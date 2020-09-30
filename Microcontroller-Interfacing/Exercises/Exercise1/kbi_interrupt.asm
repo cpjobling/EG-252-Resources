@@ -8,7 +8,7 @@
 ;*	Function:                                                            *
 ;*	on reset all LEDs will light on. If SW3 or SW4 pressed,              *
 ;*	an interrupt is generated, which set LEDs 0:3 to light on.           *
-;*	More interrupts are genereated if SW3 or SW4 are pressed.            *
+;*	More interrupts are generated if SW3 or SW4 are pressed.            *
 ;*************************************************************************
 
 ; Include derivative-specific definitions

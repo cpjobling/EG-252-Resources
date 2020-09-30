@@ -37,7 +37,7 @@ void main(void)
     } // loop forever
 }
 
-interrupt 11 void TPM1_overflow()
+interrupt VNtpm2ch2 void TPM1_overflow()
 {
     TPM1SC_TOF = 0; //Clear the overflow interrupt flag.
 
