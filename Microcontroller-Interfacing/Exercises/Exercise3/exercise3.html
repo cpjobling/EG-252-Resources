@@ -161,14 +161,14 @@ Dr Chris P. Jobling
 <span id="tpm_timer_c-46"><a href="#tpm_timer_c-46"></a>{</span>
 <span id="tpm_timer_c-47"><a href="#tpm_timer_c-47"></a>    TPM1SC_TOF = <span class="dv">0</span>;		<span class="co">//Clear the overflow interrupt flag.</span></span>
 <span id="tpm_timer_c-48"><a href="#tpm_timer_c-48"></a>   </span>
-<span id="tpm_timer_c-49"><a href="#tpm_timer_c-49"></a>    <span class="cf">if</span> (tof_cnt &gt;= digit_cnt) {</span>
-<span id="tpm_timer_c-50"><a href="#tpm_timer_c-50"></a>        tof_cnt = <span class="dv">0</span>;		<span class="co">// reset tof_cnt if larger than digit_cnt</span></span>
-<span id="tpm_timer_c-51"><a href="#tpm_timer_c-51"></a>    }</span>
-<span id="tpm_timer_c-52"><a href="#tpm_timer_c-52"></a></span>
-<span id="tpm_timer_c-53"><a href="#tpm_timer_c-53"></a>    PTFD = student_num[tof_cnt];</span>
-<span id="tpm_timer_c-54"><a href="#tpm_timer_c-54"></a>    tof_cnt++;</span>
-<span id="tpm_timer_c-55"><a href="#tpm_timer_c-55"></a>}</span>
-<span id="tpm_timer_c-56"><a href="#tpm_timer_c-56"></a></span>
+<span id="tpm_timer_c-49"><a href="#tpm_timer_c-49"></a>    <span class="cf">if</span> (tof_cnt &gt;= digit_cnt)</span>
+<span id="tpm_timer_c-50"><a href="#tpm_timer_c-50"></a>    {</span>
+<span id="tpm_timer_c-51"><a href="#tpm_timer_c-51"></a>        tof_cnt = <span class="dv">0</span>;		<span class="co">// reset tof_cnt if larger than digit_cnt</span></span>
+<span id="tpm_timer_c-52"><a href="#tpm_timer_c-52"></a>    }</span>
+<span id="tpm_timer_c-53"><a href="#tpm_timer_c-53"></a></span>
+<span id="tpm_timer_c-54"><a href="#tpm_timer_c-54"></a>    PTFD = student_num[tof_cnt];</span>
+<span id="tpm_timer_c-55"><a href="#tpm_timer_c-55"></a>    tof_cnt++;</span>
+<span id="tpm_timer_c-56"><a href="#tpm_timer_c-56"></a>}</span>
 <span id="tpm_timer_c-57"><a href="#tpm_timer_c-57"></a></span>
 <span id="tpm_timer_c-58"><a href="#tpm_timer_c-58"></a></span>
 <span id="tpm_timer_c-59"><a href="#tpm_timer_c-59"></a></span></code></pre></div>
@@ -261,8 +261,7 @@ Dr Chris P. Jobling
 <span id="tpm_motor_c-74"><a href="#tpm_motor_c-74"></a> </span>
 <span id="tpm_motor_c-75"><a href="#tpm_motor_c-75"></a>    PTGD = PTGD | <span class="bn">0x0F</span>;	<span class="co">// set free-wheel mode for both motors instead of turn off</span></span>
 <span id="tpm_motor_c-76"><a href="#tpm_motor_c-76"></a>}</span>
-<span id="tpm_motor_c-77"><a href="#tpm_motor_c-77"></a></span>
-<span id="tpm_motor_c-78"><a href="#tpm_motor_c-78"></a></span></code></pre></div>
+<span id="tpm_motor_c-77"><a href="#tpm_motor_c-77"></a></span></code></pre></div>
 <p>View on <a href="https://github.com/cpjobling/EG-252-Resources/blob/master/Microcontroller-Interfacing/Exercises/Exercise3/tpm_motor.c">GitHub</a></p>
 <h2 id="iv.-task-4-pwm-duty-cycle-and-motor-speed-control">IV. Task 4: PWM Duty Cycle and Motor Speed Control</h2>
 <p>For Task 4 you are required to modify the sample program in order to:</p>
