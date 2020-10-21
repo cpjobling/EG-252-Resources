@@ -145,59 +145,61 @@ Dr Chris P. Jobling
 <span id="kbi_interrupt_c-14"><a href="#kbi_interrupt_c-14"></a></span>
 <span id="kbi_interrupt_c-15"><a href="#kbi_interrupt_c-15"></a>muint8 LED_onseq;</span>
 <span id="kbi_interrupt_c-16"><a href="#kbi_interrupt_c-16"></a></span>
-<span id="kbi_interrupt_c-17"><a href="#kbi_interrupt_c-17"></a><span class="dt">void</span> main(<span class="dt">void</span>) {</span>
-<span id="kbi_interrupt_c-18"><a href="#kbi_interrupt_c-18"></a>	SOPT = <span class="bn">0x00</span>;		<span class="co">/* disable COP */</span></span>
+<span id="kbi_interrupt_c-17"><a href="#kbi_interrupt_c-17"></a><span class="dt">void</span> main(<span class="dt">void</span>) </span>
+<span id="kbi_interrupt_c-18"><a href="#kbi_interrupt_c-18"></a>{</span>
 <span id="kbi_interrupt_c-19"><a href="#kbi_interrupt_c-19"></a></span>
-<span id="kbi_interrupt_c-20"><a href="#kbi_interrupt_c-20"></a>	<span class="co">/* begin LED/switch test */</span></span>
+<span id="kbi_interrupt_c-20"><a href="#kbi_interrupt_c-20"></a>	SOPT = <span class="bn">0x00</span>;		<span class="co">/* disable COP */</span></span>
 <span id="kbi_interrupt_c-21"><a href="#kbi_interrupt_c-21"></a></span>
-<span id="kbi_interrupt_c-22"><a href="#kbi_interrupt_c-22"></a>	PTDPE = <span class="bn">0xFF</span>;		<span class="co">/* enable port D pullups for push button switch interrupt */</span></span>
+<span id="kbi_interrupt_c-22"><a href="#kbi_interrupt_c-22"></a>	<span class="co">/* begin LED/switch test */</span></span>
 <span id="kbi_interrupt_c-23"><a href="#kbi_interrupt_c-23"></a></span>
-<span id="kbi_interrupt_c-24"><a href="#kbi_interrupt_c-24"></a>	<span class="co">/* Init_GPIO init code */</span></span>
-<span id="kbi_interrupt_c-25"><a href="#kbi_interrupt_c-25"></a>	PTFDD = <span class="bn">0xFF</span>;		<span class="co">/* set port F as outputs for LED operation */</span></span>
-<span id="kbi_interrupt_c-26"><a href="#kbi_interrupt_c-26"></a>	LED_onseq = <span class="bn">0x0F</span>;	<span class="co">/* initialize LED_onseq */</span></span>
-<span id="kbi_interrupt_c-27"><a href="#kbi_interrupt_c-27"></a></span>
-<span id="kbi_interrupt_c-28"><a href="#kbi_interrupt_c-28"></a>	<span class="co">//*********************************************************************************</span></span>
-<span id="kbi_interrupt_c-29"><a href="#kbi_interrupt_c-29"></a>	<span class="co">//* KBI1PE7 * KBI1PE6 * KBI1PE5 * KBI1PE4 * KBI1PE3 * KBI1PE2 * KBI1PE1 * KBI1PE0 *</span></span>
-<span id="kbi_interrupt_c-30"><a href="#kbi_interrupt_c-30"></a>	<span class="co">//*********************************************************************************	</span></span>
-<span id="kbi_interrupt_c-31"><a href="#kbi_interrupt_c-31"></a>	<span class="co">// KBI1PE register; each bit selects the corresponding keyboard interrupt pin.</span></span>
-<span id="kbi_interrupt_c-32"><a href="#kbi_interrupt_c-32"></a></span>
-<span id="kbi_interrupt_c-33"><a href="#kbi_interrupt_c-33"></a>	<span class="co">//*********************************************************************************</span></span>
-<span id="kbi_interrupt_c-34"><a href="#kbi_interrupt_c-34"></a>	<span class="co">//* KBEDG7  * KBEDG6  * KBEDG5  * KBEDG4  *   KBF   *  KBACK  *  KBIE   *  KBIMOD *</span></span>
+<span id="kbi_interrupt_c-24"><a href="#kbi_interrupt_c-24"></a>	PTDPE = <span class="bn">0xFF</span>;		<span class="co">/* enable port D pullups for push button switch interrupt */</span></span>
+<span id="kbi_interrupt_c-25"><a href="#kbi_interrupt_c-25"></a></span>
+<span id="kbi_interrupt_c-26"><a href="#kbi_interrupt_c-26"></a>	<span class="co">/* Init_GPIO init code */</span></span>
+<span id="kbi_interrupt_c-27"><a href="#kbi_interrupt_c-27"></a>	PTFDD = <span class="bn">0xFF</span>;		<span class="co">/* set port F as outputs for LED operation */</span></span>
+<span id="kbi_interrupt_c-28"><a href="#kbi_interrupt_c-28"></a>	LED_onseq = <span class="bn">0x0F</span>;	<span class="co">/* initialize LED_onseq */</span></span>
+<span id="kbi_interrupt_c-29"><a href="#kbi_interrupt_c-29"></a></span>
+<span id="kbi_interrupt_c-30"><a href="#kbi_interrupt_c-30"></a>	<span class="co">//*********************************************************************************</span></span>
+<span id="kbi_interrupt_c-31"><a href="#kbi_interrupt_c-31"></a>	<span class="co">//* KBI1PE7 * KBI1PE6 * KBI1PE5 * KBI1PE4 * KBI1PE3 * KBI1PE2 * KBI1PE1 * KBI1PE0 *</span></span>
+<span id="kbi_interrupt_c-32"><a href="#kbi_interrupt_c-32"></a>	<span class="co">//*********************************************************************************	</span></span>
+<span id="kbi_interrupt_c-33"><a href="#kbi_interrupt_c-33"></a>	<span class="co">// KBI1PE register; each bit selects the corresponding keyboard interrupt pin.</span></span>
+<span id="kbi_interrupt_c-34"><a href="#kbi_interrupt_c-34"></a></span>
 <span id="kbi_interrupt_c-35"><a href="#kbi_interrupt_c-35"></a>	<span class="co">//*********************************************************************************</span></span>
-<span id="kbi_interrupt_c-36"><a href="#kbi_interrupt_c-36"></a>	<span class="co">// KBI1SC register; top four bits 0 = falling edge 1 = rising edge of corresponding</span></span>
-<span id="kbi_interrupt_c-37"><a href="#kbi_interrupt_c-37"></a>	<span class="co">// pins KBEDG7 to 4. KBF keyboard interrupt flag, KBACK acknowledges interrupt flag.</span></span>
-<span id="kbi_interrupt_c-38"><a href="#kbi_interrupt_c-38"></a>	<span class="co">// KBIE turns on the keyboard interrupt system, KBIMOD 0 = edge detection.</span></span>
-<span id="kbi_interrupt_c-39"><a href="#kbi_interrupt_c-39"></a></span>
-<span id="kbi_interrupt_c-40"><a href="#kbi_interrupt_c-40"></a>	KBI1SC_KBIE = <span class="dv">0</span>;	<span class="co">//Make sure interrupt is OFF</span></span>
-<span id="kbi_interrupt_c-41"><a href="#kbi_interrupt_c-41"></a>	KBI1PE = <span class="bn">0b01100000</span>;	<span class="co">//Turn on interrupts for pins 5 and 6 only</span></span>
-<span id="kbi_interrupt_c-42"><a href="#kbi_interrupt_c-42"></a>	KBI1SC_KBIMOD = <span class="dv">0</span>;	<span class="co">//Make sure we are on edge operation</span></span>
-<span id="kbi_interrupt_c-43"><a href="#kbi_interrupt_c-43"></a>	KBI1SC_KBACK = <span class="dv">1</span>;	<span class="co">//Clear any possible pending interrupts</span></span>
-<span id="kbi_interrupt_c-44"><a href="#kbi_interrupt_c-44"></a>	KBI1SC_KBIE = <span class="dv">1</span>;	<span class="co">//Turn on selected keyboard interrupts</span></span>
-<span id="kbi_interrupt_c-45"><a href="#kbi_interrupt_c-45"></a></span>
-<span id="kbi_interrupt_c-46"><a href="#kbi_interrupt_c-46"></a>	EnableInterrupts;	<span class="co">// enable interrupts globally (&quot;big switch&quot;)</span></span>
+<span id="kbi_interrupt_c-36"><a href="#kbi_interrupt_c-36"></a>	<span class="co">//* KBEDG7  * KBEDG6  * KBEDG5  * KBEDG4  *   KBF   *  KBACK  *  KBIE   *  KBIMOD *</span></span>
+<span id="kbi_interrupt_c-37"><a href="#kbi_interrupt_c-37"></a>	<span class="co">//*********************************************************************************</span></span>
+<span id="kbi_interrupt_c-38"><a href="#kbi_interrupt_c-38"></a>	<span class="co">// KBI1SC register; top four bits 0 = falling edge 1 = rising edge of corresponding</span></span>
+<span id="kbi_interrupt_c-39"><a href="#kbi_interrupt_c-39"></a>	<span class="co">// pins KBEDG7 to 4. KBF keyboard interrupt flag, KBACK acknowledges interrupt flag.</span></span>
+<span id="kbi_interrupt_c-40"><a href="#kbi_interrupt_c-40"></a>	<span class="co">// KBIE turns on the keyboard interrupt system, KBIMOD 0 = edge detection.</span></span>
+<span id="kbi_interrupt_c-41"><a href="#kbi_interrupt_c-41"></a></span>
+<span id="kbi_interrupt_c-42"><a href="#kbi_interrupt_c-42"></a>	KBI1SC_KBIE = <span class="dv">0</span>;	<span class="co">//Make sure interrupt is OFF</span></span>
+<span id="kbi_interrupt_c-43"><a href="#kbi_interrupt_c-43"></a>	KBI1PE = <span class="bn">0b01100000</span>;	<span class="co">//Turn on interrupts for pins 5 and 6 only</span></span>
+<span id="kbi_interrupt_c-44"><a href="#kbi_interrupt_c-44"></a>	KBI1SC_KBIMOD = <span class="dv">0</span>;	<span class="co">//Make sure we are on edge operation</span></span>
+<span id="kbi_interrupt_c-45"><a href="#kbi_interrupt_c-45"></a>	KBI1SC_KBACK = <span class="dv">1</span>;	<span class="co">//Clear any possible pending interrupts</span></span>
+<span id="kbi_interrupt_c-46"><a href="#kbi_interrupt_c-46"></a>	KBI1SC_KBIE = <span class="dv">1</span>;	<span class="co">//Turn on selected keyboard interrupts</span></span>
 <span id="kbi_interrupt_c-47"><a href="#kbi_interrupt_c-47"></a></span>
-<span id="kbi_interrupt_c-48"><a href="#kbi_interrupt_c-48"></a>	<span class="cf">for</span>(;;) {</span>
+<span id="kbi_interrupt_c-48"><a href="#kbi_interrupt_c-48"></a>	EnableInterrupts;	<span class="co">// enable interrupts globally (&quot;big switch&quot;)</span></span>
 <span id="kbi_interrupt_c-49"><a href="#kbi_interrupt_c-49"></a></span>
-<span id="kbi_interrupt_c-50"><a href="#kbi_interrupt_c-50"></a>	}	<span class="co">/* loop forever */</span></span>
-<span id="kbi_interrupt_c-51"><a href="#kbi_interrupt_c-51"></a>		<span class="co">/* make sure that you never leave main! */</span></span>
-<span id="kbi_interrupt_c-52"><a href="#kbi_interrupt_c-52"></a>}</span>
-<span id="kbi_interrupt_c-53"><a href="#kbi_interrupt_c-53"></a></span>
-<span id="kbi_interrupt_c-54"><a href="#kbi_interrupt_c-54"></a>	<span class="co">// What follows is the interrupt service routine, which is called if either of the</span></span>
-<span id="kbi_interrupt_c-55"><a href="#kbi_interrupt_c-55"></a>	<span class="co">// selected keyboard interrupts occurs on pins 5 and 6. However, Port D is tested</span></span>
-<span id="kbi_interrupt_c-56"><a href="#kbi_interrupt_c-56"></a>	<span class="co">// and the LED toggle only happens if SW3 is pressed. (KBI 6, Port D3).</span></span>
-<span id="kbi_interrupt_c-57"><a href="#kbi_interrupt_c-57"></a></span>
-<span id="kbi_interrupt_c-58"><a href="#kbi_interrupt_c-58"></a>interrupt VNkeyboard <span class="dt">void</span> intKBI_SW(){</span>
-<span id="kbi_interrupt_c-59"><a href="#kbi_interrupt_c-59"></a>	KBI1SC_KBACK = <span class="dv">1</span>;		<span class="co">// acknowledge interrupt</span></span>
-<span id="kbi_interrupt_c-60"><a href="#kbi_interrupt_c-60"></a>	<span class="cf">if</span> (PTDD_PTDD3 == <span class="dv">0</span>){</span>
-<span id="kbi_interrupt_c-61"><a href="#kbi_interrupt_c-61"></a>		PTFD = LED_onseq;	<span class="co">// this is the business of the interrupt</span></span>
-<span id="kbi_interrupt_c-62"><a href="#kbi_interrupt_c-62"></a>		LED_onseq ^= <span class="bn">0xFF</span>;	<span class="co">// toggle LED_onseq bits</span></span>
-<span id="kbi_interrupt_c-63"><a href="#kbi_interrupt_c-63"></a>	}	<span class="co">//       do nothing if not keyboard interrupt VNkeyboard</span></span>
-<span id="kbi_interrupt_c-64"><a href="#kbi_interrupt_c-64"></a>}</span>
-<span id="kbi_interrupt_c-65"><a href="#kbi_interrupt_c-65"></a></span>
-<span id="kbi_interrupt_c-66"><a href="#kbi_interrupt_c-66"></a></span>
-<span id="kbi_interrupt_c-67"><a href="#kbi_interrupt_c-67"></a></span>
-<span id="kbi_interrupt_c-68"><a href="#kbi_interrupt_c-68"></a></span>
-<span id="kbi_interrupt_c-69"><a href="#kbi_interrupt_c-69"></a></span></code></pre></div>
+<span id="kbi_interrupt_c-50"><a href="#kbi_interrupt_c-50"></a>	<span class="cf">for</span>(;;) </span>
+<span id="kbi_interrupt_c-51"><a href="#kbi_interrupt_c-51"></a>	{</span>
+<span id="kbi_interrupt_c-52"><a href="#kbi_interrupt_c-52"></a></span>
+<span id="kbi_interrupt_c-53"><a href="#kbi_interrupt_c-53"></a>	}	<span class="co">/* loop forever */</span></span>
+<span id="kbi_interrupt_c-54"><a href="#kbi_interrupt_c-54"></a>		<span class="co">/* make sure that you never leave main! */</span></span>
+<span id="kbi_interrupt_c-55"><a href="#kbi_interrupt_c-55"></a>}</span>
+<span id="kbi_interrupt_c-56"><a href="#kbi_interrupt_c-56"></a></span>
+<span id="kbi_interrupt_c-57"><a href="#kbi_interrupt_c-57"></a><span class="co">// What follows is the interrupt service routine, which is called if either of the</span></span>
+<span id="kbi_interrupt_c-58"><a href="#kbi_interrupt_c-58"></a><span class="co">// selected keyboard interrupts occurs on pins 5 and 6. However, Port D is tested</span></span>
+<span id="kbi_interrupt_c-59"><a href="#kbi_interrupt_c-59"></a><span class="co">// and the LED toggle only happens if SW3 is pressed. (KBI 6, Port D3).</span></span>
+<span id="kbi_interrupt_c-60"><a href="#kbi_interrupt_c-60"></a></span>
+<span id="kbi_interrupt_c-61"><a href="#kbi_interrupt_c-61"></a>interrupt VNkeyboard <span class="dt">void</span> intKBI_SW()</span>
+<span id="kbi_interrupt_c-62"><a href="#kbi_interrupt_c-62"></a>{</span>
+<span id="kbi_interrupt_c-63"><a href="#kbi_interrupt_c-63"></a>	KBI1SC_KBACK = <span class="dv">1</span>;		<span class="co">// acknowledge interrupt</span></span>
+<span id="kbi_interrupt_c-64"><a href="#kbi_interrupt_c-64"></a>	<span class="co">// this is the business of the interrupt</span></span>
+<span id="kbi_interrupt_c-65"><a href="#kbi_interrupt_c-65"></a>	<span class="cf">if</span> (PTDD_PTDD3 == <span class="dv">0</span>)</span>
+<span id="kbi_interrupt_c-66"><a href="#kbi_interrupt_c-66"></a>	{</span>
+<span id="kbi_interrupt_c-67"><a href="#kbi_interrupt_c-67"></a>		PTFD = LED_onseq;	</span>
+<span id="kbi_interrupt_c-68"><a href="#kbi_interrupt_c-68"></a>		LED_onseq ^= <span class="bn">0xFF</span>;	<span class="co">// toggle LED_onseq bits</span></span>
+<span id="kbi_interrupt_c-69"><a href="#kbi_interrupt_c-69"></a>	}	</span>
+<span id="kbi_interrupt_c-70"><a href="#kbi_interrupt_c-70"></a>	<span class="co">// do nothing if not keyboard interrupt VNkeyboard</span></span>
+<span id="kbi_interrupt_c-71"><a href="#kbi_interrupt_c-71"></a>}</span></code></pre></div>
 <p>View on <a href="https://github.com/cpjobling/EG-252-Resources/blob/master/Microcontroller-Interfacing/Exercises/Exercise1/kbi_interrupt.c">GitHub</a></p>
 <h2 id="appendix-b">Appendix B</h2>
 <h3 id="sample-program-in-assembly">Sample Program in Assembly</h3>
