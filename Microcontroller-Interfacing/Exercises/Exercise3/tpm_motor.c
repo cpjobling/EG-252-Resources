@@ -75,4 +75,3 @@ interrupt VNtpm1ch1 void TPM1C1SC_int()
     PTGD = PTGD | 0x0F;	// set free-wheel mode for both motors instead of turn off
 }
 
-
