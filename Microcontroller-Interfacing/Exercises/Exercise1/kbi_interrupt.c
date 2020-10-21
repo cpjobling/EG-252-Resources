@@ -14,7 +14,9 @@ typedef long mint32;
 
 muint8 LED_onseq;
 
-void main(void) {
+void main(void) 
+{
+
 	SOPT = 0x00;		/* disable COP */
 
 	/* begin LED/switch test */
@@ -45,25 +47,25 @@ void main(void) {
 
 	EnableInterrupts;	// enable interrupts globally ("big switch")
 
-	for(;;) {
+	for(;;) 
+	{
 
 	}	/* loop forever */
 		/* make sure that you never leave main! */
 }
 
-	// What follows is the interrupt service routine, which is called if either of the
-	// selected keyboard interrupts occurs on pins 5 and 6. However, Port D is tested
-	// and the LED toggle only happens if SW3 is pressed. (KBI 6, Port D3).
+// What follows is the interrupt service routine, which is called if either of the
+// selected keyboard interrupts occurs on pins 5 and 6. However, Port D is tested
+// and the LED toggle only happens if SW3 is pressed. (KBI 6, Port D3).
 
-interrupt VNkeyboard void intKBI_SW(){
+interrupt VNkeyboard void intKBI_SW()
+{
 	KBI1SC_KBACK = 1;		// acknowledge interrupt
-	if (PTDD_PTDD3 == 0){
-		PTFD = LED_onseq;	// this is the business of the interrupt
+	// this is the business of the interrupt
+	if (PTDD_PTDD3 == 0)
+	{
+		PTFD = LED_onseq;	
 		LED_onseq ^= 0xFF;	// toggle LED_onseq bits
-	}	//       do nothing if not keyboard interrupt VNkeyboard
+	}	
+	// do nothing if not keyboard interrupt VNkeyboard
 }
-
-
-
-
-
