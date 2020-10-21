@@ -37,22 +37,23 @@ void main(void)
 
     EnableInterrupts;		// enable interrupts; from now on the interrupts are active
   
-    for(;;) {
-    }				// loop forever
+    for(;;) 
+    {
+    } // loop forever
 }
 
 interrupt VNtpm2ch2 void TPM1_overflow()
 {
     TPM1SC_TOF = 0;		//Clear the overflow interrupt flag.
    
-    if (tof_cnt >= digit_cnt) {
+    if (tof_cnt >= digit_cnt)
+    {
         tof_cnt = 0;		// reset tof_cnt if larger than digit_cnt
     }
 
     PTFD = student_num[tof_cnt];
     tof_cnt++;
 }
-
 
 
 

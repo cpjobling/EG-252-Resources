@@ -52,7 +52,8 @@ void main(void)
 
     EnableInterrupts;   // enable interrupts
   
-    for(;;) {
+    for(;;) 
+    {
         drive = PTAD & 0x0F;		// read the motor direction settings from the rocker switches 1-4
         PTFD = drive;
     }   // loop forever
@@ -73,5 +74,4 @@ interrupt VNtpm1ch1 void TPM1C1SC_int()
  
     PTGD = PTGD | 0x0F;	// set free-wheel mode for both motors instead of turn off
 }
-
 
