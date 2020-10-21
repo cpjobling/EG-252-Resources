@@ -107,72 +107,80 @@ Dr Chris P. Jobling
 <h1 id="appendix">Appendix</h1>
 <h2 id="sample-program-in-assembly">Sample Program in Assembly</h2>
 <div class="sourceCode" id="kbi_adc_asm" data-include="kbi_adc.asm"><pre class="sourceCode numberSource asm numberLines"><code class="sourceCode fasm"><span id="kbi_adc_asm-1"><a href="#kbi_adc_asm-1"></a><span class="co">;*************************************************************************</span></span>
-<span id="kbi_adc_asm-2"><a href="#kbi_adc_asm-2"></a><span class="co">;*	kbi_adc.asm                                                          *</span></span>
+<span id="kbi_adc_asm-2"><a href="#kbi_adc_asm-2"></a><span class="co">;*	kbi_adc.asm                                                      *</span></span>
 <span id="kbi_adc_asm-3"><a href="#kbi_adc_asm-3"></a><span class="co">;*                                                                       *</span></span>
-<span id="kbi_adc_asm-4"><a href="#kbi_adc_asm-4"></a><span class="co">;*	MC9S08AW60 Evaluation board keyboard interrupt example               *</span></span>
-<span id="kbi_adc_asm-5"><a href="#kbi_adc_asm-5"></a><span class="co">;*	- Switch SW3 onboard connected to Port D pin 3, KBI pin6;            *</span></span>
-<span id="kbi_adc_asm-6"><a href="#kbi_adc_asm-6"></a><span class="co">;*	- Switch SW4 onboard connected to Port D pin 2, KBI pin5             *</span></span>
+<span id="kbi_adc_asm-4"><a href="#kbi_adc_asm-4"></a><span class="co">;*	MC9S08AW60 Evaluation board keyboard interrupt example           *</span></span>
+<span id="kbi_adc_asm-5"><a href="#kbi_adc_asm-5"></a><span class="co">;*	- Switch SW3 onboard connected to Port D bit 3, KBI pin6;        *</span></span>
+<span id="kbi_adc_asm-6"><a href="#kbi_adc_asm-6"></a><span class="co">;*	- Switch SW4 onboard connected to Port D bit 2, KBI pin5         *</span></span>
 <span id="kbi_adc_asm-7"><a href="#kbi_adc_asm-7"></a><span class="co">;*                                                                       *</span></span>
-<span id="kbi_adc_asm-8"><a href="#kbi_adc_asm-8"></a><span class="co">;*	Function:                                                            *</span></span>
-<span id="kbi_adc_asm-9"><a href="#kbi_adc_asm-9"></a><span class="co">;*	On reset all LEDs will light on. If SW3 or SW4 pressed,              *</span></span>
-<span id="kbi_adc_asm-10"><a href="#kbi_adc_asm-10"></a><span class="co">;*  an interrupt is generated, which set LEDs 0:3 to light on.           *</span></span>
-<span id="kbi_adc_asm-11"><a href="#kbi_adc_asm-11"></a><span class="co">;*	More interrupts are genereated if SW3 or SW4 are pressed.            *</span></span>
-<span id="kbi_adc_asm-12"><a href="#kbi_adc_asm-12"></a><span class="co">;*************************************************************************</span></span>
-<span id="kbi_adc_asm-13"><a href="#kbi_adc_asm-13"></a></span>
-<span id="kbi_adc_asm-14"><a href="#kbi_adc_asm-14"></a>		<span class="bu">INCLUDE</span>	<span class="st">&#39;derivative.inc&#39;</span> <span class="co">; Include derivative-specific definitions</span></span>
-<span id="kbi_adc_asm-15"><a href="#kbi_adc_asm-15"></a></span>
-<span id="kbi_adc_asm-16"><a href="#kbi_adc_asm-16"></a>FLASH	<span class="pp">EQU</span><span class="bn">		$2000</span></span>
-<span id="kbi_adc_asm-17"><a href="#kbi_adc_asm-17"></a>RAM		<span class="pp">EQU</span><span class="bn">		$0070</span></span>
-<span id="kbi_adc_asm-18"><a href="#kbi_adc_asm-18"></a>WATCH	<span class="pp">EQU</span><span class="bn">		$1802</span></span>
-<span id="kbi_adc_asm-19"><a href="#kbi_adc_asm-19"></a></span>
-<span id="kbi_adc_asm-20"><a href="#kbi_adc_asm-20"></a>		<span class="bu">ORG</span>		RAM</span>
-<span id="kbi_adc_asm-21"><a href="#kbi_adc_asm-21"></a>LED_on	<span class="kw">DS</span>.B	<span class="dv">1</span>		<span class="co">; Define a variable VAR_D with a size of 1 byte</span></span>
-<span id="kbi_adc_asm-22"><a href="#kbi_adc_asm-22"></a></span>
-<span id="kbi_adc_asm-23"><a href="#kbi_adc_asm-23"></a><span class="co">;Start program after reset</span></span>
-<span id="kbi_adc_asm-24"><a href="#kbi_adc_asm-24"></a>		<span class="bu">ORG</span>		FLASH</span>
-<span id="kbi_adc_asm-25"><a href="#kbi_adc_asm-25"></a>START_UP</span>
-<span id="kbi_adc_asm-26"><a href="#kbi_adc_asm-26"></a>		LDA		#<span class="bn">$00</span></span>
-<span id="kbi_adc_asm-27"><a href="#kbi_adc_asm-27"></a>		STA		WATCH	<span class="co">; Turn off the watchdog timer</span></span>
-<span id="kbi_adc_asm-28"><a href="#kbi_adc_asm-28"></a>		</span>
-<span id="kbi_adc_asm-29"><a href="#kbi_adc_asm-29"></a><span class="co">;Init_GPIO init code </span></span>
-<span id="kbi_adc_asm-30"><a href="#kbi_adc_asm-30"></a>		LDA     #<span class="dv">$</span>FF</span>
-<span id="kbi_adc_asm-31"><a href="#kbi_adc_asm-31"></a>		STA     PTFDD</span>
-<span id="kbi_adc_asm-32"><a href="#kbi_adc_asm-32"></a>		<span class="bu">MOV</span>     #<span class="bn">$0F, </span>LED_on	<span class="co">; Initialize VAR_D, used to control the LEDs</span></span>
-<span id="kbi_adc_asm-33"><a href="#kbi_adc_asm-33"></a>		LDA     #<span class="dv">$</span>FF</span>
-<span id="kbi_adc_asm-34"><a href="#kbi_adc_asm-34"></a>		STA     PTDPE           <span class="co">; Port D is enabled with pull-up</span></span>
-<span id="kbi_adc_asm-35"><a href="#kbi_adc_asm-35"></a>		<span class="kw">RSP</span>						<span class="co">; Reset stack pointer</span></span>
-<span id="kbi_adc_asm-36"><a href="#kbi_adc_asm-36"></a>                </span>
-<span id="kbi_adc_asm-37"><a href="#kbi_adc_asm-37"></a><span class="co">;Enable interrupt for Keyboard input</span></span>
-<span id="kbi_adc_asm-38"><a href="#kbi_adc_asm-38"></a>		LDA     #<span class="bn">$60</span></span>
-<span id="kbi_adc_asm-39"><a href="#kbi_adc_asm-39"></a>		STA     KBI1PE           <span class="co">; KBI1PE: enable KBI function for pins 5 and 6 only</span></span>
-<span id="kbi_adc_asm-40"><a href="#kbi_adc_asm-40"></a>		BSET<span class="bn">    $02, </span>KBI1SC      <span class="co">; KBI1SC: KBACK=1, to clear KBI flag </span></span>
-<span id="kbi_adc_asm-41"><a href="#kbi_adc_asm-41"></a>		BSET<span class="bn">    $01, </span>KBI1SC      <span class="co">; KBI1SC: KBIE=1, enable KBI </span></span>
-<span id="kbi_adc_asm-42"><a href="#kbi_adc_asm-42"></a>                               </span>
-<span id="kbi_adc_asm-43"><a href="#kbi_adc_asm-43"></a>		<span class="bu">CLI</span>                      <span class="co">; Enable interrupt</span></span>
-<span id="kbi_adc_asm-44"><a href="#kbi_adc_asm-44"></a></span>
-<span id="kbi_adc_asm-45"><a href="#kbi_adc_asm-45"></a>MAINLOOP</span>
-<span id="kbi_adc_asm-46"><a href="#kbi_adc_asm-46"></a>		LDA     LED_on           <span class="co">; Simple loop</span></span>
-<span id="kbi_adc_asm-47"><a href="#kbi_adc_asm-47"></a>		BRA		MAINLOOP</span>
-<span id="kbi_adc_asm-48"><a href="#kbi_adc_asm-48"></a></span>
-<span id="kbi_adc_asm-49"><a href="#kbi_adc_asm-49"></a><span class="co">;Interrupt service routine for a keyboard interrupt generated upon the press of a pushbutton</span></span>
-<span id="kbi_adc_asm-50"><a href="#kbi_adc_asm-50"></a><span class="co">;with a falling edge (transition from high logic level &quot;1&quot; to low logic level &quot;0&quot;)                </span></span>
-<span id="kbi_adc_asm-51"><a href="#kbi_adc_asm-51"></a>LED_SWITCH</span>
-<span id="kbi_adc_asm-52"><a href="#kbi_adc_asm-52"></a>		BSET<span class="bn">    $02, </span>KBI1SC     <span class="co">; Clear KBI flag </span></span>
-<span id="kbi_adc_asm-53"><a href="#kbi_adc_asm-53"></a>		LDA     #<span class="dv">8</span></span>
-<span id="kbi_adc_asm-54"><a href="#kbi_adc_asm-54"></a>		STA     ADC1SC1         <span class="co">; ADC conversion will start after a number is written to ADC1SC1 register.</span></span>
-<span id="kbi_adc_asm-55"><a href="#kbi_adc_asm-55"></a>ADCLOOP                </span>
-<span id="kbi_adc_asm-56"><a href="#kbi_adc_asm-56"></a>		TST     ADC1SC1         <span class="co">; Check the COCO bit (conversion complete flag).</span></span>
-<span id="kbi_adc_asm-57"><a href="#kbi_adc_asm-57"></a>		BPL     ADCLOOP         <span class="co">; if not complete, wait in the ADC loop.</span></span>
-<span id="kbi_adc_asm-58"><a href="#kbi_adc_asm-58"></a>		LDA     ADC1RL          <span class="co">; if complete, read the ADC outcome (digital value) from the register.</span></span>
-<span id="kbi_adc_asm-59"><a href="#kbi_adc_asm-59"></a>		STA     PTFD            <span class="co">; display over LED bar</span></span>
-<span id="kbi_adc_asm-60"><a href="#kbi_adc_asm-60"></a>		RTI                </span>
-<span id="kbi_adc_asm-61"><a href="#kbi_adc_asm-61"></a></span>
-<span id="kbi_adc_asm-62"><a href="#kbi_adc_asm-62"></a><span class="co">;INT_VECTOR		</span></span>
-<span id="kbi_adc_asm-63"><a href="#kbi_adc_asm-63"></a>		<span class="bu">ORG</span>     <span class="dv">$</span>FFD2</span>
-<span id="kbi_adc_asm-64"><a href="#kbi_adc_asm-64"></a>		DC.W    LED_SWITCH</span>
-<span id="kbi_adc_asm-65"><a href="#kbi_adc_asm-65"></a>		</span>
-<span id="kbi_adc_asm-66"><a href="#kbi_adc_asm-66"></a>		<span class="bu">ORG</span>     <span class="dv">$</span>FFFE</span>
-<span id="kbi_adc_asm-67"><a href="#kbi_adc_asm-67"></a>		DC.W    START_UP</span></code></pre></div>
+<span id="kbi_adc_asm-8"><a href="#kbi_adc_asm-8"></a><span class="co">;*	Function:                                                        *</span></span>
+<span id="kbi_adc_asm-9"><a href="#kbi_adc_asm-9"></a><span class="co">;*	On reset, all LEDs are off. When either SW3 or SW4 are pressed,  *</span></span>
+<span id="kbi_adc_asm-10"><a href="#kbi_adc_asm-10"></a><span class="co">;*	then the ADC channel 8 is read and sent to the LEDs.             *</span></span>
+<span id="kbi_adc_asm-11"><a href="#kbi_adc_asm-11"></a><span class="co">;*************************************************************************</span></span>
+<span id="kbi_adc_asm-12"><a href="#kbi_adc_asm-12"></a></span>
+<span id="kbi_adc_asm-13"><a href="#kbi_adc_asm-13"></a>		<span class="bu">INCLUDE</span>	<span class="st">&#39;derivative.inc&#39;</span> <span class="co">; Include derivative-specific definitions</span></span>
+<span id="kbi_adc_asm-14"><a href="#kbi_adc_asm-14"></a></span>
+<span id="kbi_adc_asm-15"><a href="#kbi_adc_asm-15"></a>FLASH	    <span class="pp">EQU</span><span class="bn">		$2000</span></span>
+<span id="kbi_adc_asm-16"><a href="#kbi_adc_asm-16"></a>RAM		    <span class="pp">EQU</span><span class="bn">		$0070</span></span>
+<span id="kbi_adc_asm-17"><a href="#kbi_adc_asm-17"></a>WATCH	    <span class="pp">EQU</span><span class="bn">		$1802</span></span>
+<span id="kbi_adc_asm-18"><a href="#kbi_adc_asm-18"></a></span>
+<span id="kbi_adc_asm-19"><a href="#kbi_adc_asm-19"></a>ConvComp	<span class="pp">EQU</span>		%<span class="dv">10000000</span>	<span class="co">;Mask for Conversion Complete flag</span></span>
+<span id="kbi_adc_asm-20"><a href="#kbi_adc_asm-20"></a></span>
+<span id="kbi_adc_asm-21"><a href="#kbi_adc_asm-21"></a>		<span class="bu">ORG</span>		RAM</span>
+<span id="kbi_adc_asm-22"><a href="#kbi_adc_asm-22"></a>LED_on		<span class="kw">DS</span>.B		<span class="dv">1</span>		<span class="co">; Define a variable VAR_D with a size of 1 byte</span></span>
+<span id="kbi_adc_asm-23"><a href="#kbi_adc_asm-23"></a></span>
+<span id="kbi_adc_asm-24"><a href="#kbi_adc_asm-24"></a><span class="co">;Start program after reset</span></span>
+<span id="kbi_adc_asm-25"><a href="#kbi_adc_asm-25"></a></span>
+<span id="kbi_adc_asm-26"><a href="#kbi_adc_asm-26"></a>		<span class="bu">ORG</span>		FLASH</span>
+<span id="kbi_adc_asm-27"><a href="#kbi_adc_asm-27"></a>START_UP</span>
+<span id="kbi_adc_asm-28"><a href="#kbi_adc_asm-28"></a>		LDA		#<span class="bn">$00</span></span>
+<span id="kbi_adc_asm-29"><a href="#kbi_adc_asm-29"></a>		STA		WATCH		<span class="co">; Turn off the watchdog timer</span></span>
+<span id="kbi_adc_asm-30"><a href="#kbi_adc_asm-30"></a>		</span>
+<span id="kbi_adc_asm-31"><a href="#kbi_adc_asm-31"></a><span class="co">;Init_GPIO init code </span></span>
+<span id="kbi_adc_asm-32"><a href="#kbi_adc_asm-32"></a>		LDA     	#<span class="dv">$</span>FF</span>
+<span id="kbi_adc_asm-33"><a href="#kbi_adc_asm-33"></a>		STA     	PTFDD</span>
+<span id="kbi_adc_asm-34"><a href="#kbi_adc_asm-34"></a>		<span class="bu">MOV</span>    		#<span class="bn">$0F, </span>LED_on	<span class="co">; Initialize VAR_D, used to control the LEDs</span></span>
+<span id="kbi_adc_asm-35"><a href="#kbi_adc_asm-35"></a>		LDA     	#<span class="dv">$</span>FF</span>
+<span id="kbi_adc_asm-36"><a href="#kbi_adc_asm-36"></a>		STA    		PTDPE           <span class="co">; Port D is enabled with pull-up</span></span>
+<span id="kbi_adc_asm-37"><a href="#kbi_adc_asm-37"></a>		<span class="kw">RSP</span>				<span class="co">; Reset stack pointer to $0080</span></span>
+<span id="kbi_adc_asm-38"><a href="#kbi_adc_asm-38"></a>                </span>
+<span id="kbi_adc_asm-39"><a href="#kbi_adc_asm-39"></a><span class="co">;Enable interrupt for Keyboard input</span></span>
+<span id="kbi_adc_asm-40"><a href="#kbi_adc_asm-40"></a>		LDA     	#<span class="bn">$60</span></span>
+<span id="kbi_adc_asm-41"><a href="#kbi_adc_asm-41"></a>		STA     	KBI1PE           <span class="co">; KBI1PE: enable KBI function for pins 5 and 6 only</span></span>
+<span id="kbi_adc_asm-42"><a href="#kbi_adc_asm-42"></a>		BSET<span class="bn">    	$02, </span>KBI1SC      <span class="co">; KBI1SC: KBACK=1, to clear KBI flag </span></span>
+<span id="kbi_adc_asm-43"><a href="#kbi_adc_asm-43"></a>		BSET<span class="bn">    	$01, </span>KBI1SC      <span class="co">; KBI1SC: KBIE=1, enable KBI </span></span>
+<span id="kbi_adc_asm-44"><a href="#kbi_adc_asm-44"></a>                               </span>
+<span id="kbi_adc_asm-45"><a href="#kbi_adc_asm-45"></a>		<span class="bu">CLI</span>                      	<span class="co">; Enable interrupt</span></span>
+<span id="kbi_adc_asm-46"><a href="#kbi_adc_asm-46"></a></span>
+<span id="kbi_adc_asm-47"><a href="#kbi_adc_asm-47"></a>MAINLOOP</span>
+<span id="kbi_adc_asm-48"><a href="#kbi_adc_asm-48"></a>		LDA     LED_on           <span class="co">; Simple loop with &quot;dummy&quot; operation</span></span>
+<span id="kbi_adc_asm-49"><a href="#kbi_adc_asm-49"></a>		BRA		MAINLOOP</span>
+<span id="kbi_adc_asm-50"><a href="#kbi_adc_asm-50"></a>		</span>
+<span id="kbi_adc_asm-51"><a href="#kbi_adc_asm-51"></a><span class="co">;Interrupt service routine for a keyboard interrupt generated upon the press of a pushbutton</span></span>
+<span id="kbi_adc_asm-52"><a href="#kbi_adc_asm-52"></a><span class="co">;with a falling edge (transition from high logic level &quot;1&quot; to low logic level &quot;0&quot;)                </span></span>
+<span id="kbi_adc_asm-53"><a href="#kbi_adc_asm-53"></a>LED_SWITCH</span>
+<span id="kbi_adc_asm-54"><a href="#kbi_adc_asm-54"></a>		BSET<span class="bn">    	$02, </span>KBI1SC     <span class="co">; Clear KBI flag </span></span>
+<span id="kbi_adc_asm-55"><a href="#kbi_adc_asm-55"></a>		LDA     	#<span class="dv">8</span>		<span class="co">; Select analogue input 8 (the blue potentiometer).</span></span>
+<span id="kbi_adc_asm-56"><a href="#kbi_adc_asm-56"></a>		STA     	ADC1SC1         <span class="co">; ADC conversion will start after a number is written to ADC1SC1 register.</span></span>
+<span id="kbi_adc_asm-57"><a href="#kbi_adc_asm-57"></a>ADCLOOP                </span>
+<span id="kbi_adc_asm-58"><a href="#kbi_adc_asm-58"></a>		LDA     	ADC1SC1         <span class="co">; </span></span>
+<span id="kbi_adc_asm-59"><a href="#kbi_adc_asm-59"></a>		<span class="bu">AND</span>		    #ConvComp	<span class="co">; Check the COCO bit (conversion complete flag).</span></span>
+<span id="kbi_adc_asm-60"><a href="#kbi_adc_asm-60"></a>		BEQ     	ADCLOOP         <span class="co">; if not complete, wait in the ADC loop.</span></span>
+<span id="kbi_adc_asm-61"><a href="#kbi_adc_asm-61"></a>		LDA     	ADC1RL          <span class="co">; if complete, read the ADC outcome (digital value) from the register.</span></span>
+<span id="kbi_adc_asm-62"><a href="#kbi_adc_asm-62"></a>		STA     	PTFD            <span class="co">; display over LED bar</span></span>
+<span id="kbi_adc_asm-63"><a href="#kbi_adc_asm-63"></a>		RTI                </span>
+<span id="kbi_adc_asm-64"><a href="#kbi_adc_asm-64"></a></span>
+<span id="kbi_adc_asm-65"><a href="#kbi_adc_asm-65"></a><span class="co">;INT_VECTOR		</span></span>
+<span id="kbi_adc_asm-66"><a href="#kbi_adc_asm-66"></a>		<span class="bu">ORG</span>     	<span class="dv">$</span>FFD2</span>
+<span id="kbi_adc_asm-67"><a href="#kbi_adc_asm-67"></a>		DC.W    	LED_SWITCH</span>
+<span id="kbi_adc_asm-68"><a href="#kbi_adc_asm-68"></a>		</span>
+<span id="kbi_adc_asm-69"><a href="#kbi_adc_asm-69"></a>		<span class="bu">ORG</span>    		<span class="dv">$</span>FFFE</span>
+<span id="kbi_adc_asm-70"><a href="#kbi_adc_asm-70"></a>		DC.W    	START_UP</span>
+<span id="kbi_adc_asm-71"><a href="#kbi_adc_asm-71"></a></span>
+<span id="kbi_adc_asm-72"><a href="#kbi_adc_asm-72"></a></span>
+<span id="kbi_adc_asm-73"><a href="#kbi_adc_asm-73"></a></span>
+<span id="kbi_adc_asm-74"><a href="#kbi_adc_asm-74"></a></span>
+<span id="kbi_adc_asm-75"><a href="#kbi_adc_asm-75"></a></span></code></pre></div>
 <p>View on <a href="https://github.com/cpjobling/EG-252-Resources/blob/master/Microcontroller-Interfacing/Exercises/Exercise2/kbi_adc.asm">GitHub</a></p>
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">EG-252 Resources</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="http://www.swan.ac.uk" property="cc:attributionName" rel="cc:attributionURL">Swansea University</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
