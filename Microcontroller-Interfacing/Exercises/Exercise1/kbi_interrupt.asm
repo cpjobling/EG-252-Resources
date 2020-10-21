@@ -5,9 +5,16 @@
 ;*	- Switch SW3 onboard connected to Port D bit 3, KBI pin6;        *
 ;*	- Switch SW4 onboard connected to Port D bit 2, KBI pin5         *
 ;*                                                                       *
+<<<<<<< HEAD
 ;*	Function:                                                        *
 ;*	On reset, all LEDs are off. When either SW3 or SW4 are pressed,  *
 ;*	then the ADC channel 8 is read and sent to the LEDs.             *
+=======
+;*	Function:                                                            *
+;*	on reset all LEDs will light on. If SW3 or SW4 pressed,              *
+;*	an interrupt is generated, which set LEDs 0:3 to light on.           *
+;*	More interrupts are generated if SW3 or SW4 are pressed.            *
+>>>>>>> master
 ;*************************************************************************
 
 		INCLUDE	'derivative.inc' ; Include derivative-specific definitions

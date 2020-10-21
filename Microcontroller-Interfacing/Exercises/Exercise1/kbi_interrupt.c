@@ -68,4 +68,8 @@ interrupt VNkeyboard void intKBI_SW()
 		LED_onseq ^= 0xFF;	// toggle LED_onseq bits
 	}	
 	// do nothing if not keyboard interrupt VNkeyboard
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> master
