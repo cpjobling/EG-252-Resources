@@ -1,51 +1,77 @@
+/*
+
+Modified test Programme for new AW60 teaching board thanks to contributions from
+Dr Tim Davies.
+
+This version gives direction control of the two motors but with interrupts to
+give PWM speed control.
+
+There are two interrupts: the timer overflow for TPM1 timer, which sets the
+overflow frequency of 100 Hz with bus clock rate 2MHz, and TPM1 channel 1 to
+turn off the motor. The motors are turned off individually to give individual
+speed control if required.
+
+The lower four rocker switches 1-4 on Port A determine the direction of the two
+motors, e.g. 00001010 is reverse both motors, 00000101 is forward both motors,
+00000000 is braked.
+
+*/
+
 #include <hidef.h>      // for EnableInterrupts macro
 #include "derivative.h" // include peripheral declarations
 
-byte tof_cnt, period;
-byte student_num[6] = {1, 2, 3, 4, 5, 6};
-byte digit_cnt = 6;
+#define VNtpm2ch2 11   // Interrupt vector for timer 2 channel 2 
+#define VNtpm1ch1 6    // Interrupt vector for timer 1 channel 1 
+
+//Define a 16 bit value to write directly to the modulus
+#define REPEAT 0x4E20	
+//Similarly, lets define the pulse width as a 16 bit value.	
+#define INITPW 0x3000		
+
+byte drive;
 
 void main(void)
 {
-    SOPT = 0x00; // disable COP (watchtimer)
+	SOPT   = 0x00;      // disable COP (watchtimer)
 
-    ICGC1 = 0x74; // select external quartz crystal
+	ICGC1 = 0x74;	// Select external 4 MHz quartz crystal.
 
-    /*The AW60 has an internal oscillator which runs at approx. 8 MHz, resulting in a system clock of 4 MHz.
- If the line above is included in your programme, the AW60 uses an external 4 MHz quartz crystal oscillator
- instead, resulting in a system clock of 2 MHz. This is more accurate than the internal oscillator, so that
- any time intervals defined in your programme will be correct to a fraction of a percent.*/
-
-    // Init_GPIO init code
-    PTFDD = 0xFF; // configure port F as outputs for LEDs
-
+    // Init_GPIO init code 
+	PTADD = 0x00;	// set port A as inputs for the rocker switches.
+	PTAPE = 0xFF;	// turn on the pullups for port A
+	PTFDD = 0xFF;	// set port F as outputs for LEDs
+	PTGDD = 0xFF;	// set port G as outputs for motor drive where motors are connected.
+   
     // configure TPM module 1
-    TPM1SC = 0x4F; // format: TOF(0) TOIE(1) CPWMS(0) CLKSB(0) CLKSA(1) PS2(1) PS1(1) PS0(1)
-                   // Turn on the overflow interrupt and set the prescaler to 128.
+	TPM1SC   = 0x48;	// format: TOF(0) TOIE(1) CPWMS(0) CLKSB(0) CLKSA(1) PS2(0) PS1(0) PS0(0)
+	TPM1MOD = REPEAT;	//write the 16-bit value 0x4E20 (20,000 decimal) to the modulus register
 
-    TPM1MOD = 0x8000; // set the counter modulo registers to hex 8000 = 32,768 decimal.
-        //You do not need to make separate writes to the low and high bytes of
-        //a 16-bit register such as TPM1MOD. The file "derivative.h" includes
-        //macros so that 16 bit variables are split and are written separately.*/
+    // configure TPM1 channel 1
+  	TPM1C1SC = 0x50;	// TPM1 Channel 1 interrupt enabled, output compare, no external output
+	TPM1C1V = INITPW;	//write 16-bit value 0x3000 (12,000 approx) to the channel 1 register
 
-    tof_cnt = 0; // initialize the number of timer overflow to 0.
-
-    EnableInterrupts; // enable interrupts; from now on the interrupts are active
-
-    for (;;)
-    {
-    } // loop forever
+    EnableInterrupts;   // enable interrupts
+  
+    for(;;) {
+        drive = PTAD & 0x0F;		// read the motor direction settings from the rocker switches 1-4
+        PTFD = drive;
+    }   // loop forever
 }
 
-interrupt VNtpm2ch2 void TPM1_overflow()
-{
-    TPM1SC_TOF = 0; //Clear the overflow interrupt flag.
+interrupt VNtpm2ch2 void TPM1SC_overflow()
+{   // interrupt vector: Vtpm1
+    
+    TPM1SC_TOF = 0;	// clear the overflow interrupt flag
 
-    if (tof_cnt >= digit_cnt)
-    {
-        tof_cnt = 0; // reset tof_cnt if larger than digit_cnt
-    }
-
-    PTFD = student_num[tof_cnt];
-    tof_cnt++;
+    PTGD = drive;       // turn on motors as configured by drive (port A switches).
 }
+
+interrupt VNtpm1ch1 void TPM1C1SC_int()
+{   // interrupt vector: Vtpm1ch1
+    
+    TPM1C1SC = 0;    	// clear the channel 1 interrupt flag
+ 
+    PTGD = PTGD | 0x0F;	// set free-wheel mode for both motors instead of turn off
+}
+
+
