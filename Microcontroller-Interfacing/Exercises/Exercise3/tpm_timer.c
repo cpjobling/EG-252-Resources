@@ -51,8 +51,7 @@ interrupt VNtpm2ch2 void TPM1_overflow()
         tof_cnt = 0;		// reset tof_cnt if larger than digit_cnt
     }
 
-    PTFD = student_num[tof_cnt];
-    tof_cnt++;
+    PTFD = student_num[tof_cnt++];
 }
 
 
