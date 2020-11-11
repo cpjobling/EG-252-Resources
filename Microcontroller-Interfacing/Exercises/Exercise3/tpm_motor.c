@@ -1,4 +1,4 @@
-/*
+/* TPM_motor.C
 
 Modified test Programme for new AW60 teaching board thanks to contributions from
 Dr Tim Davies.
@@ -20,8 +20,8 @@ motors, e.g. 00001010 is reverse both motors, 00000101 is forward both motors,
 #include <hidef.h>      // for EnableInterrupts macro
 #include "derivative.h" // include peripheral declarations
 
-#define VNtpm2ch2 11   // Interrupt vector for timer 2 channel 2 
-#define VNtpm1ch1 6    // Interrupt vector for timer 1 channel 1 
+#define T1ovf 11   // Interrupt vector for timer 1 overflow 
+#define T1C1 6    // Interrupt vector for timer 1 channel 1 
 
 //Define a 16 bit value to write directly to the modulus
 #define REPEAT 0x4E20	
@@ -59,7 +59,7 @@ void main(void)
     }   // loop forever
 }
 
-interrupt VNtpm2ch2 void TPM1SC_overflow()
+interrupt T1ovf void TPM1SC_overflow()
 {   // interrupt vector: Vtpm1
     
     TPM1SC_TOF = 0;	// clear the overflow interrupt flag
@@ -67,11 +67,10 @@ interrupt VNtpm2ch2 void TPM1SC_overflow()
     PTGD = drive;       // turn on motors as configured by drive (port A switches).
 }
 
-interrupt VNtpm1ch1 void TPM1C1SC_int()
+interrupt T1C1 void TPM1C1SC_int()
 {   // interrupt vector: Vtpm1ch1
     
-    TPM1C1SC = 0;    	// clear the channel 1 interrupt flag
+    TPM1C1SC_CH1F = 0;    	// clear the channel 1 interrupt flag
  
     PTGD = PTGD | 0x0F;	// set free-wheel mode for both motors instead of turn off
 }
-
