@@ -166,12 +166,11 @@ Dr Chris P. Jobling
 <span id="tpm_timer_c-51"><a href="#tpm_timer_c-51"></a>        tof_cnt = <span class="dv">0</span>;		<span class="co">// reset tof_cnt if larger than digit_cnt</span></span>
 <span id="tpm_timer_c-52"><a href="#tpm_timer_c-52"></a>    }</span>
 <span id="tpm_timer_c-53"><a href="#tpm_timer_c-53"></a></span>
-<span id="tpm_timer_c-54"><a href="#tpm_timer_c-54"></a>    PTFD = student_num[tof_cnt];</span>
-<span id="tpm_timer_c-55"><a href="#tpm_timer_c-55"></a>    tof_cnt++;</span>
-<span id="tpm_timer_c-56"><a href="#tpm_timer_c-56"></a>}</span>
+<span id="tpm_timer_c-54"><a href="#tpm_timer_c-54"></a>    PTFD = student_num[tof_cnt++];</span>
+<span id="tpm_timer_c-55"><a href="#tpm_timer_c-55"></a>}</span>
+<span id="tpm_timer_c-56"><a href="#tpm_timer_c-56"></a></span>
 <span id="tpm_timer_c-57"><a href="#tpm_timer_c-57"></a></span>
-<span id="tpm_timer_c-58"><a href="#tpm_timer_c-58"></a></span>
-<span id="tpm_timer_c-59"><a href="#tpm_timer_c-59"></a></span></code></pre></div>
+<span id="tpm_timer_c-58"><a href="#tpm_timer_c-58"></a></span></code></pre></div>
 <p>View on <a href="https://github.com/cpjobling/EG-252-Resources/blob/master/Microcontroller-Interfacing/Exercises/Exercise3/tpm_timer.c">GitHub</a>"</p>
 <p>Listing 1. Sample program for TPM timer function.</p>
 <h2 id="ii.-task-2-modify-the-sample-program-to-display-your-student-number">II. Task 2: Modify the Sample Program to Display your Student Number</h2>
@@ -185,7 +184,7 @@ Dr Chris P. Jobling
 <p>With this sample program the motor direction is configured by the setting of the rocker switches. The motor speed is controlled by configuring the modulo registers and the channel value registers. The modulo registers determine the PWM signal period. Upon the timer overflow interrupt the motors are turned on and direction is set by writing to port G where the two motors are connected. Upon the output compare interrupt (when the free-running counter value matches that stored in the channel value registers, an output compare interrupt is generated if an interrupt is enabled for that channel) both motors are turned off.</p>
 <p>Note that to drive the motor, an additional power supply is needed, which is available in the laboratory. Connect a 6-volt output to the demonstration board. Compile and run the sample program, you will be able to try different motor directions by setting the rocker switches accordingly.</p>
 <p>In this sample program there is a main program (Listing 2: Lines 27–51) and two interrupt service routines (Listing 2: Lines 53–73). Use the MC9S08AW60 datasheet to find out the interrupt vectors for the TPM1 timer interrupt and TPM1 channel 1 interrupt. Again check the MC9S08AW60 datasheet to understand the configuration of the modulo register and IOC register.</p>
-<div class="sourceCode" id="tpm_motor_c" data-include="tpm_motor.c"><pre class="sourceCode numberSource c numberLines"><code class="sourceCode c"><span id="tpm_motor_c-1"><a href="#tpm_motor_c-1"></a><span class="co">/*</span></span>
+<div class="sourceCode" id="tpm_motor_c" data-include="tpm_motor.c"><pre class="sourceCode numberSource c numberLines"><code class="sourceCode c"><span id="tpm_motor_c-1"><a href="#tpm_motor_c-1"></a><span class="co">/* TPM_motor.C</span></span>
 <span id="tpm_motor_c-2"><a href="#tpm_motor_c-2"></a></span>
 <span id="tpm_motor_c-3"><a href="#tpm_motor_c-3"></a><span class="co">Modified test Programme for new AW60 teaching board thanks to contributions from</span></span>
 <span id="tpm_motor_c-4"><a href="#tpm_motor_c-4"></a><span class="co">Dr Tim Davies.</span></span>
@@ -207,8 +206,8 @@ Dr Chris P. Jobling
 <span id="tpm_motor_c-20"><a href="#tpm_motor_c-20"></a><span class="pp">#include </span><span class="im">&lt;hidef.h&gt;</span><span class="pp">      </span><span class="co">// for EnableInterrupts macro</span></span>
 <span id="tpm_motor_c-21"><a href="#tpm_motor_c-21"></a><span class="pp">#include </span><span class="im">&quot;derivative.h&quot;</span><span class="pp"> </span><span class="co">// include peripheral declarations</span></span>
 <span id="tpm_motor_c-22"><a href="#tpm_motor_c-22"></a></span>
-<span id="tpm_motor_c-23"><a href="#tpm_motor_c-23"></a><span class="pp">#define VNtpm2ch2 11   </span><span class="co">// Interrupt vector for timer 2 channel 2 </span></span>
-<span id="tpm_motor_c-24"><a href="#tpm_motor_c-24"></a><span class="pp">#define VNtpm1ch1 6    </span><span class="co">// Interrupt vector for timer 1 channel 1 </span></span>
+<span id="tpm_motor_c-23"><a href="#tpm_motor_c-23"></a><span class="pp">#define T1ovf 11   </span><span class="co">// Interrupt vector for timer 1 overflow </span></span>
+<span id="tpm_motor_c-24"><a href="#tpm_motor_c-24"></a><span class="pp">#define T1C1 6    </span><span class="co">// Interrupt vector for timer 1 channel 1 </span></span>
 <span id="tpm_motor_c-25"><a href="#tpm_motor_c-25"></a></span>
 <span id="tpm_motor_c-26"><a href="#tpm_motor_c-26"></a><span class="co">//Define a 16 bit value to write directly to the modulus</span></span>
 <span id="tpm_motor_c-27"><a href="#tpm_motor_c-27"></a><span class="pp">#define REPEAT 0x4E20	</span></span>
@@ -246,7 +245,7 @@ Dr Chris P. Jobling
 <span id="tpm_motor_c-59"><a href="#tpm_motor_c-59"></a>    }   <span class="co">// loop forever</span></span>
 <span id="tpm_motor_c-60"><a href="#tpm_motor_c-60"></a>}</span>
 <span id="tpm_motor_c-61"><a href="#tpm_motor_c-61"></a></span>
-<span id="tpm_motor_c-62"><a href="#tpm_motor_c-62"></a>interrupt VNtpm2ch2 <span class="dt">void</span> TPM1SC_overflow()</span>
+<span id="tpm_motor_c-62"><a href="#tpm_motor_c-62"></a>interrupt T1ovf <span class="dt">void</span> TPM1SC_overflow()</span>
 <span id="tpm_motor_c-63"><a href="#tpm_motor_c-63"></a>{   <span class="co">// interrupt vector: Vtpm1</span></span>
 <span id="tpm_motor_c-64"><a href="#tpm_motor_c-64"></a>    </span>
 <span id="tpm_motor_c-65"><a href="#tpm_motor_c-65"></a>    TPM1SC_TOF = <span class="dv">0</span>;	<span class="co">// clear the overflow interrupt flag</span></span>
@@ -254,14 +253,13 @@ Dr Chris P. Jobling
 <span id="tpm_motor_c-67"><a href="#tpm_motor_c-67"></a>    PTGD = drive;       <span class="co">// turn on motors as configured by drive (port A switches).</span></span>
 <span id="tpm_motor_c-68"><a href="#tpm_motor_c-68"></a>}</span>
 <span id="tpm_motor_c-69"><a href="#tpm_motor_c-69"></a></span>
-<span id="tpm_motor_c-70"><a href="#tpm_motor_c-70"></a>interrupt VNtpm1ch1 <span class="dt">void</span> TPM1C1SC_int()</span>
+<span id="tpm_motor_c-70"><a href="#tpm_motor_c-70"></a>interrupt T1C1 <span class="dt">void</span> TPM1C1SC_int()</span>
 <span id="tpm_motor_c-71"><a href="#tpm_motor_c-71"></a>{   <span class="co">// interrupt vector: Vtpm1ch1</span></span>
 <span id="tpm_motor_c-72"><a href="#tpm_motor_c-72"></a>    </span>
-<span id="tpm_motor_c-73"><a href="#tpm_motor_c-73"></a>    TPM1C1SC = <span class="dv">0</span>;    	<span class="co">// clear the channel 1 interrupt flag</span></span>
+<span id="tpm_motor_c-73"><a href="#tpm_motor_c-73"></a>    TPM1C1SC_CH1F = <span class="dv">0</span>;    	<span class="co">// clear the channel 1 interrupt flag</span></span>
 <span id="tpm_motor_c-74"><a href="#tpm_motor_c-74"></a> </span>
 <span id="tpm_motor_c-75"><a href="#tpm_motor_c-75"></a>    PTGD = PTGD | <span class="bn">0x0F</span>;	<span class="co">// set free-wheel mode for both motors instead of turn off</span></span>
-<span id="tpm_motor_c-76"><a href="#tpm_motor_c-76"></a>}</span>
-<span id="tpm_motor_c-77"><a href="#tpm_motor_c-77"></a></span></code></pre></div>
+<span id="tpm_motor_c-76"><a href="#tpm_motor_c-76"></a>}</span></code></pre></div>
 <p>View on <a href="https://github.com/cpjobling/EG-252-Resources/blob/master/Microcontroller-Interfacing/Exercises/Exercise3/tpm_motor.c">GitHub</a></p>
 <h2 id="iv.-task-4-pwm-duty-cycle-and-motor-speed-control">IV. Task 4: PWM Duty Cycle and Motor Speed Control</h2>
 <p>For Task 4 you are required to modify the sample program in order to:</p>
