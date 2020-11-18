@@ -2,7 +2,7 @@
 
 This folder contains Dr Davies' demo micro mouse programme [tachoavoid.c](https://github.com/cpjobling/EG-252-Resources/blob/master/Micromouse/tacho-avoid/tachoavoid.c) which demonstrates and tests obstacle avoidance for a newly born mouse.
 
-It was developed for EG-252 Group Design Exercise
+It was developed for the EG-252 Group Design Exercise.
 
 ## Contents
 
