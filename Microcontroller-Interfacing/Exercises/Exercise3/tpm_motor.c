@@ -20,57 +20,57 @@ motors, e.g. 00001010 is reverse both motors, 00000101 is forward both motors,
 #include <hidef.h>      // for EnableInterrupts macro
 #include "derivative.h" // include peripheral declarations
 
-#define T1ovf 11   // Interrupt vector for timer 1 overflow 
-#define T1C1 6    // Interrupt vector for timer 1 channel 1 
+#define T1ovf 11 // Interrupt vector for timer 1 overflow
+#define T1C1 6   // Interrupt vector for timer 1 channel 1
 
 //Define a 16 bit value to write directly to the modulus
-#define REPEAT 0x4E20	
-//Similarly, lets define the pulse width as a 16 bit value.	
-#define INITPW 0x3000		
+#define REPEAT 0x4E20 // Timer repeat rate 0x4E20 (20,000 decimal)
+//Similarly, lets define the pulse width as a 16 bit value.
+#define INITPW 0x3000 // Initial pulse width 0x3000 (12,000 approx)
 
 byte drive;
 
 void main(void)
 {
-	SOPT   = 0x00;      // disable COP (watchtimer)
+    SOPT = 0x00; // disable COP (watchtimer)
 
-	ICGC1 = 0x74;	// Select external 4 MHz quartz crystal.
+    ICGC1 = 0x74; // Select external 4 MHz quartz crystal.
 
-    // Init_GPIO init code 
-	PTADD = 0x00;	// set port A as inputs for the rocker switches.
-	PTAPE = 0xFF;	// turn on the pullups for port A
-	PTFDD = 0xFF;	// set port F as outputs for LEDs
-	PTGDD = 0xFF;	// set port G as outputs for motor drive where motors are connected.
-   
+    // Init_GPIO init code
+    PTADD = 0x00; // set port A as inputs for the rocker switches.
+    PTAPE = 0xFF; // turn on the pullups for port A
+    PTFDD = 0xFF; // set port F as outputs for LEDs
+    PTGDD = 0xFF; // set port G as outputs for motor drive where motors are connected.
+
     // configure TPM module 1
-	TPM1SC   = 0x48;	// format: TOF(0) TOIE(1) CPWMS(0) CLKSB(0) CLKSA(1) PS2(0) PS1(0) PS0(0)
-	TPM1MOD = REPEAT;	//write the 16-bit value 0x4E20 (20,000 decimal) to the modulus register
+    TPM1SC = 0x48;    // format: TOF(0) TOIE(1) CPWMS(0) CLKSB(0) CLKSA(1) PS2(0) PS1(0) PS0(0)
+    TPM1MOD = REPEAT; // write the 16-bit value REPEAT to the modulus register
 
     // configure TPM1 channel 1
-  	TPM1C1SC = 0x50;	// TPM1 Channel 1 interrupt enabled, output compare, no external output
-	TPM1C1V = INITPW;	//write 16-bit value 0x3000 (12,000 approx) to the channel 1 register
+    TPM1C1SC = 0x50;  // TPM1 Channel 1 interrupt enabled, output compare, no external output
+    TPM1C1V = INITPW; //write 16-bit value INTPW to the channel 1 register
 
-    EnableInterrupts;   // enable interrupts
-  
-    for(;;) 
+    EnableInterrupts; // enable interrupts
+
+    for (;;)
     {
-        drive = PTAD & 0x0F;		// read the motor direction settings from the rocker switches 1-4
+        drive = PTAD & 0x0F; // read the motor direction settings from the rocker switches 1-4
         PTFD = drive;
-    }   // loop forever
+    } // loop forever
 }
 
 interrupt T1ovf void TPM1SC_overflow()
-{   // interrupt vector: Vtpm1
-    
-    TPM1SC_TOF = 0;	// clear the overflow interrupt flag
+{ // interrupt vector: Vtpm1
 
-    PTGD = drive;       // turn on motors as configured by drive (port A switches).
+    TPM1SC_TOF = 0; // clear the overflow interrupt flag
+
+    PTGD = drive; // turn on motors as configured by drive (port A switches).
 }
 
 interrupt T1C1 void TPM1C1SC_int()
-{   // interrupt vector: Vtpm1ch1
-    
-    TPM1C1SC_CH1F = 0;    	// clear the channel 1 interrupt flag
- 
-    PTGD = PTGD | 0x0F;	// set free-wheel mode for both motors instead of turn off
+{ // interrupt vector: Vtpm1ch1
+
+    TPM1C1SC_CH1F = 0; // clear the channel 1 interrupt flag
+
+    PTGD = PTGD | 0x0F; // set free-wheel mode for both motors instead of turn off
 }
